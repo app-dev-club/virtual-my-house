@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -38,7 +39,9 @@ namespace VirtualHouse.Editor
             Materials.Clear();
 
             Scene previousScene = SceneManager.GetActiveScene();
-            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+            bool restorePreviousScene = !Application.isBatchMode && previousScene.IsValid() && previousScene.isLoaded;
+            NewSceneMode sceneMode = Application.isBatchMode ? NewSceneMode.Single : NewSceneMode.Additive;
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, sceneMode);
             scene.name = "HouseBlockout";
             SceneManager.SetActiveScene(scene);
 
@@ -47,6 +50,7 @@ namespace VirtualHouse.Editor
             CreateGround(house.transform);
             CreateFirstFloor(house.transform);
             CreateSecondFloor(house.transform);
+            CreateExterior(house.transform);
             CreateLightingAndCamera();
 
             EditorSceneManager.MarkSceneDirty(scene);
@@ -57,11 +61,46 @@ namespace VirtualHouse.Editor
             Selection.activeGameObject = house;
             Debug.Log($"House blockout generated: {OutputScene}");
 
-            if (previousScene.IsValid() && previousScene.isLoaded)
+            if (restorePreviousScene)
             {
                 SceneManager.SetActiveScene(previousScene);
                 EditorSceneManager.CloseScene(scene, true);
             }
+        }
+
+        [MenuItem("Virtual House/Render Exterior Preview")]
+        public static void RenderPreview()
+        {
+            Scene scene = EditorSceneManager.OpenScene(OutputScene, OpenSceneMode.Single);
+            Camera camera = Camera.main;
+            if (camera == null)
+                throw new System.InvalidOperationException("HouseBlockout scene has no Main Camera.");
+
+            camera.transform.position = new Vector3(17.5f, 5.8f, -16.5f);
+            camera.transform.LookAt(new Vector3(7.6f, 2.7f, 2.5f));
+            camera.fieldOfView = 44f;
+            foreach (TextMesh label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))
+                label.GetComponent<MeshRenderer>().enabled = false;
+
+            const int width = 1280;
+            const int height = 900;
+            RenderTexture target = new(width, height, 24);
+            Texture2D image = new(width, height, TextureFormat.RGB24, false);
+            RenderTexture previous = RenderTexture.active;
+            camera.targetTexture = target;
+            RenderTexture.active = target;
+            camera.Render();
+            image.ReadPixels(new Rect(0f, 0f, width, height), 0, 0);
+            image.Apply();
+            camera.targetTexture = null;
+            RenderTexture.active = previous;
+
+            string output = Path.Combine(Application.dataPath, "VirtualHouse", "house-exterior-preview.png");
+            File.WriteAllBytes(output, image.EncodeToPNG());
+            Object.DestroyImmediate(image);
+            Object.DestroyImmediate(target);
+            AssetDatabase.Refresh();
+            Debug.Log($"Exterior preview rendered: {output} ({scene.name})");
         }
 
         private static void GenerateIfMissing()
@@ -178,6 +217,91 @@ namespace VirtualHouse.Editor
             WallZWithOpening(walls, fittings, "間仕切_収納西", 12f, 5f, 8f, SecondFloorY, 6.2f, 1.0f, "収納扉");
         }
 
+        /// <summary>
+        /// Photo-derived exterior. Absolute dimensions remain estimates, but the placement is tied to
+        /// the plan grid so every part can be adjusted independently after generation.
+        /// </summary>
+        private static void CreateExterior(Transform root)
+        {
+            Transform exterior = NewGroup("外観_写真ベース", root);
+            Transform cladding = NewGroup("外壁仕上げ", exterior);
+            Transform openings = NewGroup("窓と玄関", exterior);
+            Transform roofs = NewGroup("屋根と庇", exterior);
+            Transform drainage = NewGroup("雨樋", exterior);
+
+            // The photographs show a rough, dark pebble-dash skirt wrapping the ground floor.
+            CladdingX(cladding, "南面腰壁_西", 0f, 11f, -0.09f);
+            CladdingX(cladding, "南面腰壁_東", 13f, 16f, -0.09f);
+            CladdingX(cladding, "玄関正面腰壁", 11f, 13f, -2.09f);
+            CladdingX(cladding, "北面腰壁", 2f, 17f, 8.09f);
+            CladdingZ(cladding, "西面腰壁", -0.09f, 0f, 4f);
+            CladdingZ(cladding, "東面腰壁", 18.09f, 2f, 6f);
+            CladdingZ(cladding, "北西張出し腰壁", 1.91f, 4f, 6f);
+            CladdingZ(cladding, "北東張出し腰壁", 17.09f, 6f, 8f);
+
+            // South/front elevation: two broad sets of sliding doors and the recessed entrance.
+            WindowX(openings, "南西掃出し窓", 2.0f, -0.085f, 3.55f, 2.05f, 0.18f, 4, true);
+            WindowX(openings, "南中央掃出し窓", 7.5f, -0.085f, 5.8f, 2.05f, 0.18f, 6, true);
+            WindowX(openings, "南東腰窓", 14.45f, -0.085f, 2.25f, 1.25f, 0.82f, 2, true);
+            DoorX(openings, "玄関引違い戸", 12f, -2.085f, 1.65f, 0f);
+            AddPorch(openings, 12f * Grid, -2.45f * Grid);
+
+            // The long first-floor side visible in photos 1, 9 and 16-18.
+            WindowZ(openings, "西南掃出し窓", -0.085f, 1.75f, 3.0f, 2.05f, 0.18f, 4, true);
+            WindowZ(openings, "西北掃出し窓", 1.915f, 5.0f, 1.5f, 1.55f, 0.55f, 2, true);
+
+            // Rear/service elevations use smaller frosted windows, matching the photo sequence.
+            WindowX(openings, "北西腰窓", 3.0f, 6.085f, 1.35f, 1.15f, 0.9f, 2, true);
+            WindowX(openings, "北中央窓", 7.5f, 8.085f, 2.2f, 1.35f, 0.72f, 3, true);
+            WindowX(openings, "北東窓", 14.2f, 8.085f, 1.65f, 1.15f, 0.85f, 2, true);
+            DoorX(openings, "北勝手口", 11.3f, 8.085f, 0.8f, 0f);
+            WindowZ(openings, "東南腰窓", 16.085f, 1.0f, 1.7f, 1.25f, 0.8f, 2, true);
+            WindowZ(openings, "東中央腰窓", 18.085f, 3.8f, 1.45f, 1.15f, 0.9f, 2, true);
+            WindowZ(openings, "東北窓", 17.085f, 7.0f, 1.2f, 1.05f, 0.95f, 2, true);
+
+            // Second storey: two windows along each eave elevation and one on each gable end.
+            WindowX(openings, "2階南西窓", 6.1f, 2.915f, 2.25f, 1.5f, 3.72f, 3, true);
+            WindowX(openings, "2階南東窓", 10.6f, 2.915f, 2.25f, 1.5f, 3.72f, 3, true);
+            WindowX(openings, "2階北西窓", 6.15f, 8.085f, 1.8f, 1.35f, 3.78f, 2, true);
+            WindowX(openings, "2階北東窓", 10.75f, 8.085f, 1.8f, 1.35f, 3.78f, 2, true);
+            WindowZ(openings, "2階西妻窓", 3.915f, 5.5f, 1.7f, 1.4f, 3.75f, 2, true);
+            WindowZ(openings, "2階東妻窓", 13.085f, 5.5f, 1.7f, 1.4f, 3.75f, 2, true);
+
+            // Main tiled gable. Ridge runs along the long axis of the second floor.
+            const float mainRoofAngle = 27f;
+            float mainHalfRun = 2.75f;
+            float mainSlopeLength = mainHalfRun / Mathf.Cos(mainRoofAngle * Mathf.Deg2Rad);
+            float mainRise = mainHalfRun * Mathf.Tan(mainRoofAngle * Mathf.Deg2Rad);
+            float mainEaveY = 5.72f;
+            float mainCenterY = mainEaveY + mainRise * 0.5f;
+            float mainLength = 9.8f * Grid;
+            float mainCenterX = 8.5f * Grid;
+            float ridgeZ = 5.5f * Grid;
+            CreateGableWall(roofs, "西妻壁", 4f * Grid - 0.02f, ridgeZ, 4.55f, 5.68f, mainRoofAngle);
+            CreateGableWall(roofs, "東妻壁", 13f * Grid + 0.02f, ridgeZ, 4.55f, 5.68f, mainRoofAngle);
+            CreateRotatedBox("主屋根_南面", new Vector3(mainCenterX, mainCenterY, ridgeZ - mainHalfRun * 0.5f),
+                new Vector3(mainLength, 0.13f, mainSlopeLength), new Vector3(-mainRoofAngle, 0f, 0f), GetMaterial("UpperRoof"), roofs);
+            CreateRotatedBox("主屋根_北面", new Vector3(mainCenterX, mainCenterY, ridgeZ + mainHalfRun * 0.5f),
+                new Vector3(mainLength, 0.13f, mainSlopeLength), new Vector3(mainRoofAngle, 0f, 0f), GetMaterial("UpperRoof"), roofs);
+            CreateBox("主屋根_棟", new Vector3(mainCenterX, mainEaveY + mainRise + 0.06f, ridgeZ),
+                new Vector3(mainLength + 0.12f, 0.18f, 0.20f), GetMaterial("UpperRoofRidge"), roofs);
+
+            // One-storey hipped/shed roofs reconstructed as editable overlapping roof planes.
+            ShedRoofX(roofs, "南側下屋", 0f, 18f, -2.55f, 3.05f, 3.26f, 2.72f, true);
+            ShedRoofX(roofs, "北側下屋", 1.7f, 17.4f, 7.75f, 8.75f, 3.18f, 2.82f, false);
+            ShedRoofZ(roofs, "西側下屋", -0.65f, 4.15f, -0.2f, 6.3f, 2.76f, 3.18f, true);
+            ShedRoofZ(roofs, "東側下屋", 12.85f, 18.65f, 1.7f, 8.25f, 3.20f, 2.75f, false);
+            CanopyX(roofs, "玄関庇", 12f * Grid, -2.55f * Grid, 2.75f, 2.45f, 1.25f);
+
+            // Characteristic dark-red metal gutters and downpipes.
+            GutterX(drainage, "南雨樋", -0.35f, 16.4f, -2.58f, 2.68f);
+            GutterX(drainage, "北雨樋", 1.5f, 17.6f, 8.78f, 2.78f);
+            Downpipe(drainage, "南西縦樋", 0.15f, -0.18f, 2.65f);
+            Downpipe(drainage, "玄関縦樋", 13.05f, -2.1f, 2.8f);
+            Downpipe(drainage, "北西縦樋", 2.0f, 6.05f, 2.8f);
+            Downpipe(drainage, "北東縦樋", 17.0f, 7.9f, 2.8f);
+        }
+
         private static void CreateStairs(Transform parent, float x, float z, float widthCells, float lengthCells, float baseY)
         {
             Transform stairs = NewGroup("階段_概形", parent);
@@ -194,6 +318,152 @@ namespace VirtualHouse.Editor
                 CreateBox($"段_{i + 1:00}", center, new Vector3(width, height, depth),
                     GetMaterial("Stair"), stairs);
             }
+        }
+
+        private static void CladdingX(Transform parent, string name, float x1, float x2, float z)
+        {
+            CreateBox(name, new Vector3((x1 + x2) * 0.5f * Grid, 0.72f, z * Grid),
+                new Vector3(Mathf.Abs(x2 - x1) * Grid, 1.12f, 0.055f), GetMaterial("Cladding"), parent);
+        }
+
+        private static void CladdingZ(Transform parent, string name, float x, float z1, float z2)
+        {
+            CreateBox(name, new Vector3(x * Grid, 0.72f, (z1 + z2) * 0.5f * Grid),
+                new Vector3(0.055f, 1.12f, Mathf.Abs(z2 - z1) * Grid), GetMaterial("Cladding"), parent);
+        }
+
+        private static void WindowX(Transform parent, string name, float x, float z, float width, float height,
+            float bottom, int columns, bool awning)
+        {
+            Transform window = NewGroup(name, parent);
+            float widthM = width * Grid;
+            float xM = x * Grid;
+            float zM = z * Grid;
+            float frame = 0.065f;
+            CreateBox("ガラス", new Vector3(xM, bottom + height * 0.5f, zM),
+                new Vector3(widthM - frame * 2f, height - frame * 2f, 0.045f), GetMaterial("Glass"), window);
+            CreateBox("枠_上", new Vector3(xM, bottom + height, zM - 0.008f),
+                new Vector3(widthM, frame, 0.075f), GetMaterial("WindowFrame"), window);
+            CreateBox("枠_下", new Vector3(xM, bottom, zM - 0.008f),
+                new Vector3(widthM, frame, 0.075f), GetMaterial("WindowFrame"), window);
+            CreateBox("枠_左", new Vector3(xM - widthM * 0.5f, bottom + height * 0.5f, zM - 0.008f),
+                new Vector3(frame, height, 0.075f), GetMaterial("WindowFrame"), window);
+            CreateBox("枠_右", new Vector3(xM + widthM * 0.5f, bottom + height * 0.5f, zM - 0.008f),
+                new Vector3(frame, height, 0.075f), GetMaterial("WindowFrame"), window);
+            for (int i = 1; i < columns; i++)
+            {
+                float mullionX = xM - widthM * 0.5f + widthM * i / columns;
+                CreateBox($"縦桟_{i}", new Vector3(mullionX, bottom + height * 0.5f, zM - 0.012f),
+                    new Vector3(frame * 0.72f, height, 0.08f), GetMaterial("WindowFrame"), window);
+            }
+            if (height > 1.7f)
+                CreateBox("中桟", new Vector3(xM, bottom + height * 0.46f, zM - 0.014f),
+                    new Vector3(widthM, frame * 0.8f, 0.08f), GetMaterial("WindowFrame"), window);
+            if (awning)
+                CreateRotatedBox("庇", new Vector3(xM, bottom + height + 0.17f, zM - 0.25f),
+                    new Vector3(widthM + 0.34f, 0.09f, 0.55f), new Vector3(-6f, 0f, 0f), GetMaterial("Awning"), window);
+        }
+
+        private static void WindowZ(Transform parent, string name, float x, float z, float width, float height,
+            float bottom, int columns, bool awning)
+        {
+            Transform window = NewGroup(name, parent);
+            float widthM = width * Grid;
+            float xM = x * Grid;
+            float zM = z * Grid;
+            float frame = 0.065f;
+            CreateBox("ガラス", new Vector3(xM, bottom + height * 0.5f, zM),
+                new Vector3(0.045f, height - frame * 2f, widthM - frame * 2f), GetMaterial("Glass"), window);
+            CreateBox("枠_上", new Vector3(xM, bottom + height, zM),
+                new Vector3(0.075f, frame, widthM), GetMaterial("WindowFrame"), window);
+            CreateBox("枠_下", new Vector3(xM, bottom, zM),
+                new Vector3(0.075f, frame, widthM), GetMaterial("WindowFrame"), window);
+            CreateBox("枠_左", new Vector3(xM, bottom + height * 0.5f, zM - widthM * 0.5f),
+                new Vector3(0.075f, height, frame), GetMaterial("WindowFrame"), window);
+            CreateBox("枠_右", new Vector3(xM, bottom + height * 0.5f, zM + widthM * 0.5f),
+                new Vector3(0.075f, height, frame), GetMaterial("WindowFrame"), window);
+            for (int i = 1; i < columns; i++)
+            {
+                float mullionZ = zM - widthM * 0.5f + widthM * i / columns;
+                CreateBox($"縦桟_{i}", new Vector3(xM, bottom + height * 0.5f, mullionZ),
+                    new Vector3(0.08f, height, frame * 0.72f), GetMaterial("WindowFrame"), window);
+            }
+            if (height > 1.7f)
+                CreateBox("中桟", new Vector3(xM, bottom + height * 0.46f, zM),
+                    new Vector3(0.08f, frame * 0.8f, widthM), GetMaterial("WindowFrame"), window);
+            if (awning)
+                CreateRotatedBox("庇", new Vector3(xM - 0.25f, bottom + height + 0.17f, zM),
+                    new Vector3(0.55f, 0.09f, widthM + 0.34f), new Vector3(0f, 0f, 6f), GetMaterial("Awning"), window);
+        }
+
+        private static void AddPorch(Transform parent, float x, float z)
+        {
+            Transform porch = NewGroup("玄関ポーチ", parent);
+            CreateBox("土間", new Vector3(x, 0.02f, z), new Vector3(2.15f, 0.16f, 1.45f), GetMaterial("Concrete"), porch);
+            CreateBox("左柱", new Vector3(x - 0.86f, 1.25f, z - 0.48f), new Vector3(0.10f, 2.5f, 0.10f), GetMaterial("Post"), porch);
+            CreateBox("右柱", new Vector3(x + 0.86f, 1.25f, z - 0.48f), new Vector3(0.10f, 2.5f, 0.10f), GetMaterial("Post"), porch);
+        }
+
+        private static void ShedRoofX(Transform parent, string name, float x1, float x2, float z1, float z2,
+            float innerY, float outerY, bool highAtPositiveZ)
+        {
+            float z1M = z1 * Grid;
+            float z2M = z2 * Grid;
+            float y1 = highAtPositiveZ ? outerY : innerY;
+            float y2 = highAtPositiveZ ? innerY : outerY;
+            float run = Mathf.Abs(z2M - z1M);
+            float angle = -Mathf.Atan2(y2 - y1, z2M - z1M) * Mathf.Rad2Deg;
+            float slopeLength = Mathf.Sqrt(run * run + (y2 - y1) * (y2 - y1));
+            CreateRotatedBox(name, new Vector3((x1 + x2) * 0.5f * Grid, (y1 + y2) * 0.5f, (z1M + z2M) * 0.5f),
+                new Vector3(Mathf.Abs(x2 - x1) * Grid, 0.11f, slopeLength), new Vector3(angle, 0f, 0f), GetMaterial("LowerRoof"), parent);
+        }
+
+        private static void ShedRoofZ(Transform parent, string name, float x1, float x2, float z1, float z2,
+            float innerY, float outerY, bool highAtPositiveX)
+        {
+            float x1M = x1 * Grid;
+            float x2M = x2 * Grid;
+            float y1 = highAtPositiveX ? outerY : innerY;
+            float y2 = highAtPositiveX ? innerY : outerY;
+            float run = Mathf.Abs(x2M - x1M);
+            float angle = Mathf.Atan2(y2 - y1, x2M - x1M) * Mathf.Rad2Deg;
+            float slopeLength = Mathf.Sqrt(run * run + (y2 - y1) * (y2 - y1));
+            CreateRotatedBox(name, new Vector3((x1M + x2M) * 0.5f, (y1 + y2) * 0.5f, (z1 + z2) * 0.5f * Grid),
+                new Vector3(slopeLength, 0.11f, Mathf.Abs(z2 - z1) * Grid), new Vector3(0f, 0f, angle), GetMaterial("LowerRoof"), parent);
+        }
+
+        private static void CanopyX(Transform parent, string name, float x, float z, float y, float width, float depth)
+        {
+            CreateRotatedBox(name, new Vector3(x, y, z), new Vector3(width, 0.12f, depth),
+                new Vector3(5f, 0f, 0f), GetMaterial("LowerRoof"), parent);
+        }
+
+        private static void CreateGableWall(Transform parent, string name, float x, float centerZ, float width,
+            float baseY, float roofAngle)
+        {
+            Transform gable = NewGroup(name, parent);
+            const int segments = 12;
+            float segmentWidth = width / segments;
+            float halfWidth = width * 0.5f;
+            for (int i = 0; i < segments; i++)
+            {
+                float localZ = -halfWidth + segmentWidth * (i + 0.5f);
+                float height = (halfWidth - Mathf.Abs(localZ)) * Mathf.Tan(roofAngle * Mathf.Deg2Rad);
+                CreateBox($"妻壁_{i + 1:00}", new Vector3(x, baseY + height * 0.5f, centerZ + localZ),
+                    new Vector3(0.16f, height, segmentWidth + 0.015f), GetMaterial("Wall"), gable);
+            }
+        }
+
+        private static void GutterX(Transform parent, string name, float x1, float x2, float z, float y)
+        {
+            CreateBox(name, new Vector3((x1 + x2) * 0.5f * Grid, y, z * Grid),
+                new Vector3(Mathf.Abs(x2 - x1) * Grid, 0.12f, 0.12f), GetMaterial("Gutter"), parent);
+        }
+
+        private static void Downpipe(Transform parent, string name, float x, float z, float height)
+        {
+            CreateBox(name, new Vector3(x * Grid, height * 0.5f, z * Grid),
+                new Vector3(0.105f, height, 0.105f), GetMaterial("Gutter"), parent);
         }
 
         private static void Room(Transform parent, string name, float x, float z, float width, float depth, float y, string material)
@@ -329,6 +599,14 @@ namespace VirtualHouse.Editor
             return box;
         }
 
+        private static GameObject CreateRotatedBox(string name, Vector3 position, Vector3 size, Vector3 euler,
+            Material material, Transform parent)
+        {
+            GameObject box = CreateBox(name, position, size, material, parent);
+            box.transform.rotation = Quaternion.Euler(euler);
+            return box;
+        }
+
         private static Transform NewGroup(string name, Transform parent)
         {
             GameObject group = new(name);
@@ -361,6 +639,16 @@ namespace VirtualHouse.Editor
                     "Stair" => new Color(0.55f, 0.34f, 0.17f),
                     "Ground" => new Color(0.30f, 0.45f, 0.25f),
                     "Grid" => new Color(0.20f, 0.55f, 0.75f),
+                    "Cladding" => new Color(0.25f, 0.23f, 0.20f),
+                    "UpperRoof" => new Color(0.16f, 0.30f, 0.42f),
+                    "UpperRoofRidge" => new Color(0.10f, 0.21f, 0.31f),
+                    "LowerRoof" => new Color(0.48f, 0.08f, 0.07f),
+                    "Awning" => new Color(0.82f, 0.80f, 0.74f),
+                    "WindowFrame" => new Color(0.73f, 0.74f, 0.72f),
+                    "Glass" => new Color(0.40f, 0.53f, 0.58f),
+                    "Gutter" => new Color(0.34f, 0.08f, 0.07f),
+                    "Concrete" => new Color(0.48f, 0.47f, 0.44f),
+                    "Post" => new Color(0.16f, 0.14f, 0.12f),
                     _ => Color.white
                 };
                 AssetDatabase.CreateAsset(material, path);
