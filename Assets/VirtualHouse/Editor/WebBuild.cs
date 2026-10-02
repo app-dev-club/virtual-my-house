@@ -44,6 +44,7 @@ namespace VirtualHouse.Editor
                 throw new InvalidOperationException($"WebGL build failed: {report.summary.result}");
 
             File.WriteAllText(Path.Combine(outputPath, ".nojekyll"), string.Empty);
+            NormalizeBuildFilenames(outputPath);
             MakePageTouchFriendly(Path.Combine(outputPath, "index.html"));
             Debug.Log($"WebGL build completed: {outputPath}");
         }
@@ -73,6 +74,34 @@ namespace VirtualHouse.Editor
       #unity-canvas { display: block; width: 100% !important; height: 100% !important; }
     </style>";
             html = html.Replace("</head>", mobileStyle + Environment.NewLine + "  </head>");
+            File.WriteAllText(indexPath, html);
+        }
+
+        private static void NormalizeBuildFilenames(string outputPath)
+        {
+            string generatedName = new DirectoryInfo(outputPath).Name;
+            if (generatedName == "WebGL")
+                return;
+
+            string buildFolder = Path.Combine(outputPath, "Build");
+            string[] extensions = { "data", "framework.js", "loader.js", "wasm" };
+            foreach (string extension in extensions)
+            {
+                string source = Path.Combine(buildFolder, $"{generatedName}.{extension}");
+                string destination = Path.Combine(buildFolder, $"WebGL.{extension}");
+                if (!File.Exists(source))
+                    continue;
+                if (File.Exists(destination))
+                    File.Delete(destination);
+                File.Move(source, destination);
+            }
+
+            string indexPath = Path.Combine(outputPath, "index.html");
+            string html = File.ReadAllText(indexPath);
+            html = html.Replace($"/{generatedName}.loader.js", "/WebGL.loader.js")
+                .Replace($"/{generatedName}.data", "/WebGL.data")
+                .Replace($"/{generatedName}.framework.js", "/WebGL.framework.js")
+                .Replace($"/{generatedName}.wasm", "/WebGL.wasm");
             File.WriteAllText(indexPath, html);
         }
 

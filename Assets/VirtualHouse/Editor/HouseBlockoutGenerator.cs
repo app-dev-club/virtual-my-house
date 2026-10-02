@@ -104,6 +104,41 @@ namespace VirtualHouse.Editor
             Debug.Log($"Exterior preview rendered: {output} ({scene.name})");
         }
 
+        [MenuItem("Virtual House/Render Entrance Preview")]
+        public static void RenderEntrancePreview()
+        {
+            Scene scene = EditorSceneManager.OpenScene(OutputScene, OpenSceneMode.Single);
+            Camera camera = Camera.main;
+            if (camera == null)
+                throw new System.InvalidOperationException("HouseBlockout scene has no Main Camera.");
+
+            camera.transform.position = new Vector3(11.48f * Grid, 1.48f, -0.72f * Grid);
+            camera.transform.LookAt(new Vector3(11.52f * Grid, 1.28f, 4.85f * Grid));
+            camera.fieldOfView = 72f;
+            foreach (TextMesh label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))
+                label.GetComponent<MeshRenderer>().enabled = false;
+
+            const int width = 1280;
+            const int height = 900;
+            RenderTexture target = new(width, height, 24);
+            Texture2D image = new(width, height, TextureFormat.RGB24, false);
+            RenderTexture previous = RenderTexture.active;
+            camera.targetTexture = target;
+            RenderTexture.active = target;
+            camera.Render();
+            image.ReadPixels(new Rect(0f, 0f, width, height), 0, 0);
+            image.Apply();
+            camera.targetTexture = null;
+            RenderTexture.active = previous;
+
+            string output = Path.Combine(Application.dataPath, "VirtualHouse", "entrance-interior-preview.png");
+            File.WriteAllBytes(output, image.EncodeToPNG());
+            Object.DestroyImmediate(image);
+            Object.DestroyImmediate(target);
+            AssetDatabase.Refresh();
+            Debug.Log($"Entrance preview rendered: {output} ({scene.name})");
+        }
+
         private static void GenerateIfMissing()
         {
             if (EditorApplication.isCompiling || EditorApplication.isUpdating)
@@ -176,12 +211,13 @@ namespace VirtualHouse.Editor
             // Principal partitions, with representative door/fusuma openings.
             WallZWithOpening(walls, fittings, "間仕切_洋室", 4f, 0f, 5f, 0f, 1.1f, 0.9f, "洋室扉");
             WallZWithOpening(walls, fittings, "間仕切_和室間", 8f, 1f, 5f, 0f, 1.8f, 1.4f, "襖_和室間");
-            WallZWithOpening(walls, fittings, "間仕切_和室DK", 12f, 0f, 5f, 0f, 1.2f, 0.9f, "DK扉");
+            // Keep the narrow entrance-side corridor open all the way to the stair foot.
+            WallZ(walls, "間仕切_和室DK_北", 12f, 1.75f, 3.82f, 0f);
             WallXWithOpening(walls, fittings, "間仕切_和室西南", 4f, 8f, 1f, 0f, 6.2f, 1.6f, "襖_和室西");
-            WallXWithOpening(walls, fittings, "間仕切_和室東南", 8f, 12f, 1f, 0f, 10.1f, 1.6f, "襖_和室東");
+            WallXWithOpening(walls, fittings, "間仕切_和室東南", 8f, 12f, 1f, 0f, 11f, 2f, "襖_和室東");
             WallXWithOpening(walls, fittings, "間仕切_和室西北", 4f, 8f, 5f, 0f, 6.2f, 1.4f, "襖_北西");
-            WallXWithOpening(walls, fittings, "間仕切_和室東北", 8f, 12f, 5f, 0f, 10.3f, 1.2f, "襖_北東");
-            WallXWithOpening(walls, fittings, "間仕切_DK北", 12f, 16f, 4f, 0f, 12.7f, 0.9f, "DK北扉");
+            WallXWithOpening(walls, fittings, "間仕切_和室東北", 8f, 12f, 5f, 0f, 11.3f, 1.4f, "襖_北東");
+            WallXWithOpening(walls, fittings, "間仕切_DK北", 12f, 16f, 4f, 0f, 12.65f, 1.3f, "DK北扉");
             WallZWithOpening(walls, fittings, "間仕切_脱衣西", 13f, 4f, 6f, 0f, 5f, 0.8f, "脱衣扉");
             WallZWithOpening(walls, fittings, "間仕切_浴室西", 15f, 4f, 8f, 0f, 5.5f, 0.8f, "浴室扉");
             WallXWithOpening(walls, fittings, "間仕切_洗面南", 13f, 15f, 6f, 0f, 14f, 0.8f, "洗面入口");
@@ -190,6 +226,7 @@ namespace VirtualHouse.Editor
             WallXWithOpening(walls, fittings, "間仕切_納戸南", 2f, 4f, 4f, 0f, 3.2f, 0.8f, "納戸扉");
 
             CreateStairs(floor, 11.25f, 4.1f, 1.35f, 3.4f, 0f);
+            CreateEntranceInterior(floor);
         }
 
         private static void CreateSecondFloor(Transform root)
@@ -201,10 +238,13 @@ namespace VirtualHouse.Editor
 
             // 9 x 5 cells = about 37.2 square metres, matching the noted 37.31 m2 closely.
             Room(rooms, "8帖和室", 4f, 4f, 4f, 4f, SecondFloorY, "Tatami");
-            Room(rooms, "4.5帖和室", 9f, 5f, 3f, 3f, SecondFloorY, "Tatami");
-            Room(rooms, "2階ホール", 8f, 3f, 5f, 2f, SecondFloorY, "Hall");
+            Room(rooms, "4.5帖和室", 9f, 5f, 2.15f, 3f, SecondFloorY, "Tatami");
+            FloorBox(rooms, "4.5帖北側補完", 9f, 7.5f, 3f, 0.5f, SecondFloorY, "Tatami");
+            FloorBox(rooms, "2階ホール南", 8f, 3f, 5f, 1.05f, SecondFloorY, "Hall");
+            FloorBox(rooms, "2階ホール西", 8f, 4.05f, 3.15f, 0.95f, SecondFloorY, "Hall");
+            FloorBox(rooms, "2階ホール東", 12.6f, 4.05f, 0.4f, 0.95f, SecondFloorY, "Hall");
             Room(rooms, "2階廊下", 8f, 5f, 1f, 3f, SecondFloorY, "Hall");
-            Room(rooms, "2階収納", 12f, 5f, 1f, 3f, SecondFloorY, "Storage");
+            Room(rooms, "2階収納", 12.65f, 5f, 0.35f, 3f, SecondFloorY, "Storage");
             FloorBox(rooms, "2階南西床補完", 4f, 3f, 4f, 1f, SecondFloorY, "Hall");
 
             WallX(walls, "外壁_2階南", 4f, 13f, 3f, SecondFloorY);
@@ -214,8 +254,12 @@ namespace VirtualHouse.Editor
 
             WallZWithOpening(walls, fittings, "間仕切_8帖東", 8f, 3f, 8f, SecondFloorY, 4.6f, 1.2f, "襖_8帖");
             WallZWithOpening(walls, fittings, "間仕切_4.5帖西", 9f, 5f, 8f, SecondFloorY, 5.8f, 0.9f, "襖_4.5帖");
-            WallXWithOpening(walls, fittings, "間仕切_4.5帖南", 9f, 12f, 5f, SecondFloorY, 10f, 0.9f, "4.5帖入口");
-            WallZWithOpening(walls, fittings, "間仕切_収納西", 12f, 5f, 8f, SecondFloorY, 6.2f, 1.0f, "収納扉");
+            WallXWithOpening(walls, fittings, "間仕切_4.5帖南", 9f, 11.15f, 5f, SecondFloorY, 10f, 0.9f, "4.5帖入口");
+            WallZWithOpening(walls, fittings, "間仕切_収納西", 12.65f, 5f, 8f, SecondFloorY, 6.2f, 1.0f, "収納扉");
+
+            // A real opening above the stair run replaces the former continuous second-floor slab.
+            // The top tread meets this landing, so the CharacterController can walk up without teleporting.
+            FloorBox(rooms, "階段上り口踊り場", 11.15f, 7.5f, 1.5f, 0.5f, SecondFloorY, "Hall");
         }
 
         /// <summary>
@@ -233,7 +277,9 @@ namespace VirtualHouse.Editor
             // The photographs show a rough, dark pebble-dash skirt wrapping the ground floor.
             CladdingX(cladding, "南面腰壁_西", 0f, 11f, -0.09f);
             CladdingX(cladding, "南面腰壁_東", 13f, 16f, -0.09f);
-            CladdingX(cladding, "玄関正面腰壁", 11f, 13f, -2.09f);
+            // The entrance is deliberately left as an unobstructed opening for the walkthrough.
+            CladdingX(cladding, "玄関正面腰壁_左袖", 11f, 11.18f, -2.09f);
+            CladdingX(cladding, "玄関正面腰壁_右袖", 12.82f, 13f, -2.09f);
             CladdingX(cladding, "北面腰壁", 2f, 17f, 8.09f);
             CladdingZ(cladding, "西面腰壁", -0.09f, 0f, 4f);
             CladdingZ(cladding, "東面腰壁", 18.09f, 2f, 6f);
@@ -305,7 +351,7 @@ namespace VirtualHouse.Editor
 
         private static void CreateStairs(Transform parent, float x, float z, float widthCells, float lengthCells, float baseY)
         {
-            Transform stairs = NewGroup("階段_概形", parent);
+            Transform stairs = NewGroup("木階段_写真ベース", parent);
             const int steps = 14;
             float width = widthCells * Grid;
             float depth = lengthCells * Grid / steps;
@@ -319,6 +365,167 @@ namespace VirtualHouse.Editor
                 CreateBox($"段_{i + 1:00}", center, new Vector3(width, height, depth),
                     GetMaterial("Stair"), stairs);
             }
+
+            float xCenter = (x + widthCells * 0.5f) * Grid;
+            float zStart = z * Grid;
+            float run = lengthCells * Grid;
+            float railAngle = -Mathf.Atan2(SecondFloorY, run) * Mathf.Rad2Deg;
+            float railLength = Mathf.Sqrt(run * run + SecondFloorY * SecondFloorY);
+            float railY = baseY + SecondFloorY * 0.5f + 0.79f;
+            float railZ = zStart + run * 0.5f;
+
+            // Leave a character-width gap in the left rail at the upper landing.
+            const float landingExitGap = 0.72f;
+            float leftRun = run - landingExitGap;
+            float leftRise = SecondFloorY * leftRun / run;
+            float leftRailLength = Mathf.Sqrt(leftRun * leftRun + leftRise * leftRise);
+
+            CreateRotatedBox("手すり_左", new Vector3(xCenter - width * 0.5f + 0.045f,
+                    baseY + leftRise * 0.5f + 0.79f, zStart + leftRun * 0.5f),
+                new Vector3(0.07f, 0.08f, leftRailLength), new Vector3(railAngle, 0f, 0f),
+                GetMaterial("DarkWood"), stairs);
+            CreateRotatedBox("手すり_右", new Vector3(xCenter + width * 0.5f - 0.045f, railY, railZ),
+                new Vector3(0.07f, 0.08f, railLength), new Vector3(railAngle, 0f, 0f),
+                GetMaterial("DarkWood"), stairs);
+
+            for (int i = 0; i < steps; i += 2)
+            {
+                float treadY = baseY + rise * (i + 1);
+                float balusterZ = zStart + depth * (i + 0.5f);
+                if (balusterZ < zStart + leftRun)
+                    CreateBox($"親柱_左_{i + 1:00}", new Vector3(xCenter - width * 0.5f + 0.045f, treadY + 0.39f, balusterZ),
+                        new Vector3(0.055f, 0.78f, 0.055f), GetMaterial("DarkWood"), stairs);
+                CreateBox($"親柱_右_{i + 1:00}", new Vector3(xCenter + width * 0.5f - 0.045f, treadY + 0.39f, balusterZ),
+                    new Vector3(0.055f, 0.78f, 0.055f), GetMaterial("DarkWood"), stairs);
+            }
+        }
+
+        private static void CreateEntranceInterior(Transform parent)
+        {
+            Transform interior = NewGroup("玄関周り_写真ベース", parent);
+            Transform surfaces = NewGroup("土間と廊下", interior);
+            Transform timber = NewGroup("柱梁と天井", interior);
+            Transform fittings = NewGroup("格子建具と下駄箱", interior);
+            Transform lights = NewGroup("照明", interior);
+
+            float entryCenterX = 12f * Grid;
+            float entryCenterZ = -1f * Grid;
+            float entryWidth = 2f * Grid;
+            float entryDepth = 2f * Grid;
+
+            // The photographed green concrete doma sits below the raised timber floor.
+            CreateBox("緑色モルタル土間", new Vector3(entryCenterX, -0.052f, entryCenterZ),
+                new Vector3(entryWidth - 0.10f, 0.055f, entryDepth - 0.06f), GetMaterial("GenkanGreen"), surfaces);
+            CreateBox("上がり框", new Vector3(entryCenterX, 0.045f, 0.035f),
+                new Vector3(entryWidth - 0.04f, 0.09f, 0.18f), GetMaterial("DarkWood"), surfaces);
+
+            // Parquet-like boards reproduce the warm, small-square hallway floor visible in the photos.
+            const int boardRows = 12;
+            for (int i = 0; i < boardRows; i++)
+            {
+                float zCenter = (0.16f + i * 0.31f) * Grid;
+                Material boardMaterial = GetMaterial(i % 2 == 0 ? "HallLight" : "HallDark");
+                CreateBox($"廊下板_{i + 1:00}_西", new Vector3(11.28f * Grid, 0.012f, zCenter),
+                    new Vector3(0.52f * Grid, 0.024f, 0.29f * Grid), boardMaterial, surfaces);
+                CreateBox($"廊下板_{i + 1:00}_東", new Vector3(11.74f * Grid, 0.013f, zCenter),
+                    new Vector3(0.38f * Grid, 0.026f, 0.29f * Grid),
+                    GetMaterial(i % 2 == 0 ? "HallDark" : "HallLight"), surfaces);
+            }
+
+            // Rough pale wall panels framed with exposed light timber (traditional shinkabe construction).
+            CreateBox("砂壁_玄関西", new Vector3(11.075f * Grid, 1.30f, entryCenterZ),
+                new Vector3(0.035f, 2.52f, entryDepth - 0.12f), GetMaterial("Plaster"), timber);
+            CreateBox("砂壁_玄関東", new Vector3(12.925f * Grid, 1.30f, entryCenterZ),
+                new Vector3(0.035f, 2.52f, entryDepth - 0.12f), GetMaterial("Plaster"), timber);
+            foreach (float postX in new[] { 11.10f, 12.90f })
+            {
+                foreach (float postZ in new[] { -1.93f, -0.05f })
+                    CreateBox($"玄関柱_{postX:0.00}_{postZ:0.00}", new Vector3(postX * Grid, 1.31f, postZ * Grid),
+                        new Vector3(0.105f, 2.62f, 0.105f), GetMaterial("LightWood"), timber);
+            }
+            CreateBox("玄関鴨居", new Vector3(entryCenterX, 2.36f, -1.94f * Grid),
+                new Vector3(entryWidth, 0.13f, 0.12f), GetMaterial("DarkWood"), timber);
+            CreateBox("玄関天井", new Vector3(entryCenterX, 2.62f, entryCenterZ),
+                new Vector3(entryWidth, 0.10f, entryDepth), GetMaterial("Ceiling"), timber);
+            CreateBox("廊下天井", new Vector3(11.52f * Grid, 2.62f, 1.90f * Grid),
+                new Vector3(1.12f * Grid, 0.10f, 3.80f * Grid), GetMaterial("Ceiling"), timber);
+            for (int i = 0; i <= 5; i++)
+            {
+                float beamZ = (0.15f + i * 0.70f) * Grid;
+                CreateBox($"廊下天井桟_{i + 1:00}", new Vector3(11.52f * Grid, 2.555f, beamZ),
+                    new Vector3(1.12f * Grid, 0.045f, 0.055f), GetMaterial("DarkWood"), timber);
+            }
+
+            CreateLatticePanelZ(fittings, "縦格子引戸", 11.94f, 2.46f, 1.62f);
+            CreateShoeCabinet(fittings, 12.66f * Grid, -0.54f * Grid);
+
+            CreateWarmLight(lights, "玄関灯", new Vector3(entryCenterX, 2.38f, entryCenterZ), 4.0f, 0.72f);
+            CreateWarmLight(lights, "廊下灯", new Vector3(11.52f * Grid, 2.40f, 2.25f * Grid), 3.6f, 0.62f);
+        }
+
+        private static void CreateLatticePanelZ(Transform parent, string name, float xCells, float zCells, float lengthCells)
+        {
+            Transform panel = NewGroup(name, parent);
+            float x = xCells * Grid;
+            float z = zCells * Grid;
+            float length = lengthCells * Grid;
+            const float bottom = 0.08f;
+            const float height = 2.12f;
+
+            CreateBox("和紙面", new Vector3(x, bottom + height * 0.5f, z),
+                new Vector3(0.028f, height - 0.16f, length - 0.08f), GetMaterial("Paper"), panel);
+            CreateBox("枠_上", new Vector3(x - 0.018f, bottom + height, z),
+                new Vector3(0.075f, 0.075f, length), GetMaterial("DarkWood"), panel);
+            CreateBox("枠_下", new Vector3(x - 0.018f, bottom, z),
+                new Vector3(0.075f, 0.075f, length), GetMaterial("DarkWood"), panel);
+            CreateBox("枠_前", new Vector3(x - 0.018f, bottom + height * 0.5f, z - length * 0.5f),
+                new Vector3(0.075f, height, 0.075f), GetMaterial("DarkWood"), panel);
+            CreateBox("枠_後", new Vector3(x - 0.018f, bottom + height * 0.5f, z + length * 0.5f),
+                new Vector3(0.075f, height, 0.075f), GetMaterial("DarkWood"), panel);
+            for (int i = 1; i < 9; i++)
+            {
+                float barZ = z - length * 0.5f + length * i / 9f;
+                CreateBox($"縦格子_{i:00}", new Vector3(x - 0.035f, bottom + height * 0.5f, barZ),
+                    new Vector3(0.055f, height, 0.028f), GetMaterial("LightWood"), panel);
+            }
+            CreateBox("中桟", new Vector3(x - 0.04f, bottom + 0.82f, z),
+                new Vector3(0.06f, 0.075f, length), GetMaterial("LightWood"), panel);
+        }
+
+        private static void CreateShoeCabinet(Transform parent, float x, float z)
+        {
+            Transform cabinet = NewGroup("造付け下駄箱", parent);
+            const float width = 0.58f;
+            const float depth = 0.72f;
+            const float height = 1.02f;
+            CreateBox("側板_左", new Vector3(x - width * 0.5f, height * 0.5f, z),
+                new Vector3(0.035f, height, depth), GetMaterial("Cabinet"), cabinet);
+            CreateBox("側板_右", new Vector3(x + width * 0.5f, height * 0.5f, z),
+                new Vector3(0.035f, height, depth), GetMaterial("Cabinet"), cabinet);
+            CreateBox("天板", new Vector3(x, height, z),
+                new Vector3(width + 0.08f, 0.055f, depth + 0.06f), GetMaterial("DarkWood"), cabinet);
+            CreateBox("背板", new Vector3(x, height * 0.5f, z + depth * 0.5f),
+                new Vector3(width, height, 0.035f), GetMaterial("Cabinet"), cabinet);
+            for (int i = 0; i < 5; i++)
+            {
+                float shelfY = 0.08f + i * 0.19f;
+                CreateBox($"棚_{i + 1:00}", new Vector3(x, shelfY, z),
+                    new Vector3(width, 0.028f, depth), GetMaterial("Cabinet"), cabinet);
+            }
+        }
+
+        private static void CreateWarmLight(Transform parent, string name, Vector3 position, float range, float intensity)
+        {
+            GameObject lightObject = new(name);
+            lightObject.transform.SetParent(parent, false);
+            lightObject.transform.position = position;
+            Light light = lightObject.AddComponent<Light>();
+            light.type = LightType.Point;
+            light.range = range;
+            light.intensity = intensity;
+            light.color = new Color(1f, 0.67f, 0.42f);
+            CreateBox("乳白ガラスカバー", position - new Vector3(0f, 0.05f, 0f),
+                new Vector3(0.24f, 0.10f, 0.24f), GetMaterial("Paper"), parent);
         }
 
         private static void CladdingX(Transform parent, string name, float x1, float x2, float z)
@@ -576,7 +783,8 @@ namespace VirtualHouse.Editor
             lightObject.transform.rotation = Quaternion.Euler(48f, -32f, 0f);
 
             GameObject playerObject = new("Player");
-            playerObject.transform.position = new Vector3(10f * Grid, 0.03f, 0.5f * Grid);
+            // Start in the genkan, facing the hallway and stair, with the open exterior behind the player.
+            playerObject.transform.position = new Vector3(11.62f * Grid, 0.03f, -1.15f * Grid);
             playerObject.transform.rotation = Quaternion.identity;
 
             CharacterController controller = playerObject.AddComponent<CharacterController>();
@@ -664,6 +872,15 @@ namespace VirtualHouse.Editor
                     "Gutter" => new Color(0.34f, 0.08f, 0.07f),
                     "Concrete" => new Color(0.48f, 0.47f, 0.44f),
                     "Post" => new Color(0.16f, 0.14f, 0.12f),
+                    "GenkanGreen" => new Color(0.24f, 0.40f, 0.34f),
+                    "Plaster" => new Color(0.76f, 0.75f, 0.68f),
+                    "LightWood" => new Color(0.64f, 0.46f, 0.28f),
+                    "DarkWood" => new Color(0.30f, 0.17f, 0.085f),
+                    "HallLight" => new Color(0.66f, 0.43f, 0.23f),
+                    "HallDark" => new Color(0.48f, 0.27f, 0.13f),
+                    "Paper" => new Color(0.90f, 0.88f, 0.80f),
+                    "Cabinet" => new Color(0.43f, 0.28f, 0.16f),
+                    "Ceiling" => new Color(0.73f, 0.62f, 0.48f),
                     _ => Color.white
                 };
                 AssetDatabase.CreateAsset(material, path);
