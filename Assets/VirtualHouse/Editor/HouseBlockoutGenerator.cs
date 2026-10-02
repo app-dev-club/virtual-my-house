@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VirtualHouse;
 
 namespace VirtualHouse.Editor
 {
@@ -51,7 +52,7 @@ namespace VirtualHouse.Editor
             CreateFirstFloor(house.transform);
             CreateSecondFloor(house.transform);
             CreateExterior(house.transform);
-            CreateLightingAndCamera();
+            CreateLightingAndPlayer();
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, OutputScene);
@@ -516,14 +517,12 @@ namespace VirtualHouse.Editor
 
         private static void DoorX(Transform parent, string name, float x, float z, float width, float floorY)
         {
-            Vector3 center = new(x * Grid, floorY + 1.0f, z * Grid);
-            CreateBox(name, center, new Vector3(width * Grid, 2.0f, 0.045f), GetMaterial("Door"), parent);
+            // Door models are intentionally omitted so walkthrough routes remain open.
         }
 
         private static void DoorZ(Transform parent, string name, float x, float z, float width, float floorY)
         {
-            Vector3 center = new(x * Grid, floorY + 1.0f, z * Grid);
-            CreateBox(name, center, new Vector3(0.045f, 2.0f, width * Grid), GetMaterial("Door"), parent);
+            // Door models are intentionally omitted so walkthrough routes remain open.
         }
 
         private static void CreateLabel(Transform parent, string text, float x, float z, float y)
@@ -567,7 +566,7 @@ namespace VirtualHouse.Editor
                 GetMaterial("Ground"), root);
         }
 
-        private static void CreateLightingAndCamera()
+        private static void CreateLightingAndPlayer()
         {
             GameObject lightObject = new("Directional Light");
             Light light = lightObject.AddComponent<Light>();
@@ -576,16 +575,32 @@ namespace VirtualHouse.Editor
             light.color = new Color(1f, 0.95f, 0.86f);
             lightObject.transform.rotation = Quaternion.Euler(48f, -32f, 0f);
 
+            GameObject playerObject = new("Player");
+            playerObject.transform.position = new Vector3(10f * Grid, 0.03f, 0.5f * Grid);
+            playerObject.transform.rotation = Quaternion.identity;
+
+            CharacterController controller = playerObject.AddComponent<CharacterController>();
+            controller.height = 1.8f;
+            controller.radius = 0.28f;
+            controller.center = new Vector3(0f, 0.9f, 0f);
+            controller.stepOffset = 0.3f;
+            controller.slopeLimit = 50f;
+
             GameObject cameraObject = new("Main Camera");
             cameraObject.tag = "MainCamera";
+            cameraObject.transform.SetParent(playerObject.transform, false);
+            cameraObject.transform.localPosition = new Vector3(0f, 1.62f, 0f);
             Camera camera = cameraObject.AddComponent<Camera>();
             cameraObject.AddComponent<AudioListener>();
             camera.clearFlags = CameraClearFlags.Skybox;
-            camera.fieldOfView = 42f;
+            camera.fieldOfView = 65f;
             camera.nearClipPlane = 0.1f;
             camera.farClipPlane = 200f;
-            cameraObject.transform.position = new Vector3(17f, 19f, -17f);
-            cameraObject.transform.LookAt(new Vector3(7.5f, 1.3f, 3.2f));
+
+            HouseFirstPersonController player = playerObject.AddComponent<HouseFirstPersonController>();
+            SerializedObject serializedPlayer = new(player);
+            serializedPlayer.FindProperty("view").objectReferenceValue = cameraObject.transform;
+            serializedPlayer.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static GameObject CreateBox(string name, Vector3 position, Vector3 size, Material material, Transform parent)
