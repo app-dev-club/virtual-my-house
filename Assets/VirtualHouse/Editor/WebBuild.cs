@@ -20,7 +20,7 @@ namespace VirtualHouse.Editor
         [MenuItem("Virtual House/Build WebGL")]
         public static void BuildWebGL()
         {
-            string outputPath = GetCommandLineValue("-webBuildPath") ?? "Build/WebGL";
+            string outputPath = GetCommandLineValue("-webBuildPath") ?? "docs";
             outputPath = Path.GetFullPath(outputPath);
             Directory.CreateDirectory(outputPath);
 

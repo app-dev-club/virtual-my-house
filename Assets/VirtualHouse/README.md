@@ -33,7 +33,8 @@ Play ボタンで一人称の室内移動を開始できます。
 室内を移動しやすいよう、扉・ドア・襖のモデルは生成しません。
 スマートフォンのWebGLビルドでは、ブラウザのタッチ対応を検出して同じ操作UIを表示します。
 
-WebGLビルドはUnityメニュの `Virtual House > Build WebGL` から作成できます。
+WebGLビルドはUnityメニュの `Virtual House > Build WebGL` から `docs/` に作成できます。
+GitHub Pagesは `main` ブランチの `/docs` を公開元に使用します。
 
 ## 再生成
 
