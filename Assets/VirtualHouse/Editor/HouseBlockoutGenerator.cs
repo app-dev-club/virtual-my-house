@@ -230,6 +230,7 @@ namespace VirtualHouse.Editor
             Transform fittings = NewGroup("建具_目安", floor);
 
             // Redrawn plan: 1.82 m in the legend equals two grid cells.
+            // Thick strokes become walls; dotted strokes become full-height openings.
             Room(rooms, "8帖洋室", 0f, 0f, 4f, 4f, 0f, "FloorWood");
             Room(rooms, "8帖和室_西", 4f, 1f, 4f, 4f, 0f, "Tatami");
             Room(rooms, "8帖和室_東", 8f, 1f, 4f, 4f, 0f, "Tatami");
@@ -248,44 +249,46 @@ namespace VirtualHouse.Editor
             Room(rooms, "水回り物入", 14f, 4f, 1f, 1f, 0f, "Storage");
             Room(rooms, "浴室", 15f, 4f, 2f, 2f, 0f, "Bath");
             Room(rooms, "給湯", 17f, 4f, 1f, 2f, 0f, "Utility");
-            Room(rooms, "DK物入_北", 17f, 2f, 1f, 1f, 0f, "Storage");
-            Room(rooms, "DK物入_南", 17f, 0.5f, 1f, 1f, 0f, "Storage");
             Room(rooms, "玄関", 12f, -2f, 2f, 2f, -0.08f, "Entry");
 
             // Exterior outline. The entrance, storage and wet-area projections follow the drawing.
-            WallX(walls, "外壁_南西", 0f, 12f, 0f, 0f);
+            WallXWithWindowOpening(walls, "外壁_南西窓", 0f, 4.2f, 0f, 0f, 2f, 3.55f, 0.18f, 2.05f);
+            WallXWithWindowOpening(walls, "外壁_南中央窓", 4.2f, 12f, 0f, 0f, 7.5f, 5.8f, 0.18f, 2.05f);
             WallZ(walls, "外壁_玄関西", 12f, -2f, 0f, 0f);
             WallXWithOpening(walls, fittings, "外壁_玄関正面", 12f, 14f, -2f, 0f, 13f, 1.05f, "玄関扉");
             WallZ(walls, "外壁_玄関東", 14f, -2f, 0f, 0f);
-            WallX(walls, "外壁_南東", 14f, 18f, 0f, 0f);
-            WallZWithOpening(walls, fittings, "外壁_東", 18f, 0f, 6f, 0f, 4.75f, 0.9f, "勝手口");
-            WallX(walls, "外壁_水回り北", 14f, 18f, 6f, 0f);
+            WallXWithWindowOpening(walls, "外壁_南東窓", 14f, 18f, 0f, 0f, 16f, 2.25f, 0.82f, 1.25f);
+            WallZWithWindowOpening(walls, "外壁_東南窓", 18f, 0f, 3.2f, 0f, 1.4f, 1.7f, 0.8f, 1.25f);
+            WallZWithOpening(walls, fittings, "外壁_東勝手口", 18f, 3.2f, 5.2f, 0f, 4.75f, 0.9f, "勝手口");
+            WallZWithWindowOpening(walls, "外壁_東北窓", 18f, 5.2f, 6f, 0f, 5.55f, 0.7f, 0.95f, 1.05f);
+            WallXWithWindowOpening(walls, "外壁_水回り北", 14f, 18f, 6f, 0f, 16f, 1.65f, 0.85f, 1.15f);
             WallX(walls, "外壁_WC北", 12f, 14f, 7f, 0f);
             WallZ(walls, "外壁_WC西", 12f, 6f, 7f, 0f);
             WallZ(walls, "外壁_WC東", 14f, 6f, 7f, 0f);
-            WallX(walls, "外壁_北", 4f, 12f, 6f, 0f);
+            WallXWithWindowOpening(walls, "外壁_北中央窓", 4f, 12f, 6f, 0f, 8f, 2.2f, 0.72f, 1.35f);
             WallZ(walls, "外壁_北西", 4f, 5f, 6f, 0f);
-            WallX(walls, "外壁_納戸北", 2f, 4f, 6f, 0f);
+            WallXWithWindowOpening(walls, "外壁_納戸北窓", 2f, 4f, 6f, 0f, 3f, 1.35f, 0.9f, 1.15f);
             WallZ(walls, "外壁_納戸西", 2f, 4f, 6f, 0f);
             WallX(walls, "外壁_洋室北", 0f, 2f, 4f, 0f);
-            WallZ(walls, "外壁_西", 0f, 0f, 4f, 0f);
+            WallZWithWindowOpening(walls, "外壁_西窓", 0f, 0f, 4f, 0f, 1.75f, 3f, 0.18f, 2.05f);
 
-            // Principal partitions, with representative door/fusuma openings.
+            // Principal partitions. Opening widths follow the dotted portions of the drawing.
             WallZWithOpening(walls, fittings, "間仕切_洋室", 4f, 0f, 5f, 0f, 1.1f, 0.9f, "洋室扉");
-            WallZWithOpening(walls, fittings, "間仕切_和室間", 8f, 1f, 5f, 0f, 1.8f, 1.4f, "襖_和室間");
+            WallZWithOpening(walls, fittings, "間仕切_和室間", 8f, 1f, 5f, 0f, 3f, 2.1f, "襖_和室間");
             WallZ(walls, "間仕切_和室階段", 12f, 1f, 5f, 0f);
-            WallZWithOpening(walls, fittings, "間仕切_廊下DK", 14f, 0f, 4f, 0f, 1.1f, 0.9f, "DK入口");
-            WallXWithOpening(walls, fittings, "間仕切_和室西南", 4f, 8f, 1f, 0f, 6.2f, 1.6f, "襖_和室西");
-            WallXWithOpening(walls, fittings, "間仕切_和室東南", 8f, 12f, 1f, 0f, 11f, 2f, "襖_和室東");
-            WallXWithOpening(walls, fittings, "間仕切_和室西北", 4f, 8f, 5f, 0f, 6.2f, 1.4f, "襖_北西");
-            WallXWithOpening(walls, fittings, "間仕切_和室東北", 8f, 12f, 5f, 0f, 10.8f, 1.4f, "襖_北東");
-            WallXWithOpening(walls, fittings, "間仕切_DK北", 14f, 18f, 4f, 0f, 14.55f, 0.8f, "脱衣入口");
+            WallZWithOpening(walls, fittings, "間仕切_廊下DK", 14f, 0f, 4f, 0f, 2f, 3.1f, "DK入口");
+            WallXWithOpening(walls, fittings, "間仕切_和室西南", 4f, 8f, 1f, 0f, 6f, 3.1f, "襖_和室西");
+            WallXWithOpening(walls, fittings, "間仕切_和室東南", 8f, 12f, 1f, 0f, 10f, 3.1f, "襖_和室東");
+            WallXWithOpening(walls, fittings, "間仕切_和室西北", 4f, 8f, 5f, 0f, 6f, 3.5f, "襖_北西");
+            WallXWithOpening(walls, fittings, "間仕切_和室東北", 8f, 12f, 5f, 0f, 10f, 3.5f, "襖_北東");
+            WallXWithOpening(walls, fittings, "間仕切_DK北", 14f, 18f, 4f, 0f, 16f, 2.2f, "水回り入口");
+            WallZWithOpening(walls, fittings, "間仕切_水回り西", 14f, 3f, 6f, 0f, 4.85f, 2.1f, "水回り引戸");
+            WallXWithOpening(walls, fittings, "間仕切_脱衣南", 14f, 16f, 3f, 0f, 14.5f, 0.8f, "脱衣入口");
             WallZWithOpening(walls, fittings, "間仕切_浴室西", 15f, 4f, 6f, 0f, 4.55f, 0.75f, "浴室扉");
             WallZ(walls, "間仕切_浴室給湯", 17f, 4f, 6f, 0f);
-            WallXWithOpening(walls, fittings, "間仕切_洗面南", 14f, 15f, 5f, 0f, 14.5f, 0.65f, "洗面入口");
-            WallXWithOpening(walls, fittings, "間仕切_WC南", 12f, 14f, 6f, 0f, 13.5f, 0.65f, "WC入口");
+            WallXWithOpening(walls, fittings, "間仕切_洗面南", 14f, 15f, 5f, 0f, 14.5f, 0.85f, "洗面入口");
+            WallXWithOpening(walls, fittings, "間仕切_WC南", 12f, 14f, 6f, 0f, 13f, 1.8f, "WC入口");
             WallZ(walls, "間仕切_WC間", 13f, 6f, 7f, 0f);
-            WallX(walls, "間仕切_北側収納", 4f, 12f, 5f, 0f);
             WallXWithOpening(walls, fittings, "間仕切_納戸南", 2f, 4f, 4f, 0f, 3.2f, 0.8f, "納戸扉");
 
             CreateStairs(floor, 12f, 1f, 1f, 4f, 0f);
@@ -300,6 +303,7 @@ namespace VirtualHouse.Editor
             Transform fittings = NewGroup("建具_目安", floor);
 
             // The redrawn second floor has corridors along both eaves and the stair on the east side.
+            // Dotted runs are represented as wide wall openings.
             Room(rooms, "8帖和室", 4.5f, 4f, 4f, 3f, SecondFloorY, "Tatami");
             Room(rooms, "4.5帖和室", 9f, 4f, 3f, 3f, SecondFloorY, "Tatami");
             Room(rooms, "北側廊下", 4.5f, 7f, 7.5f, 1f, SecondFloorY, "Hall");
@@ -310,15 +314,17 @@ namespace VirtualHouse.Editor
             Room(rooms, "物入_南東", 12f, 3f, 1f, 1f, SecondFloorY, "Storage");
             FloorBox(rooms, "階段上踊り場", 12f, 7f, 1f, 1f, SecondFloorY, "Hall");
 
-            WallX(walls, "外壁_2階南", 4f, 13f, 3f, SecondFloorY);
-            WallZ(walls, "外壁_2階東", 13f, 3f, 8f, SecondFloorY);
-            WallX(walls, "外壁_2階北", 4f, 13f, 8f, SecondFloorY);
-            WallZ(walls, "外壁_2階西", 4f, 3f, 8f, SecondFloorY);
+            WallXWithWindowOpening(walls, "外壁_2階南西窓", 4f, 8.3f, 3f, SecondFloorY, 6.1f, 2.25f, 0.72f, 1.5f);
+            WallXWithWindowOpening(walls, "外壁_2階南東窓", 8.3f, 13f, 3f, SecondFloorY, 10.6f, 2.25f, 0.72f, 1.5f);
+            WallZWithWindowOpening(walls, "外壁_2階東窓", 13f, 3f, 8f, SecondFloorY, 5.5f, 1.7f, 0.75f, 1.4f);
+            WallXWithWindowOpening(walls, "外壁_2階北西窓", 4f, 8.4f, 8f, SecondFloorY, 6.15f, 1.8f, 0.78f, 1.35f);
+            WallXWithWindowOpening(walls, "外壁_2階北東窓", 8.4f, 13f, 8f, SecondFloorY, 10.75f, 1.8f, 0.78f, 1.35f);
+            WallZWithWindowOpening(walls, "外壁_2階西窓", 4f, 3f, 8f, SecondFloorY, 5.5f, 1.7f, 0.75f, 1.4f);
 
-            WallXWithOpening(walls, fittings, "間仕切_北側廊下", 4.5f, 12f, 7f, SecondFloorY, 10.5f, 1.0f, "北廊下入口");
-            WallXWithOpening(walls, fittings, "間仕切_南側廊下", 4f, 12f, 4f, SecondFloorY, 10.5f, 1.0f, "南廊下入口");
-            WallZWithOpening(walls, fittings, "間仕切_8帖東", 8.5f, 4f, 7f, SecondFloorY, 4.65f, 0.9f, "襖_8帖");
-            WallZWithOpening(walls, fittings, "間仕切_4.5帖西", 9f, 4f, 7f, SecondFloorY, 5.25f, 0.9f, "襖_4.5帖");
+            WallXWithOpening(walls, fittings, "間仕切_北側廊下", 4.5f, 12f, 7f, SecondFloorY, 10f, 3.8f, "北廊下開口");
+            WallXWithOpening(walls, fittings, "間仕切_南側廊下", 4f, 12f, 4f, SecondFloorY, 8.2f, 7.0f, "南廊下開口");
+            WallZWithOpening(walls, fittings, "間仕切_8帖東", 8.5f, 4f, 7f, SecondFloorY, 5.5f, 2.6f, "8帖側開口");
+            WallZWithOpening(walls, fittings, "間仕切_4.5帖西", 9f, 4f, 7f, SecondFloorY, 5.5f, 2.2f, "4.5帖側開口");
             WallZ(walls, "間仕切_階段西", 12f, 4f, 7f, SecondFloorY);
         }
 
@@ -758,6 +764,44 @@ namespace VirtualHouse.Editor
             float length = Mathf.Abs(z2 - z1) * Grid;
             Vector3 center = new(x * Grid, floorY + WallHeight * 0.5f, (z1 + z2) * 0.5f * Grid);
             CreateBox(name, center, new Vector3(WallThickness, WallHeight, length), GetMaterial("Wall"), parent);
+        }
+
+        private static void WallXWithWindowOpening(Transform walls, string name, float x1, float x2, float z,
+            float floorY, float openingCenter, float openingWidth, float openingBottom, float openingHeight)
+        {
+            float leftEnd = openingCenter - openingWidth * 0.5f;
+            float rightStart = openingCenter + openingWidth * 0.5f;
+            if (leftEnd > x1) WallX(walls, name + "_左", x1, leftEnd, z, floorY);
+            if (rightStart < x2) WallX(walls, name + "_右", rightStart, x2, z, floorY);
+
+            float width = openingWidth * Grid;
+            float centerX = openingCenter * Grid;
+            if (openingBottom > 0f)
+                CreateBox(name + "_腰壁", new Vector3(centerX, floorY + openingBottom * 0.5f, z * Grid),
+                    new Vector3(width, openingBottom, WallThickness), GetMaterial("Wall"), walls);
+            float headerHeight = WallHeight - openingBottom - openingHeight;
+            if (headerHeight > 0f)
+                CreateBox(name + "_垂壁", new Vector3(centerX, floorY + openingBottom + openingHeight + headerHeight * 0.5f, z * Grid),
+                    new Vector3(width, headerHeight, WallThickness), GetMaterial("Wall"), walls);
+        }
+
+        private static void WallZWithWindowOpening(Transform walls, string name, float x, float z1, float z2,
+            float floorY, float openingCenter, float openingWidth, float openingBottom, float openingHeight)
+        {
+            float lowerEnd = openingCenter - openingWidth * 0.5f;
+            float upperStart = openingCenter + openingWidth * 0.5f;
+            if (lowerEnd > z1) WallZ(walls, name + "_南", x, z1, lowerEnd, floorY);
+            if (upperStart < z2) WallZ(walls, name + "_北", x, upperStart, z2, floorY);
+
+            float width = openingWidth * Grid;
+            float centerZ = openingCenter * Grid;
+            if (openingBottom > 0f)
+                CreateBox(name + "_腰壁", new Vector3(x * Grid, floorY + openingBottom * 0.5f, centerZ),
+                    new Vector3(WallThickness, openingBottom, width), GetMaterial("Wall"), walls);
+            float headerHeight = WallHeight - openingBottom - openingHeight;
+            if (headerHeight > 0f)
+                CreateBox(name + "_垂壁", new Vector3(x * Grid, floorY + openingBottom + openingHeight + headerHeight * 0.5f, centerZ),
+                    new Vector3(WallThickness, headerHeight, width), GetMaterial("Wall"), walls);
         }
 
         private static void WallXWithOpening(Transform walls, Transform fittings, string name, float x1, float x2,
