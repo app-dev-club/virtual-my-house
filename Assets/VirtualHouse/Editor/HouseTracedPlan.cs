@@ -71,7 +71,7 @@ namespace VirtualHouse.Editor
                 {310,291,310,367},{310,367,348,367},{422,367,504,367},{578,367,613,367},
                 {310,423,613,423},{613,405,613,480},{688,367,688,480},{688,423,840,423},
                 {840,329,840,423},{840,329,915,329},{915,254,915,329},{840,254,915,254},
-                {840,254,840,291},{802,254,840,254},{764,254,802,254},{764,254,764,291},
+                {840,254,840,291},{764,254,802,254},{764,254,764,291},
                 {688,291,764,291},{688,254,726,254},{688,216,726,216},{726,179,726,254},
                 {802,179,802,254},{840,179,840,216},{688,179,840,179},
                 {688,141,688,179},{613,141,688,141},{613,141,613,179},{651,141,651,179},
@@ -100,24 +100,14 @@ namespace VirtualHouse.Editor
             // Stair shaft aligned between the two images (53px horizontal, -57px vertical).
             Vector3 foot=PlanPoint(613,367,0);
             CreateStairs(first,foot.x/Grid,foot.z/Grid,38*PlanScale/Grid,112*PlanScale/Grid,0);
-            // No old photo-based window, lattice, cladding or canopy may fill a traced opening.
-            Transform roofs=NewGroup("屋根_図面外形",root);
-            PlanRoof(roofs,365,158,704,346,true);
-            PlanRoof(roofs,158,291,310,442,false);
-            PlanRoof(roofs,235,216,310,291,false);
-            PlanRoof(roofs,310,179,613,216,false);
-            PlanRoof(roofs,613,141,688,179,false);
-            PlanRoof(roofs,688,179,840,423,false);
-            PlanRoof(roofs,840,254,915,329,false);
-            PlanRoof(roofs,310,367,613,423,false);
-            PlanRoof(roofs,613,367,688,480,false);
+            CreateTracedExterior(root);
             Physics.SyncTransforms();
             ValidateTracedOpenings(false,new float[,] {
                 {348,367,422,367},{504,367,578,367},{310,367,310,405},
                 {310,216,310,291},{462,250,462,326},{574,216,613,216},
                 {613,179,651,179},{651,179,688,179},{688,179,688,216},
                 {688,216,688,254},{688,291,688,367},{726,254,764,254},
-                {840,216,840,254},{840,291,840,329},{613,423,688,423},{613,480,688,480}
+                {802,254,840,254},{840,216,840,254},{840,291,840,329},{613,423,688,423},{613,480,688,480}
             });
             ValidateTracedOpenings(true,new float[,] {
                 {402,310,515,310},{591,310,667,310},{515,158,515,194},
@@ -142,11 +132,71 @@ namespace VirtualHouse.Editor
             Debug.Log($"Traced opening validation passed: floor {(upper?2:1)}, {openings.GetLength(0)} openings");
         }
 
-        private static void PlanRoof(Transform parent,float l,float t,float r,float b,bool upper)
+        public static void ValidateStairWalk()
         {
-            CreateBox("屋根",PlanPoint((l+r)/2,(t+b)/2,(upper?SecondFloorY:0)+WallHeight+0.08f,upper),
-                new Vector3((r-l)*PlanScale+0.22f,0.12f,(b-t)*PlanScale+0.22f),
-                GetMaterial(upper?"UpperRoof":"LowerRoof"),parent);
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene(OutputScene);
+            CharacterController player=GameObject.Find("Player").GetComponent<CharacterController>();
+            Vector3 foot=PlanPoint(632,367,0);
+            float run=112*PlanScale;
+            foreach(bool descend in new[]{true,false})
+            {
+                player.enabled=false;
+                player.transform.position=foot+new Vector3(0,descend?SecondFloorY+0.03f:0.03f,descend?run+0.45f:-0.55f);
+                player.enabled=true;
+                Physics.SyncTransforms();
+                float target=foot.z+(descend?-0.55f:run+0.45f), vy=0;
+                for(int i=0;i<360;i++)
+                {
+                    if(player.isGrounded && vy<0) vy=-2;
+                    vy-=20f/60;
+                    float dz=Mathf.Clamp(target-player.transform.position.z,-2.6f/60,2.6f/60);
+                    player.Move(new Vector3(0,vy/60,dz));
+                }
+                Vector3 end=player.transform.position;
+                Debug.Log($"Stair walk descend={descend}: end={end}, targetZ={target}");
+                if(Mathf.Abs(end.z-target)>0.1f || Mathf.Abs(end.y-(descend?0:SecondFloorY))>0.15f)
+                    throw new System.InvalidOperationException($"Stair walk failed descend={descend} at {end}");
+            }
+        }
+
+        public static void RebuildAndValidateStairs()
+        {
+            GenerateAndRenderPreviews();
+            ValidateStairWalk();
+            ValidateServiceWalk();
+        }
+
+        public static void ValidateServiceWalk()
+        {
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene(OutputScene);
+            CharacterController player=GameObject.Find("Player").GetComponent<CharacterController>();
+            Vector3[] route={PlanPoint(821,310,0),PlanPoint(821,235,0),PlanPoint(875,235,0),PlanPoint(930,235,-0.09f)};
+            foreach(bool returning in new[]{false,true})
+            {
+                player.enabled=false;
+                player.transform.position=route[returning?route.Length-1:0]+Vector3.up*0.03f;
+                player.enabled=true;
+                Physics.SyncTransforms();
+                float vy=0;
+                for(int leg=1;leg<route.Length;leg++)
+                {
+                    Vector3 target=route[returning?route.Length-1-leg:leg];
+                    for(int frame=0;frame<240;frame++)
+                    {
+                        if(player.isGrounded && vy<0) vy=-2;
+                        vy-=20f/60;
+                        Vector3 delta=target-player.transform.position;
+                        delta.y=0;
+                        delta=Vector3.ClampMagnitude(delta,2.6f/60);
+                        player.Move(delta+Vector3.up*(vy/60));
+                    }
+                    Vector3 end=player.transform.position;
+                    if(Vector2.Distance(new Vector2(end.x,end.z),new Vector2(target.x,target.z))>0.1f ||
+                        Mathf.Abs(end.y-target.y)>0.18f)
+                        throw new System.InvalidOperationException($"Service walk failed returning={returning}, leg={leg}, end={end}");
+                }
+                Debug.Log($"Service walk passed: returning={returning}, end={player.transform.position}");
+            }
         }
     }
 }
