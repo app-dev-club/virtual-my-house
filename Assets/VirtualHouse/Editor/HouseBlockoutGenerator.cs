@@ -13,7 +13,7 @@ namespace VirtualHouse.Editor
     /// One grid cell is half of one tsubo side: 1.81818 m / 2 = 0.90909 m.
     /// </summary>
     [InitializeOnLoad]
-    public static class HouseBlockoutGenerator
+    public static partial class HouseBlockoutGenerator
     {
         private const float Grid = 0.90909f;
         private const float WallHeight = 2.7f;
@@ -49,9 +49,7 @@ namespace VirtualHouse.Editor
             GameObject house = new("住宅概形_図面ベース");
             CreateReferenceGrid(house.transform);
             CreateGround(house.transform);
-            CreateFirstFloor(house.transform);
-            CreateSecondFloor(house.transform);
-            CreateExterior(house.transform);
+            CreateTracedHouse(house.transform);
             CreateLightingAndPlayer();
 
             EditorSceneManager.MarkSceneDirty(scene);
@@ -157,6 +155,8 @@ namespace VirtualHouse.Editor
 
             GameObject exterior = GameObject.Find("外観_写真ベース");
             if (exterior != null) exterior.SetActive(false);
+            GameObject tracedRoofs = GameObject.Find("屋根_図面外形");
+            if (tracedRoofs != null) tracedRoofs.SetActive(false);
             GameObject firstFloor = GameObject.Find("1階");
             GameObject secondFloor = GameObject.Find("2階");
 
@@ -172,8 +172,8 @@ namespace VirtualHouse.Editor
 
             if (firstFloor != null) firstFloor.SetActive(false);
             if (secondFloor != null) secondFloor.SetActive(true);
-            camera.transform.position = new Vector3(8.5f * Grid, 20f, 5.5f * Grid);
-            camera.transform.LookAt(new Vector3(8.5f * Grid, SecondFloorY, 5.5f * Grid), Vector3.forward);
+            camera.transform.position = new Vector3(8.5f * Grid, 20f, 3f * Grid);
+            camera.transform.LookAt(new Vector3(8.5f * Grid, SecondFloorY, 3f * Grid), Vector3.forward);
             camera.orthographicSize = 3.6f;
             RenderCameraToPng(camera, Path.Combine(Application.dataPath, "VirtualHouse", "second-floor-plan-preview.png"));
 
