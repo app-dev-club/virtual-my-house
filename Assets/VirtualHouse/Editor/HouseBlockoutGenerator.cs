@@ -69,6 +69,14 @@ namespace VirtualHouse.Editor
             }
         }
 
+        public static void GenerateAndRenderPreviews()
+        {
+            Generate();
+            RenderFloorPlanPreview();
+            RenderPreview();
+            RenderEntrancePreview();
+        }
+
         [MenuItem("Virtual House/Render Exterior Preview")]
         public static void RenderPreview()
         {
@@ -77,8 +85,8 @@ namespace VirtualHouse.Editor
             if (camera == null)
                 throw new System.InvalidOperationException("HouseBlockout scene has no Main Camera.");
 
-            camera.transform.position = new Vector3(17.5f, 5.8f, -16.5f);
-            camera.transform.LookAt(new Vector3(7.6f, 2.7f, 2.5f));
+            camera.transform.position = new Vector3(18.5f, 5.8f, -16.5f);
+            camera.transform.LookAt(new Vector3(8.2f, 2.7f, 2.2f));
             camera.fieldOfView = 44f;
             foreach (TextMesh label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))
                 label.GetComponent<MeshRenderer>().enabled = false;
@@ -112,8 +120,8 @@ namespace VirtualHouse.Editor
             if (camera == null)
                 throw new System.InvalidOperationException("HouseBlockout scene has no Main Camera.");
 
-            camera.transform.position = new Vector3(11.48f * Grid, 1.48f, -0.72f * Grid);
-            camera.transform.LookAt(new Vector3(11.52f * Grid, 1.28f, 4.85f * Grid));
+            camera.transform.position = new Vector3(13f * Grid, 1.48f, -0.72f * Grid);
+            camera.transform.LookAt(new Vector3(13.48f * Grid, 1.28f, 4.85f * Grid));
             camera.fieldOfView = 72f;
             foreach (TextMesh label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))
                 label.GetComponent<MeshRenderer>().enabled = false;
@@ -137,6 +145,60 @@ namespace VirtualHouse.Editor
             Object.DestroyImmediate(target);
             AssetDatabase.Refresh();
             Debug.Log($"Entrance preview rendered: {output} ({scene.name})");
+        }
+
+        [MenuItem("Virtual House/Render Floor Plan Preview")]
+        public static void RenderFloorPlanPreview()
+        {
+            Scene scene = EditorSceneManager.OpenScene(OutputScene, OpenSceneMode.Single);
+            Camera camera = Camera.main;
+            if (camera == null)
+                throw new System.InvalidOperationException("HouseBlockout scene has no Main Camera.");
+
+            GameObject exterior = GameObject.Find("外観_写真ベース");
+            if (exterior != null) exterior.SetActive(false);
+            GameObject firstFloor = GameObject.Find("1階");
+            GameObject secondFloor = GameObject.Find("2階");
+
+            camera.transform.position = new Vector3(9f * Grid, 20f, 2.5f * Grid);
+            camera.transform.LookAt(new Vector3(9f * Grid, 0f, 2.5f * Grid), Vector3.forward);
+            camera.orthographic = true;
+            camera.orthographicSize = 6.2f;
+            camera.nearClipPlane = 0.1f;
+            camera.farClipPlane = 50f;
+
+            if (secondFloor != null) secondFloor.SetActive(false);
+            RenderCameraToPng(camera, Path.Combine(Application.dataPath, "VirtualHouse", "floor-plan-preview.png"));
+
+            if (firstFloor != null) firstFloor.SetActive(false);
+            if (secondFloor != null) secondFloor.SetActive(true);
+            camera.transform.position = new Vector3(8.5f * Grid, 20f, 5.5f * Grid);
+            camera.transform.LookAt(new Vector3(8.5f * Grid, SecondFloorY, 5.5f * Grid), Vector3.forward);
+            camera.orthographicSize = 3.6f;
+            RenderCameraToPng(camera, Path.Combine(Application.dataPath, "VirtualHouse", "second-floor-plan-preview.png"));
+
+            AssetDatabase.Refresh();
+            Debug.Log($"Floor-plan previews rendered ({scene.name})");
+        }
+
+        private static void RenderCameraToPng(Camera camera, string output)
+        {
+            const int width = 1600;
+            const int height = 900;
+            RenderTexture target = new(width, height, 24);
+            Texture2D image = new(width, height, TextureFormat.RGB24, false);
+            RenderTexture previous = RenderTexture.active;
+            camera.targetTexture = target;
+            RenderTexture.active = target;
+            camera.Render();
+            image.ReadPixels(new Rect(0f, 0f, width, height), 0, 0);
+            image.Apply();
+            camera.targetTexture = null;
+            RenderTexture.active = previous;
+
+            File.WriteAllBytes(output, image.EncodeToPNG());
+            Object.DestroyImmediate(image);
+            Object.DestroyImmediate(target);
         }
 
         private static void GenerateIfMissing()
@@ -167,42 +229,42 @@ namespace VirtualHouse.Editor
             Transform walls = NewGroup("壁", floor);
             Transform fittings = NewGroup("建具_目安", floor);
 
-            // Major spaces reconstructed from the plan. Dimensions are in plan-grid cells.
+            // Redrawn plan: 1.82 m in the legend equals two grid cells.
             Room(rooms, "8帖洋室", 0f, 0f, 4f, 4f, 0f, "FloorWood");
             Room(rooms, "8帖和室_西", 4f, 1f, 4f, 4f, 0f, "Tatami");
             Room(rooms, "8帖和室_東", 8f, 1f, 4f, 4f, 0f, "Tatami");
-            Room(rooms, "8帖DK", 12f, 0f, 4f, 4f, 0f, "FloorWood");
+            Room(rooms, "8帖DK", 14f, 0f, 4f, 4f, 0f, "FloorWood");
             Room(rooms, "納戸", 2f, 4f, 2f, 2f, 0f, "Storage");
             Room(rooms, "南側廊下", 4f, 0f, 8f, 1f, 0f, "Hall");
-            Room(rooms, "北側廊下", 4f, 5f, 8f, 2f, 0f, "Hall");
-            Room(rooms, "階段ホール", 11f, 4f, 2f, 2f, 0f, "Hall");
-            Room(rooms, "脱衣室", 13f, 4f, 2f, 2f, 0f, "Wet");
-            Room(rooms, "浴室", 15f, 5f, 2f, 2f, 0f, "Bath");
-            Room(rooms, "洗面", 13f, 6f, 2f, 2f, 0f, "Wet");
-            Room(rooms, "WC", 12f, 7f, 1f, 1f, 0f, "Wet");
-            Room(rooms, "給湯", 15f, 7f, 2f, 1f, 0f, "Utility");
-            Room(rooms, "物入", 16f, 2f, 2f, 2f, 0f, "Storage");
-            Room(rooms, "玄関", 11f, -2f, 2f, 2f, -0.08f, "Entry");
-
-            // Fill the circulation/utility footprint between named rooms.
-            FloorBox(rooms, "北側床補完", 4f, 7f, 8f, 1f, 0f, "Hall");
-            FloorBox(rooms, "水回り通路", 12f, 6f, 1f, 1f, 0f, "Hall");
-            FloorBox(rooms, "浴室南側床", 15f, 4f, 2f, 1f, 0f, "Wet");
-            FloorBox(rooms, "東側接続床", 17f, 4f, 1f, 2f, 0f, "Storage");
+            Room(rooms, "北側物入_西", 4f, 5f, 2f, 1f, 0f, "Storage");
+            Room(rooms, "北側物入_中央", 6f, 5f, 2f, 1f, 0f, "Storage");
+            Room(rooms, "北側物入_東", 8f, 5f, 2f, 1f, 0f, "Storage");
+            Room(rooms, "北側板間", 10f, 5f, 2f, 1f, 0f, "Hall");
+            Room(rooms, "縦廊下", 13f, 0f, 1f, 6f, 0f, "Hall");
+            Room(rooms, "WC_西", 12f, 6f, 1f, 1f, 0f, "Wet");
+            Room(rooms, "WC_東", 13f, 6f, 1f, 1f, 0f, "Wet");
+            Room(rooms, "脱衣室", 14f, 3f, 2f, 1f, 0f, "Wet");
+            Room(rooms, "洗面", 14f, 5f, 1f, 1f, 0f, "Wet");
+            Room(rooms, "水回り物入", 14f, 4f, 1f, 1f, 0f, "Storage");
+            Room(rooms, "浴室", 15f, 4f, 2f, 2f, 0f, "Bath");
+            Room(rooms, "給湯", 17f, 4f, 1f, 2f, 0f, "Utility");
+            Room(rooms, "DK物入_北", 17f, 2f, 1f, 1f, 0f, "Storage");
+            Room(rooms, "DK物入_南", 17f, 0.5f, 1f, 1f, 0f, "Storage");
+            Room(rooms, "玄関", 12f, -2f, 2f, 2f, -0.08f, "Entry");
 
             // Exterior outline. The entrance, storage and wet-area projections follow the drawing.
-            WallX(walls, "外壁_南西", 0f, 11f, 0f, 0f);
-            WallZ(walls, "外壁_玄関西", 11f, -2f, 0f, 0f);
-            WallXWithOpening(walls, fittings, "外壁_玄関正面", 11f, 13f, -2f, 0f, 12f, 1.05f, "玄関扉");
-            WallZ(walls, "外壁_玄関東", 13f, -2f, 0f, 0f);
-            WallX(walls, "外壁_南東", 13f, 16f, 0f, 0f);
-            WallZ(walls, "外壁_DK東", 16f, 0f, 2f, 0f);
-            WallX(walls, "外壁_物入南", 16f, 18f, 2f, 0f);
-            WallZ(walls, "外壁_東", 18f, 2f, 6f, 0f);
-            WallX(walls, "外壁_東北段差", 17f, 18f, 6f, 0f);
-            WallZ(walls, "外壁_北東", 17f, 6f, 8f, 0f);
-            WallX(walls, "外壁_北", 4f, 17f, 8f, 0f);
-            WallZ(walls, "外壁_北西", 4f, 6f, 8f, 0f);
+            WallX(walls, "外壁_南西", 0f, 12f, 0f, 0f);
+            WallZ(walls, "外壁_玄関西", 12f, -2f, 0f, 0f);
+            WallXWithOpening(walls, fittings, "外壁_玄関正面", 12f, 14f, -2f, 0f, 13f, 1.05f, "玄関扉");
+            WallZ(walls, "外壁_玄関東", 14f, -2f, 0f, 0f);
+            WallX(walls, "外壁_南東", 14f, 18f, 0f, 0f);
+            WallZWithOpening(walls, fittings, "外壁_東", 18f, 0f, 6f, 0f, 4.75f, 0.9f, "勝手口");
+            WallX(walls, "外壁_水回り北", 14f, 18f, 6f, 0f);
+            WallX(walls, "外壁_WC北", 12f, 14f, 7f, 0f);
+            WallZ(walls, "外壁_WC西", 12f, 6f, 7f, 0f);
+            WallZ(walls, "外壁_WC東", 14f, 6f, 7f, 0f);
+            WallX(walls, "外壁_北", 4f, 12f, 6f, 0f);
+            WallZ(walls, "外壁_北西", 4f, 5f, 6f, 0f);
             WallX(walls, "外壁_納戸北", 2f, 4f, 6f, 0f);
             WallZ(walls, "外壁_納戸西", 2f, 4f, 6f, 0f);
             WallX(walls, "外壁_洋室北", 0f, 2f, 4f, 0f);
@@ -211,21 +273,22 @@ namespace VirtualHouse.Editor
             // Principal partitions, with representative door/fusuma openings.
             WallZWithOpening(walls, fittings, "間仕切_洋室", 4f, 0f, 5f, 0f, 1.1f, 0.9f, "洋室扉");
             WallZWithOpening(walls, fittings, "間仕切_和室間", 8f, 1f, 5f, 0f, 1.8f, 1.4f, "襖_和室間");
-            // Keep the narrow entrance-side corridor open all the way to the stair foot.
-            WallZ(walls, "間仕切_和室DK_北", 12f, 1.75f, 3.82f, 0f);
+            WallZ(walls, "間仕切_和室階段", 12f, 1f, 5f, 0f);
+            WallZWithOpening(walls, fittings, "間仕切_廊下DK", 14f, 0f, 4f, 0f, 1.1f, 0.9f, "DK入口");
             WallXWithOpening(walls, fittings, "間仕切_和室西南", 4f, 8f, 1f, 0f, 6.2f, 1.6f, "襖_和室西");
             WallXWithOpening(walls, fittings, "間仕切_和室東南", 8f, 12f, 1f, 0f, 11f, 2f, "襖_和室東");
             WallXWithOpening(walls, fittings, "間仕切_和室西北", 4f, 8f, 5f, 0f, 6.2f, 1.4f, "襖_北西");
-            WallXWithOpening(walls, fittings, "間仕切_和室東北", 8f, 12f, 5f, 0f, 11.3f, 1.4f, "襖_北東");
-            WallXWithOpening(walls, fittings, "間仕切_DK北", 12f, 16f, 4f, 0f, 12.65f, 1.3f, "DK北扉");
-            WallZWithOpening(walls, fittings, "間仕切_脱衣西", 13f, 4f, 6f, 0f, 5f, 0.8f, "脱衣扉");
-            WallZWithOpening(walls, fittings, "間仕切_浴室西", 15f, 4f, 8f, 0f, 5.5f, 0.8f, "浴室扉");
-            WallXWithOpening(walls, fittings, "間仕切_洗面南", 13f, 15f, 6f, 0f, 14f, 0.8f, "洗面入口");
-            WallXWithOpening(walls, fittings, "間仕切_WC南", 12f, 13f, 7f, 0f, 12.5f, 0.65f, "WC扉");
-            WallZWithOpening(walls, fittings, "間仕切_物入西", 16f, 2f, 4f, 0f, 3f, 1.1f, "物入扉");
+            WallXWithOpening(walls, fittings, "間仕切_和室東北", 8f, 12f, 5f, 0f, 10.8f, 1.4f, "襖_北東");
+            WallXWithOpening(walls, fittings, "間仕切_DK北", 14f, 18f, 4f, 0f, 14.55f, 0.8f, "脱衣入口");
+            WallZWithOpening(walls, fittings, "間仕切_浴室西", 15f, 4f, 6f, 0f, 4.55f, 0.75f, "浴室扉");
+            WallZ(walls, "間仕切_浴室給湯", 17f, 4f, 6f, 0f);
+            WallXWithOpening(walls, fittings, "間仕切_洗面南", 14f, 15f, 5f, 0f, 14.5f, 0.65f, "洗面入口");
+            WallXWithOpening(walls, fittings, "間仕切_WC南", 12f, 14f, 6f, 0f, 13.5f, 0.65f, "WC入口");
+            WallZ(walls, "間仕切_WC間", 13f, 6f, 7f, 0f);
+            WallX(walls, "間仕切_北側収納", 4f, 12f, 5f, 0f);
             WallXWithOpening(walls, fittings, "間仕切_納戸南", 2f, 4f, 4f, 0f, 3.2f, 0.8f, "納戸扉");
 
-            CreateStairs(floor, 11.25f, 4.1f, 1.35f, 3.4f, 0f);
+            CreateStairs(floor, 12f, 1f, 1f, 4f, 0f);
             CreateEntranceInterior(floor);
         }
 
@@ -236,30 +299,27 @@ namespace VirtualHouse.Editor
             Transform walls = NewGroup("壁", floor);
             Transform fittings = NewGroup("建具_目安", floor);
 
-            // 9 x 5 cells = about 37.2 square metres, matching the noted 37.31 m2 closely.
-            Room(rooms, "8帖和室", 4f, 4f, 4f, 4f, SecondFloorY, "Tatami");
-            Room(rooms, "4.5帖和室", 9f, 5f, 2.15f, 3f, SecondFloorY, "Tatami");
-            FloorBox(rooms, "4.5帖北側補完", 9f, 7.5f, 3f, 0.5f, SecondFloorY, "Tatami");
-            FloorBox(rooms, "2階ホール南", 8f, 3f, 5f, 1.05f, SecondFloorY, "Hall");
-            FloorBox(rooms, "2階ホール西", 8f, 4.05f, 3.15f, 0.95f, SecondFloorY, "Hall");
-            FloorBox(rooms, "2階ホール東", 12.6f, 4.05f, 0.4f, 0.95f, SecondFloorY, "Hall");
-            Room(rooms, "2階廊下", 8f, 5f, 1f, 3f, SecondFloorY, "Hall");
-            Room(rooms, "2階収納", 12.65f, 5f, 0.35f, 3f, SecondFloorY, "Storage");
-            FloorBox(rooms, "2階南西床補完", 4f, 3f, 4f, 1f, SecondFloorY, "Hall");
+            // The redrawn second floor has corridors along both eaves and the stair on the east side.
+            Room(rooms, "8帖和室", 4.5f, 4f, 4f, 3f, SecondFloorY, "Tatami");
+            Room(rooms, "4.5帖和室", 9f, 4f, 3f, 3f, SecondFloorY, "Tatami");
+            Room(rooms, "北側廊下", 4.5f, 7f, 7.5f, 1f, SecondFloorY, "Hall");
+            Room(rooms, "南側廊下", 4f, 3f, 8f, 1f, SecondFloorY, "Hall");
+            Room(rooms, "物入_南西", 4f, 3f, 0.5f, 1f, SecondFloorY, "Storage");
+            Room(rooms, "物入_中央北", 8.5f, 5.8f, 0.5f, 1.2f, SecondFloorY, "Storage");
+            Room(rooms, "物入_中央南", 8.5f, 4f, 0.5f, 1.2f, SecondFloorY, "Storage");
+            Room(rooms, "物入_南東", 12f, 3f, 1f, 1f, SecondFloorY, "Storage");
+            FloorBox(rooms, "階段上踊り場", 12f, 7f, 1f, 1f, SecondFloorY, "Hall");
 
             WallX(walls, "外壁_2階南", 4f, 13f, 3f, SecondFloorY);
             WallZ(walls, "外壁_2階東", 13f, 3f, 8f, SecondFloorY);
             WallX(walls, "外壁_2階北", 4f, 13f, 8f, SecondFloorY);
             WallZ(walls, "外壁_2階西", 4f, 3f, 8f, SecondFloorY);
 
-            WallZWithOpening(walls, fittings, "間仕切_8帖東", 8f, 3f, 8f, SecondFloorY, 4.6f, 1.2f, "襖_8帖");
-            WallZWithOpening(walls, fittings, "間仕切_4.5帖西", 9f, 5f, 8f, SecondFloorY, 5.8f, 0.9f, "襖_4.5帖");
-            WallXWithOpening(walls, fittings, "間仕切_4.5帖南", 9f, 11.15f, 5f, SecondFloorY, 10f, 0.9f, "4.5帖入口");
-            WallZWithOpening(walls, fittings, "間仕切_収納西", 12.65f, 5f, 8f, SecondFloorY, 6.2f, 1.0f, "収納扉");
-
-            // A real opening above the stair run replaces the former continuous second-floor slab.
-            // The top tread meets this landing, so the CharacterController can walk up without teleporting.
-            FloorBox(rooms, "階段上り口踊り場", 11.15f, 7.5f, 1.5f, 0.5f, SecondFloorY, "Hall");
+            WallXWithOpening(walls, fittings, "間仕切_北側廊下", 4.5f, 12f, 7f, SecondFloorY, 10.5f, 1.0f, "北廊下入口");
+            WallXWithOpening(walls, fittings, "間仕切_南側廊下", 4f, 12f, 4f, SecondFloorY, 10.5f, 1.0f, "南廊下入口");
+            WallZWithOpening(walls, fittings, "間仕切_8帖東", 8.5f, 4f, 7f, SecondFloorY, 4.65f, 0.9f, "襖_8帖");
+            WallZWithOpening(walls, fittings, "間仕切_4.5帖西", 9f, 4f, 7f, SecondFloorY, 5.25f, 0.9f, "襖_4.5帖");
+            WallZ(walls, "間仕切_階段西", 12f, 4f, 7f, SecondFloorY);
         }
 
         /// <summary>
@@ -275,23 +335,22 @@ namespace VirtualHouse.Editor
             Transform drainage = NewGroup("雨樋", exterior);
 
             // The photographs show a rough, dark pebble-dash skirt wrapping the ground floor.
-            CladdingX(cladding, "南面腰壁_西", 0f, 11f, -0.09f);
-            CladdingX(cladding, "南面腰壁_東", 13f, 16f, -0.09f);
+            CladdingX(cladding, "南面腰壁_西", 0f, 12f, -0.09f);
+            CladdingX(cladding, "南面腰壁_東", 14f, 18f, -0.09f);
             // The entrance is deliberately left as an unobstructed opening for the walkthrough.
-            CladdingX(cladding, "玄関正面腰壁_左袖", 11f, 11.18f, -2.09f);
-            CladdingX(cladding, "玄関正面腰壁_右袖", 12.82f, 13f, -2.09f);
-            CladdingX(cladding, "北面腰壁", 2f, 17f, 8.09f);
+            CladdingX(cladding, "玄関正面腰壁_左袖", 12f, 12.18f, -2.09f);
+            CladdingX(cladding, "玄関正面腰壁_右袖", 13.82f, 14f, -2.09f);
+            CladdingX(cladding, "北面腰壁", 2f, 18f, 6.09f);
             CladdingZ(cladding, "西面腰壁", -0.09f, 0f, 4f);
-            CladdingZ(cladding, "東面腰壁", 18.09f, 2f, 6f);
+            CladdingZ(cladding, "東面腰壁", 18.09f, 0f, 6f);
             CladdingZ(cladding, "北西張出し腰壁", 1.91f, 4f, 6f);
-            CladdingZ(cladding, "北東張出し腰壁", 17.09f, 6f, 8f);
 
             // South/front elevation: two broad sets of sliding doors and the recessed entrance.
             WindowX(openings, "南西掃出し窓", 2.0f, -0.085f, 3.55f, 2.05f, 0.18f, 4, true);
             WindowX(openings, "南中央掃出し窓", 7.5f, -0.085f, 5.8f, 2.05f, 0.18f, 6, true);
-            WindowX(openings, "南東腰窓", 14.45f, -0.085f, 2.25f, 1.25f, 0.82f, 2, true);
-            DoorX(openings, "玄関引違い戸", 12f, -2.085f, 1.65f, 0f);
-            AddPorch(openings, 12f * Grid, -2.45f * Grid);
+            WindowX(openings, "南東腰窓", 16f, -0.085f, 2.25f, 1.25f, 0.82f, 2, true);
+            DoorX(openings, "玄関引違い戸", 13f, -2.085f, 1.65f, 0f);
+            AddPorch(openings, 13f * Grid, -2.45f * Grid);
 
             // The long first-floor side visible in photos 1, 9 and 16-18.
             WindowZ(openings, "西南掃出し窓", -0.085f, 1.75f, 3.0f, 2.05f, 0.18f, 4, true);
@@ -299,12 +358,11 @@ namespace VirtualHouse.Editor
 
             // Rear/service elevations use smaller frosted windows, matching the photo sequence.
             WindowX(openings, "北西腰窓", 3.0f, 6.085f, 1.35f, 1.15f, 0.9f, 2, true);
-            WindowX(openings, "北中央窓", 7.5f, 8.085f, 2.2f, 1.35f, 0.72f, 3, true);
-            WindowX(openings, "北東窓", 14.2f, 8.085f, 1.65f, 1.15f, 0.85f, 2, true);
-            DoorX(openings, "北勝手口", 11.3f, 8.085f, 0.8f, 0f);
-            WindowZ(openings, "東南腰窓", 16.085f, 1.0f, 1.7f, 1.25f, 0.8f, 2, true);
-            WindowZ(openings, "東中央腰窓", 18.085f, 3.8f, 1.45f, 1.15f, 0.9f, 2, true);
-            WindowZ(openings, "東北窓", 17.085f, 7.0f, 1.2f, 1.05f, 0.95f, 2, true);
+            WindowX(openings, "北中央窓", 8f, 6.085f, 2.2f, 1.35f, 0.72f, 3, true);
+            WindowX(openings, "北東窓", 16f, 6.085f, 1.65f, 1.15f, 0.85f, 2, true);
+            WindowZ(openings, "東南腰窓", 18.085f, 1.4f, 1.7f, 1.25f, 0.8f, 2, true);
+            DoorZ(openings, "東勝手口", 18.085f, 4.75f, 0.9f, 0f);
+            WindowZ(openings, "東北窓", 18.085f, 5.55f, 0.8f, 1.05f, 0.95f, 1, true);
 
             // Second storey: two windows along each eave elevation and one on each gable end.
             WindowX(openings, "2階南西窓", 6.1f, 2.915f, 2.25f, 1.5f, 3.72f, 3, true);
@@ -334,19 +392,19 @@ namespace VirtualHouse.Editor
                 new Vector3(mainLength + 0.12f, 0.18f, 0.20f), GetMaterial("UpperRoofRidge"), roofs);
 
             // One-storey hipped/shed roofs reconstructed as editable overlapping roof planes.
-            ShedRoofX(roofs, "南側下屋", 0f, 18f, -2.55f, 3.05f, 3.26f, 2.72f, true);
-            ShedRoofX(roofs, "北側下屋", 1.7f, 17.4f, 7.75f, 8.75f, 3.18f, 2.82f, false);
+            ShedRoofX(roofs, "南側下屋", 0f, 18.5f, -2.55f, 3.05f, 3.26f, 2.72f, true);
+            ShedRoofX(roofs, "北側下屋", 1.7f, 18.4f, 5.75f, 6.75f, 3.18f, 2.82f, false);
             ShedRoofZ(roofs, "西側下屋", -0.65f, 4.15f, -0.2f, 6.3f, 2.76f, 3.18f, true);
-            ShedRoofZ(roofs, "東側下屋", 12.85f, 18.65f, 1.7f, 8.25f, 3.20f, 2.75f, false);
-            CanopyX(roofs, "玄関庇", 12f * Grid, -2.55f * Grid, 2.75f, 2.45f, 1.25f);
+            ShedRoofZ(roofs, "東側下屋", 12.85f, 18.65f, -0.2f, 6.25f, 3.20f, 2.75f, false);
+            CanopyX(roofs, "玄関庇", 13f * Grid, -2.55f * Grid, 2.75f, 2.45f, 1.25f);
 
             // Characteristic dark-red metal gutters and downpipes.
-            GutterX(drainage, "南雨樋", -0.35f, 16.4f, -2.58f, 2.68f);
-            GutterX(drainage, "北雨樋", 1.5f, 17.6f, 8.78f, 2.78f);
+            GutterX(drainage, "南雨樋", -0.35f, 18.4f, -2.58f, 2.68f);
+            GutterX(drainage, "北雨樋", 1.5f, 18.6f, 6.78f, 2.78f);
             Downpipe(drainage, "南西縦樋", 0.15f, -0.18f, 2.65f);
-            Downpipe(drainage, "玄関縦樋", 13.05f, -2.1f, 2.8f);
+            Downpipe(drainage, "玄関縦樋", 14.05f, -2.1f, 2.8f);
             Downpipe(drainage, "北西縦樋", 2.0f, 6.05f, 2.8f);
-            Downpipe(drainage, "北東縦樋", 17.0f, 7.9f, 2.8f);
+            Downpipe(drainage, "北東縦樋", 18.0f, 5.9f, 2.8f);
         }
 
         private static void CreateStairs(Transform parent, float x, float z, float widthCells, float lengthCells, float baseY)
@@ -408,7 +466,7 @@ namespace VirtualHouse.Editor
             Transform fittings = NewGroup("格子建具と下駄箱", interior);
             Transform lights = NewGroup("照明", interior);
 
-            float entryCenterX = 12f * Grid;
+            float entryCenterX = 13f * Grid;
             float entryCenterZ = -1f * Grid;
             float entryWidth = 2f * Grid;
             float entryDepth = 2f * Grid;
@@ -425,19 +483,19 @@ namespace VirtualHouse.Editor
             {
                 float zCenter = (0.16f + i * 0.31f) * Grid;
                 Material boardMaterial = GetMaterial(i % 2 == 0 ? "HallLight" : "HallDark");
-                CreateBox($"廊下板_{i + 1:00}_西", new Vector3(11.28f * Grid, 0.012f, zCenter),
+                CreateBox($"廊下板_{i + 1:00}_西", new Vector3(13.28f * Grid, 0.012f, zCenter),
                     new Vector3(0.52f * Grid, 0.024f, 0.29f * Grid), boardMaterial, surfaces);
-                CreateBox($"廊下板_{i + 1:00}_東", new Vector3(11.74f * Grid, 0.013f, zCenter),
+                CreateBox($"廊下板_{i + 1:00}_東", new Vector3(13.74f * Grid, 0.013f, zCenter),
                     new Vector3(0.38f * Grid, 0.026f, 0.29f * Grid),
                     GetMaterial(i % 2 == 0 ? "HallDark" : "HallLight"), surfaces);
             }
 
             // Rough pale wall panels framed with exposed light timber (traditional shinkabe construction).
-            CreateBox("砂壁_玄関西", new Vector3(11.075f * Grid, 1.30f, entryCenterZ),
+            CreateBox("砂壁_玄関西", new Vector3(12.075f * Grid, 1.30f, entryCenterZ),
                 new Vector3(0.035f, 2.52f, entryDepth - 0.12f), GetMaterial("Plaster"), timber);
-            CreateBox("砂壁_玄関東", new Vector3(12.925f * Grid, 1.30f, entryCenterZ),
+            CreateBox("砂壁_玄関東", new Vector3(13.925f * Grid, 1.30f, entryCenterZ),
                 new Vector3(0.035f, 2.52f, entryDepth - 0.12f), GetMaterial("Plaster"), timber);
-            foreach (float postX in new[] { 11.10f, 12.90f })
+            foreach (float postX in new[] { 12.10f, 13.90f })
             {
                 foreach (float postZ in new[] { -1.93f, -0.05f })
                     CreateBox($"玄関柱_{postX:0.00}_{postZ:0.00}", new Vector3(postX * Grid, 1.31f, postZ * Grid),
@@ -447,20 +505,20 @@ namespace VirtualHouse.Editor
                 new Vector3(entryWidth, 0.13f, 0.12f), GetMaterial("DarkWood"), timber);
             CreateBox("玄関天井", new Vector3(entryCenterX, 2.62f, entryCenterZ),
                 new Vector3(entryWidth, 0.10f, entryDepth), GetMaterial("Ceiling"), timber);
-            CreateBox("廊下天井", new Vector3(11.52f * Grid, 2.62f, 1.90f * Grid),
+            CreateBox("廊下天井", new Vector3(13.52f * Grid, 2.62f, 1.90f * Grid),
                 new Vector3(1.12f * Grid, 0.10f, 3.80f * Grid), GetMaterial("Ceiling"), timber);
             for (int i = 0; i <= 5; i++)
             {
                 float beamZ = (0.15f + i * 0.70f) * Grid;
-                CreateBox($"廊下天井桟_{i + 1:00}", new Vector3(11.52f * Grid, 2.555f, beamZ),
+                CreateBox($"廊下天井桟_{i + 1:00}", new Vector3(13.52f * Grid, 2.555f, beamZ),
                     new Vector3(1.12f * Grid, 0.045f, 0.055f), GetMaterial("DarkWood"), timber);
             }
 
-            CreateLatticePanelZ(fittings, "縦格子引戸", 11.94f, 2.46f, 1.62f);
-            CreateShoeCabinet(fittings, 12.66f * Grid, -0.54f * Grid);
+            CreateLatticePanelZ(fittings, "縦格子引戸", 13.94f, 2.46f, 1.62f);
+            CreateShoeCabinet(fittings, 13.66f * Grid, -0.54f * Grid);
 
             CreateWarmLight(lights, "玄関灯", new Vector3(entryCenterX, 2.38f, entryCenterZ), 4.0f, 0.72f);
-            CreateWarmLight(lights, "廊下灯", new Vector3(11.52f * Grid, 2.40f, 2.25f * Grid), 3.6f, 0.62f);
+            CreateWarmLight(lights, "廊下灯", new Vector3(13.52f * Grid, 2.40f, 2.25f * Grid), 3.6f, 0.62f);
         }
 
         private static void CreateLatticePanelZ(Transform parent, string name, float xCells, float zCells, float lengthCells)
@@ -742,7 +800,7 @@ namespace VirtualHouse.Editor
             mesh.text = text;
             mesh.anchor = TextAnchor.MiddleCenter;
             mesh.alignment = TextAlignment.Center;
-            mesh.characterSize = 0.16f;
+            mesh.characterSize = 0.085f;
             mesh.fontSize = 42;
             mesh.color = new Color(0.12f, 0.12f, 0.12f, 1f);
         }
@@ -784,7 +842,7 @@ namespace VirtualHouse.Editor
 
             GameObject playerObject = new("Player");
             // Start in the genkan, facing the hallway and stair, with the open exterior behind the player.
-            playerObject.transform.position = new Vector3(11.62f * Grid, 0.03f, -1.15f * Grid);
+            playerObject.transform.position = new Vector3(13f * Grid, 0.03f, -1.15f * Grid);
             playerObject.transform.rotation = Quaternion.identity;
 
             CharacterController controller = playerObject.AddComponent<CharacterController>();
