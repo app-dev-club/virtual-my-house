@@ -57,6 +57,7 @@ Play ボタンで一人称の室内移動を開始できます。
 
 WebGLビルドはUnityメニュの `Virtual House > Build WebGL` から `docs/` に作成できます。
 GitHub Pagesは `main` ブランチの `/docs` を公開元に使用します。
+詳しい手順と公開ファイルの構成は、プロジェクト直下の `BUILD.md` を参照してください。通常のBuild ProfilesからのWebビルドにも、ファイル名と全画面表示の共通後処理を適用します。
 
 ## 再生成
 
