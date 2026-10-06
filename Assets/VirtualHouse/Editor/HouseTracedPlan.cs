@@ -100,6 +100,7 @@ namespace VirtualHouse.Editor
             // Stair shaft aligned between the two images (53px horizontal, -57px vertical).
             Vector3 foot=PlanPoint(613,367,0);
             CreateStairs(first,foot.x/Grid,foot.z/Grid,38*PlanScale/Grid,112*PlanScale/Grid,0);
+            CreateEastJapaneseRoomInterior(first);
             CreateTracedExterior(root);
             Physics.SyncTransforms();
             ValidateTracedOpenings(false,new float[,] {

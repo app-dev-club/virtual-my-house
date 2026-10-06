@@ -983,6 +983,12 @@ namespace VirtualHouse.Editor
                     "Paper" => new Color(0.90f, 0.88f, 0.80f),
                     "Cabinet" => new Color(0.43f, 0.28f, 0.16f),
                     "Ceiling" => new Color(0.73f, 0.62f, 0.48f),
+                    "TatamiEdge" => new Color(0.10f, 0.16f, 0.14f),
+                    "TatamiPhoto" => new Color(0.58f, 0.50f, 0.31f),
+                    "SandWall" => new Color(0.55f, 0.49f, 0.25f),
+                    "Chabudai" => new Color(0.055f, 0.045f, 0.035f),
+                    "ChabudaiGold" => new Color(0.67f, 0.43f, 0.16f),
+                    "CurtainOrange" => new Color(0.78f, 0.30f, 0.12f),
                     _ => Color.white
                 };
                 AssetDatabase.CreateAsset(material, path);
