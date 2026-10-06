@@ -103,6 +103,7 @@ namespace VirtualHouse.Editor
             CreateEastJapaneseRoomInterior(first);
             CreateWestJapaneseRoomInterior(first);
             CreateWesternRoomInterior(first);
+            CreateKitchenInterior(first);
             CreateTracedExterior(root);
             Physics.SyncTransforms();
             ValidateTracedOpenings(false,new float[,] {
