@@ -80,7 +80,6 @@ namespace VirtualHouse
                    objectName.Contains("入口") || objectName.Contains("勝手口") ||
                    objectName.Contains("引違い戸");
         }
-
         private void OnEnable()
         {
             if (useTouchControls)
@@ -247,7 +246,7 @@ namespace VirtualHouse
                         movementTouchOrigin = position;
                         movementTouchPosition = position;
                     }
-                    else if (position.y >= Screen.height * 0.5f && lookTouchId < 0)
+                    else if (position.y >= Screen.height * 0.3f && lookTouchId < 0)
                     {
                         lookTouchId = touchId;
                     }
