@@ -7,6 +7,8 @@ namespace VirtualHouse
     [RequireComponent(typeof(CharacterController))]
     public sealed class HouseFirstPersonController : MonoBehaviour
     {
+        private const float TouchMovementAreaRatio = 0.3f;
+
         [Header("Movement")]
         [SerializeField] private float walkSpeed = 2.6f;
         [SerializeField] private float sprintSpeed = 5.0f;
@@ -240,7 +242,7 @@ namespace VirtualHouse
                     }
 
                     // Lock each finger to the region where it began, even across the divider.
-                    if (position.y < Screen.height * 0.3f && movementTouchId < 0)
+                    if (position.y < Screen.height * TouchMovementAreaRatio && movementTouchId < 0)
                     {
                         movementTouchId = touchId;
                         movementTouchOrigin = position;
@@ -324,9 +326,10 @@ namespace VirtualHouse
 
             Color previousColor = GUI.color;
             GUI.color = new Color(1f, 1f, 1f, 0.5f);
-            GUI.Box(new Rect(0f, Screen.height * 0.5f, Screen.width, 2f), "");
-            GUI.Label(new Rect(24f, Screen.height * 0.5f - 30f, 280f, 26f), "LOOK: drag upper half");
-            GUI.Label(new Rect(24f, Screen.height * 0.5f + 8f, 280f, 26f), "MOVE: drag lower half");
+            float dividerY = Screen.height * (1f - TouchMovementAreaRatio);
+            GUI.Box(new Rect(0f, dividerY, Screen.width, 2f), "");
+            GUI.Label(new Rect(24f, dividerY - 30f, 280f, 26f), "LOOK: drag upper 70%");
+            GUI.Label(new Rect(24f, dividerY + 8f, 280f, 26f), "MOVE: drag lower 30%");
             GUI.color = new Color(1f, 1f, 1f, 0.38f);
             GUI.Box(new Rect(origin.x - radius, origin.y - radius, radius * 2f, radius * 2f), "MOVE");
             GUI.Box(new Rect(knob.x - 26f, knob.y - 26f, 52f, 52f), "");
