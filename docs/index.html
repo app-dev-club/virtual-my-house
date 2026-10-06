@@ -6,12 +6,6 @@
     <title>Unity Web Player | virtual-my-house</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-  <style>
-      html, body, #unity-container, #unity-canvas { width: 100%; height: 100%; margin: 0; overflow: hidden; }
-      body, #unity-canvas { touch-action: none; overscroll-behavior: none; }
-      #unity-container { position: fixed; inset: 0; }
-      #unity-canvas { display: block; width: 100% !important; height: 100% !important; }
-    </style>
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -58,12 +52,12 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/WebGL.loader.js";
+      var loaderUrl = buildUrl + "/docs.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/WebGL.data",
-        frameworkUrl: buildUrl + "/WebGL.framework.js",
-        codeUrl: buildUrl + "/WebGL.wasm",
+        dataUrl: buildUrl + "/docs.data",
+        frameworkUrl: buildUrl + "/docs.framework.js",
+        codeUrl: buildUrl + "/docs.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "virtual-my-house",
