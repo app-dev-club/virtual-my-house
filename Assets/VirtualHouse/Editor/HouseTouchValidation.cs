@@ -27,7 +27,7 @@ namespace VirtualHouse.Editor
             }
             void Check(bool ok, string message) { if (!ok) throw new InvalidOperationException(message); }
             Vector2 lower = new Vector2(Screen.width * .30f, Screen.height * .25f);
-            Vector2 upper = new Vector2(Screen.width * .30f, Screen.height * .75f);
+            Vector2 upper = new Vector2(Screen.width * .30f, Screen.height * .35f);
             try
             {
                 Touch(1, TouchPhase.Began, lower); Sample();

@@ -241,7 +241,7 @@ namespace VirtualHouse
                     }
 
                     // Lock each finger to the region where it began, even across the divider.
-                    if (position.y < Screen.height * 0.5f && movementTouchId < 0)
+                    if (position.y < Screen.height * 0.3f && movementTouchId < 0)
                     {
                         movementTouchId = touchId;
                         movementTouchOrigin = position;
