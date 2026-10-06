@@ -80,7 +80,7 @@ namespace VirtualHouse.Editor
             PhotoWindow(trim,"東DK腰窓",845,376,65,0.9f,1.1f,2,false,true);
             PhotoWindow(trim,"東収納窓",920,291,49,1.15f,0.70f,2,false,true);
             PhotoWindow(trim,"北西腰窓",383,174,115,0.9f,1.10f,3);
-            PhotoWindow(trim,"浴室小窓",764,174,48,1.28f,0.65f,2);
+            PhotoWindow(trim,"浴室小窓",764,174,60,1.08f,0.95f,2);
             PhotoWindow(trim,"二階南西窓",440,350,115,3.76f,1.36f,3,true);
             PhotoWindow(trim,"二階南東窓",610,350,115,3.76f,1.36f,3,true);
             PhotoWindow(trim,"二階北西窓",440,154,100,3.82f,1.25f,3,true);
