@@ -7,7 +7,7 @@ namespace VirtualHouse
     [RequireComponent(typeof(CharacterController))]
     public sealed class HouseFirstPersonController : MonoBehaviour
     {
-        private const float TouchMovementAreaRatio = 0.3f;
+        private const float TouchMovementAreaRatio = 0.2f;
 
         [Header("Movement")]
         [SerializeField] private float walkSpeed = 2.6f;
