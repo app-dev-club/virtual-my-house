@@ -101,6 +101,8 @@ namespace VirtualHouse.Editor
             Vector3 foot=PlanPoint(613,367,0);
             CreateStairs(first,foot.x/Grid,foot.z/Grid,38*PlanScale/Grid,112*PlanScale/Grid,0);
             CreateEastJapaneseRoomInterior(first);
+            CreateWestJapaneseRoomInterior(first);
+            CreateWesternRoomInterior(first);
             CreateTracedExterior(root);
             Physics.SyncTransforms();
             ValidateTracedOpenings(false,new float[,] {

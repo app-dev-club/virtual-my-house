@@ -213,21 +213,16 @@ namespace VirtualHouse.Editor
                 CreateDecorationBox($"縁側板_{i:00}", new Vector3(center, 0.014f, z),
                     new Vector3(width - 0.08f, 0.025f, 0.085f), GetMaterial(i % 2 == 0 ? "HallLight" : "HallDark"), parent);
             }
-            // The orange patterned curtains are represented by narrow alternating folds at the outer edge.
-            for (int i = 0; i < 24; i++)
-            {
-                float foldWidth = width / 24f;
-                float x = west + foldWidth * (i + 0.5f);
-                float y = 1.15f + (i % 2 == 0 ? 0.015f : -0.015f);
-                CreateDecorationBox($"橙色カーテン_{i:00}", new Vector3(x, y, 0.07f + (i % 2) * 0.018f),
-                    new Vector3(foldWidth * 0.88f, 2.18f, 0.035f), GetMaterial("CurtainOrange"), parent);
-            }
+            CreateOpenCurtains(parent, new Vector3(center, 1.15f, 0.07f), width, 2.18f, false);
         }
 
         private static GameObject CreateDecorationBox(string name, Vector3 position, Vector3 size,
             Material material, Transform parent)
         {
+            if (name.Contains("ガラス")) material = GetClearWindowMaterial();
             GameObject box = CreateBox(name, position, size, material, parent);
+            if (name.Contains("ガラス"))
+                box.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             Collider collider = box.GetComponent<Collider>();
             if (collider != null)
                 Object.DestroyImmediate(collider);

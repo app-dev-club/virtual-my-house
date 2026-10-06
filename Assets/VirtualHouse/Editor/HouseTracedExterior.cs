@@ -75,7 +75,8 @@ namespace VirtualHouse.Editor
             PhotoWindow(trim,"南廊下西サッシ",386,428,132,0.17f,2.02f,4);
             PhotoWindow(trim,"南廊下東サッシ",537,428,132,0.17f,2.02f,4);
             PhotoWindow(trim,"DK南腰窓",764,428,108,0.92f,1.05f,2);
-            PhotoWindow(trim,"西洋室サッシ",135,367,94,0.17f,2.02f,4,false,true);
+            PhotoWindow(trim,"西洋室サッシ",135,367,94,0.85f,1.25f,2,false,true);
+            PhotoWindow(trim,"洋室北腰窓",195,291,58,0.85f,1.25f,2);
             PhotoWindow(trim,"東DK腰窓",845,376,65,0.9f,1.1f,2,false,true);
             PhotoWindow(trim,"東収納窓",920,291,49,1.15f,0.70f,2,false,true);
             PhotoWindow(trim,"北西腰窓",383,174,115,0.9f,1.10f,3);
@@ -97,10 +98,18 @@ namespace VirtualHouse.Editor
             float bottom,float height,int columns,bool upper=false,bool side=false)
         {
             Vector3 p=PlanPoint(x,v,0,upper);
+            CutWindowOpening(parent.root, p, width*PlanScale, bottom, height, side);
             if(side) WindowZ(parent,name,p.x/Grid,p.z/Grid,width*PlanScale/Grid,height,bottom,columns,false);
             else WindowX(parent,name,p.x/Grid,p.z/Grid,width*PlanScale/Grid,height,bottom,columns,false);
+            Transform window = parent.GetChild(parent.childCount-1);
+            foreach (Renderer pane in window.GetComponentsInChildren<Renderer>())
+                if (pane.name == "ガラス")
+                {
+                    pane.sharedMaterial = GetClearWindowMaterial();
+                    pane.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                }
             // Shallow pale hoods observed on all photographed elevations.
-            float outwards=side?(x>600?1:-1):(v<220?1:-1);
+            float outwards=side?(x>600?1:-1):(v<220 || name=="洋室北腰窓" ?1:-1);
             Vector3 center=p+Vector3.up*(bottom+height+0.14f)+
                 (side?Vector3.right:Vector3.forward)*outwards*0.17f;
             CreateBox("窓庇",center,side?new Vector3(0.40f,0.07f,width*PlanScale+0.26f):
