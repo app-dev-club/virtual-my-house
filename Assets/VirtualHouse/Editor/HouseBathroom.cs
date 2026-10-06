@@ -68,9 +68,19 @@ namespace VirtualHouse.Editor
                 if(renderer.name.StartsWith("カーテンひだ")) renderer.sharedMaterial=white;
             CreateWarmLight(room,"浴室照明",PlanPoint(757,228,2.4f),3f,.6f);
             CreateDecorationBox("浴室天井",new Vector3((l+r)/2,2.65f,(s+n)/2),new Vector3(r-l,.04f,n-s),GetMaterial("Wall"),room);
-            // Washer is tucked into the west end of the dressing area, not in the bath doorway.
-            Vector3 wp=PlanPoint(705,274,0);
-            Transform washer=NewGroup("古い洗濯機",room);
+            CreateVintageWasherPrefab();
+            CreateDecorationBox("脱衣所木床",PlanPoint(726,272.5f,.014f),new Vector3(76*PlanScale,.025f,37*PlanScale),GetMaterial("FloorWood"),room);
+        }
+
+        private const string VintageWasherPath = "Assets/VirtualHouse/Prefabs/VintageWasher.prefab";
+
+        private static void CreateVintageWasherPrefab()
+        {
+            Material white=WesternMaterial("WasherIvory",new Color(.82f,.81f,.72f));
+            Material dark=WesternMaterial("BathDark",new Color(.17f,.20f,.20f));
+            Material metal=GetMaterial("KitchenSteel");
+            Vector3 wp=Vector3.zero;
+            Transform washer=new GameObject("古い洗濯機").transform;
             CreateBox("洗濯機本体",wp+Vector3.up*.43f,new Vector3(.64f,.80f,.53f),white,washer);
             CreateBox("操作パネル",wp+new Vector3(-.265f,.91f,0),new Vector3(.075f,.18f,.53f),dark,washer);
             for(int i=0;i<3;i++)
@@ -80,7 +90,29 @@ namespace VirtualHouse.Editor
             KitchenRod(washer,"前面取手",wp+new Vector3(.329f,.73f,-.18f),wp+new Vector3(.329f,.73f,.18f),.017f,metal);
             foreach(int x in new[]{-1,1}) foreach(int z in new[]{-1,1}) CreateBox("洗濯機脚",wp+new Vector3(x*.25f,.035f,z*.20f),new Vector3(.065f,.07f,.065f),white,washer);
             KitchenRod(washer,"排水ホース",wp+new Vector3(-.15f,.7f,.29f),wp+new Vector3(-.10f,.08f,.29f),.03f,dark);
-            CreateDecorationBox("脱衣所木床",PlanPoint(726,272.5f,.014f),new Vector3(76*PlanScale,.025f,37*PlanScale),GetMaterial("FloorWood"),room);
+            Directory.CreateDirectory("Assets/VirtualHouse/Prefabs");
+            PrefabUtility.SaveAsPrefabAsset(washer.gameObject,VintageWasherPath);
+            Object.DestroyImmediate(washer.gameObject);
+        }
+
+        [MenuItem("Virtual House/Make Washer Prefab Only")]
+        public static void MakeWasherPrefabOnly()
+        {
+            EditorSceneManager.OpenScene(OutputScene);
+            CreateVintageWasherPrefab();
+            foreach(Transform item in Object.FindObjectsByType<Transform>(FindObjectsInactive.Include,FindObjectsSortMode.None))
+                if(item!=null && item.name=="古い洗濯機") Object.DestroyImmediate(item.gameObject);
+            EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+            AssetDatabase.SaveAssets();
+            EditorSceneManager.OpenScene(OutputScene);
+            foreach(Transform item in Object.FindObjectsByType<Transform>(FindObjectsInactive.Include,FindObjectsSortMode.None))
+                if(item.name=="古い洗濯機" || item.name=="洗濯機本体")
+                    throw new System.InvalidOperationException("Washer remains in scene");
+            GameObject prefab=AssetDatabase.LoadAssetAtPath<GameObject>(VintageWasherPath);
+            if(prefab==null || prefab.transform.Find("洗濯機本体")==null || prefab.transform.position!=Vector3.zero)
+                throw new System.InvalidOperationException("Washer prefab missing or not centered");
+            Debug.Log("Washer prefab saved at origin; no washer remains in saved scene.");
+            RenderBathroomPreview();
         }
 
         private static void CreatePebbleFloor(Transform parent,float l,float r,float s,float n,Material material)

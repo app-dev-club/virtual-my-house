@@ -91,7 +91,25 @@ namespace VirtualHouse
 
         private void OnDisable()
         {
+            ResetTouchInput();
             ReleaseCursor();
+        }
+
+        private void ResetTouchInput()
+        {
+            movementTouchId = lookTouchId = -1;
+            touchMovement = touchLookDelta = Vector2.zero;
+            touchJumpPressed = false;
+        }
+
+        private void OnApplicationFocus(bool focused)
+        {
+            if (!focused) ResetTouchInput();
+        }
+
+        private void OnApplicationPause(bool paused)
+        {
+            if (paused) ResetTouchInput();
         }
 
         private void Update()
@@ -122,7 +140,7 @@ namespace VirtualHouse
                 return;
 
             Vector2 lookDelta = Vector2.zero;
-            if (Mouse.current != null)
+            if (!useTouchControls && Mouse.current != null)
                 lookDelta += Mouse.current.delta.ReadValue() * mouseSensitivity;
             if (Gamepad.current != null)
                 lookDelta += Gamepad.current.rightStick.ReadValue() * gamepadSensitivity * Time.unscaledDeltaTime;
@@ -186,7 +204,7 @@ namespace VirtualHouse
             Touchscreen touchscreen = Touchscreen.current;
             if (touchscreen == null)
             {
-                touchMovement = Vector2.zero;
+                ResetTouchInput();
                 return;
             }
 
@@ -214,19 +232,22 @@ namespace VirtualHouse
                 Vector2 position = touch.position.ReadValue();
                 if (phase == UnityEngine.InputSystem.TouchPhase.Began)
                 {
+                    useTouchControls = true;
+                    ReleaseCursor();
                     if (IsInsideJumpArea(position))
                     {
                         touchJumpPressed = true;
                         continue;
                     }
 
-                    if (position.x < Screen.width * 0.48f && movementTouchId < 0)
+                    // Lock each finger to the region where it began, even across the divider.
+                    if (position.y < Screen.height * 0.5f && movementTouchId < 0)
                     {
                         movementTouchId = touchId;
                         movementTouchOrigin = position;
                         movementTouchPosition = position;
                     }
-                    else if (lookTouchId < 0)
+                    else if (position.y >= Screen.height * 0.5f && lookTouchId < 0)
                     {
                         lookTouchId = touchId;
                     }
@@ -247,7 +268,17 @@ namespace VirtualHouse
 
         private static bool IsInsideJumpArea(Vector2 position)
         {
-            return position.x > Screen.width * 0.78f && position.y < Screen.height * 0.34f;
+            return GetJumpRect().Contains(new Vector2(position.x, Screen.height - position.y));
+        }
+
+        // GUI coordinates (top-left origin); shared by the visible button and hit testing.
+        private static Rect GetJumpRect()
+        {
+            Rect safe = Screen.safeArea;
+            float size = Mathf.Min(Screen.width, Screen.height) * 0.18f;
+            float margin = Mathf.Min(Screen.width, Screen.height) * 0.035f;
+            return new Rect(safe.xMax - size - margin,
+                Screen.height - safe.yMin - size - margin, size, size);
         }
 
         private float GetTouchStickRadius()
@@ -289,17 +320,19 @@ namespace VirtualHouse
                 ? new Vector2(movementTouchOrigin.x, Screen.height - movementTouchOrigin.y)
                 : new Vector2(radius + 24f, Screen.height - radius - 24f);
             Vector2 knob = movementTouchId >= 0
-                ? new Vector2(movementTouchPosition.x, Screen.height - movementTouchPosition.y)
+                ? origin + new Vector2(touchMovement.x, -touchMovement.y) * radius
                 : origin;
 
             Color previousColor = GUI.color;
+            GUI.color = new Color(1f, 1f, 1f, 0.5f);
+            GUI.Box(new Rect(0f, Screen.height * 0.5f, Screen.width, 2f), "");
+            GUI.Label(new Rect(24f, Screen.height * 0.5f - 30f, 280f, 26f), "LOOK: drag upper half");
+            GUI.Label(new Rect(24f, Screen.height * 0.5f + 8f, 280f, 26f), "MOVE: drag lower half");
             GUI.color = new Color(1f, 1f, 1f, 0.38f);
             GUI.Box(new Rect(origin.x - radius, origin.y - radius, radius * 2f, radius * 2f), "MOVE");
             GUI.Box(new Rect(knob.x - 26f, knob.y - 26f, 52f, 52f), "");
 
-            float jumpSize = radius * 1.15f;
-            GUI.Box(new Rect(Screen.width - jumpSize - 24f, Screen.height - jumpSize - 24f,
-                jumpSize, jumpSize), "JUMP");
+            GUI.Box(GetJumpRect(), "JUMP");
             GUI.color = previousColor;
         }
     }

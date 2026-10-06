@@ -120,10 +120,10 @@ namespace VirtualHouse.Editor
             CreateDecorationBox("ラグ",new Vector3(cx,0.027f,cz),new Vector3(2.45f,0.016f,2.30f),rug,room);
             CreateDecorationBox("ラグ中央",new Vector3(cx,0.037f,cz),new Vector3(2.18f,0.006f,2.03f),floor,room);
             CreateDecorationBox("洋室天井",new Vector3(cx,2.60f,cz),new Vector3(w,0.06f,d),wallpaper,room);
-            // Estimated position in the solid northern section of the east wall, clear of the hall door.
-            float shelfZ=PlanPoint(310,330,0).z;
+            // User-confirmed west wall opposite the entrance: this bay is shelving, not a window.
+            float shelfZ=PlanPoint(140,367,0).z;
             Transform cabinet=NewGroup("造付け飾り棚",room);
-            float shelfX=ne.x-0.30f;
+            float shelfX=PlanPoint(140,367,0).x+0.30f;
             CreateBox("下部収納",new Vector3(shelfX,0.43f,shelfZ),new Vector3(0.40f,0.86f,1.9f),GetMaterial("Cabinet"),cabinet);
             CreateBox("カウンター",new Vector3(shelfX,0.90f,shelfZ),new Vector3(0.46f,0.06f,1.96f),GetMaterial("LightWood"),cabinet);
             foreach(int side in new[]{-1,1})
@@ -143,7 +143,6 @@ namespace VirtualHouse.Editor
             CreateWarmLight(room,"洋室壁灯",new Vector3(ne.x-0.24f,2.12f,ne.z-0.8f),3.7f,0.6f);
             CreateOpenCurtains(room,PlanPoint(234,438,1.18f),132*PlanScale,2.12f,false);
             CreateOpenCurtains(room,PlanPoint(195,296,1.48f),58*PlanScale,1.30f,false);
-            CreateOpenCurtains(room,PlanPoint(144,367,1.48f),94*PlanScale,1.30f,true);
             CreateWesternFurniturePrefabs();
         }
 

@@ -50,6 +50,7 @@ namespace VirtualHouse.Editor
             CreateReferenceGrid(house.transform);
             CreateGround(house.transform);
             CreateTracedHouse(house.transform);
+            CombineRepeatedDecorations(house.transform);
             CreateLightingAndPlayer();
 
             EditorSceneManager.MarkSceneDirty(scene);
