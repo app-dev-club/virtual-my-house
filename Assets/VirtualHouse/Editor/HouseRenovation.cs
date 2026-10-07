@@ -55,6 +55,8 @@ namespace VirtualHouse.Editor
             PlanWall(walls,746,179,746,216);
             PlanWall(walls,746,254,840,254); // Closed on kitchen side.
             PlanWall(walls,840,216,840,254); // Closed on outdoor side.
+            PlanWall(walls,651,179,688,179); // WC entry is only the western dotted half.
+            PlanWall(walls,688,216,688,254); // Dressing entry is only the southern dotted half.
             CreateBox("脱衣所_残す柱",PlanPoint(726,254,WallHeight/2),new Vector3(.16f,WallHeight,.16f),GetMaterial("DarkWood"),walls);
             Transform fittings = NewGroup("リフォーム後_設備",first);
             Material white = GetMaterial("Wall"), steel = GetMaterial("KitchenSteel");
@@ -71,10 +73,11 @@ namespace VirtualHouse.Editor
             CreateBox("洗濯機",PlanPoint(746,274,.46f),new Vector3(.62f,.90f,.62f),white,fittings);
             CreateDecorationBox("洗濯機上蓋",PlanPoint(746,274,.92f),new Vector3(.49f,.025f,.46f),GetMaterial("KitchenSteel"),fittings);
             CreateBox("洗面台",PlanPoint(707,194,.40f),new Vector3(.64f,.80f,.45f),white,fittings);
-            CreateBox("便器",PlanPoint(630,155,.24f),new Vector3(.38f,.46f,.56f),white,fittings);
-            CreateBox("トイレタンク",PlanPoint(630,147,.64f),new Vector3(.43f,.70f,.20f),white,fittings);
+            CreateBox("便器",PlanPoint(666,155,.24f),new Vector3(.38f,.46f,.56f),white,fittings);
+            CreateBox("トイレタンク",PlanPoint(666,147,.64f),new Vector3(.43f,.70f,.20f),white,fittings);
             CreateWarmLight(fittings,"浴室照明",PlanPoint(779,216,2.4f),3f,.7f);
             CreateWarmLight(fittings,"脱衣所照明",PlanPoint(710,246,2.4f),2f,.6f);
+            CreateRenovatedKitchen(first);
             EditorSceneManager.SaveScene(scene,RenovatedScene);
             var builds = EditorBuildSettings.scenes.Where(s => s.path != OutputScene && s.path != RenovatedScene).ToList();
             builds.Insert(0,new EditorBuildSettingsScene(RenovatedScene,true));
@@ -98,11 +101,12 @@ namespace VirtualHouse.Editor
             CreateRenovatedScene();
             EditorSceneManager.OpenScene(RenovatedScene);
             Physics.SyncTransforms();
-            ValidateTracedOpenings(false,new float[,] { {688,216,688,254},{746,216,746,254},{688,254,726,254},{613,179,688,179} });
-            foreach (Vector3 point in new[] {PlanPoint(820,254,1),PlanPoint(840,235,1),PlanPoint(726,254,1)})
+            ValidateTracedOpenings(false,new float[,] { {688,254,688,291},{746,216,746,254},{688,254,726,254},{613,179,651,179} });
+            foreach (Vector3 point in new[] {PlanPoint(820,254,1),PlanPoint(840,235,1),PlanPoint(726,254,1),PlanPoint(669,179,1),PlanPoint(688,235,1)})
                 if (!Physics.OverlapSphere(point,.025f).Any(c=>c.name.StartsWith("壁_") || c.name=="脱衣所_残す柱"))
                     throw new InvalidOperationException("Required closed wall or pillar missing: " + point);
             ValidateRenovationWalk();
+            ValidateRenovatedKitchen();
             Camera camera=Camera.main;
             GameObject.Find("外観_写真ベース").SetActive(false);
             GameObject.Find("2階").SetActive(false);
@@ -110,6 +114,7 @@ namespace VirtualHouse.Editor
             camera.transform.LookAt(PlanPoint(760,230,0),Vector3.forward);
             camera.orthographic=true; camera.orthographicSize=3.3f;
             RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/renovation-preview.png"));
+            RenderRenovatedKitchenPreviews();
             // Preview and walking checks must not change the saved scene or its spawn.
             EditorSceneManager.OpenScene(RenovatedScene);
             Debug.Log("RENOVATION VALIDATION PASSED: openings, closed walls, retained pillar, walking and preview.");
@@ -118,7 +123,7 @@ namespace VirtualHouse.Editor
         private static void ValidateRenovationWalk()
         {
             CharacterController player=GameObject.Find("Player").GetComponent<CharacterController>();
-            Vector3[] route={PlanPoint(670,235,0),PlanPoint(706,235,0),PlanPoint(706,274,0),PlanPoint(706,235,0),PlanPoint(764,235,0),PlanPoint(776,206,0)};
+            Vector3[] route={PlanPoint(632,159,0),PlanPoint(632,196,0),PlanPoint(670,196,0),PlanPoint(670,274,0),PlanPoint(706,274,0),PlanPoint(706,235,0),PlanPoint(764,235,0),PlanPoint(776,206,0)};
             foreach(bool reverse in new[]{false,true})
             {
                 player.enabled=false;player.transform.position=route[reverse?route.Length-1:0]+Vector3.up*.04f;player.enabled=true;
