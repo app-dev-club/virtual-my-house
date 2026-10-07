@@ -37,6 +37,48 @@ namespace VirtualHouse
         private bool touchJumpPressed;
         private bool useTouchControls;
 
+        public float ViewPitch => pitch;
+
+        public void RestoreScenePose(Vector3 position, Quaternion rotation, float viewPitch)
+        {
+            Vector3 fallback = transform.position;
+            characterController.enabled = false;
+            Physics.SyncTransforms();
+            if (!IsClearPosition(position))
+            {
+                bool found = false;
+                // Keep the same floor; only adjust when the new plan occupies this spot.
+                for (float radius = .25f; radius <= 2f && !found; radius += .25f)
+                    for (int direction = 0; direction < 16; direction++)
+                    {
+                        float angle = direction * Mathf.PI / 8;
+                        Vector3 candidate = position + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+                        if (!IsClearPosition(candidate) || !Physics.Raycast(candidate + Vector3.up * .15f,
+                            Vector3.down, .35f, ~0, QueryTriggerInteraction.Ignore)) continue;
+                        position = candidate;
+                        found = true;
+                        break;
+                    }
+                if (!found) position = fallback;
+            }
+            transform.SetPositionAndRotation(position, rotation);
+            pitch = Mathf.Clamp(viewPitch, -maximumLookAngle, maximumLookAngle);
+            if (view != null) view.localRotation = Quaternion.Euler(pitch, 0, 0);
+            verticalVelocity = 0;
+            ResetTouchInput();
+            characterController.enabled = true;
+            Physics.SyncTransforms();
+        }
+
+        private bool IsClearPosition(Vector3 position)
+        {
+            float radius = Mathf.Max(.05f, characterController.radius - .03f);
+            Vector3 center = position + characterController.center;
+            float half = characterController.height / 2 - radius - .05f;
+            return !Physics.CheckCapsule(center + Vector3.up * half, center - Vector3.up * half,
+                radius, ~0, QueryTriggerInteraction.Ignore);
+        }
+
 #if UNITY_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]
         private static extern int VirtualHouse_HasTouch();

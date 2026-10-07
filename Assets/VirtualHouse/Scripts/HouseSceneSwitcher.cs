@@ -10,6 +10,8 @@ namespace VirtualHouse
         public const string After = "HouseRenovated";
         public const string Alternative = "HouseRenovatedAlternative";
         private bool loading;
+        private float ignoreMouseUntil;
+        private GUIStyle buttonStyle;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Install()
@@ -28,8 +30,11 @@ namespace VirtualHouse
             get
             {
                 Rect safe = Screen.safeArea;
-                float width = Mathf.Min(280, safe.width - 24);
-                return new Rect(safe.xMax - width - 12, Screen.height - safe.yMax + 12, width, 54);
+                if (safe.width <= 0 || safe.height <= 0)
+                    safe = new Rect(0, 0, Mathf.Max(Screen.width, 360), Mathf.Max(Screen.height, 600));
+                float scale = Mathf.Clamp(Mathf.Min(safe.width, safe.height) / 600f, 1f, 2f);
+                float width = Mathf.Min(360 * scale, safe.width - 24);
+                return new Rect(safe.xMax - width - 12, Screen.height - safe.yMax + 12, width, 88 * scale);
             }
         }
 
@@ -37,11 +42,21 @@ namespace VirtualHouse
 
         private void Update()
         {
-            if (!IsHouse || loading) return;
-            if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame) Switch();
+            // Touch and browser-synthesized mouse events must not both advance the plan.
+            // Track touches even during a scene load, including a finger held across it.
+            bool touchSwitch = false;
             if (Touchscreen.current != null)
                 foreach (var touch in Touchscreen.current.touches)
-                    if (touch.press.wasPressedThisFrame && IsSwitchArea(touch.position.ReadValue())) Switch();
+                {
+                    if (touch.press.isPressed || touch.press.wasReleasedThisFrame)
+                        ignoreMouseUntil = Time.unscaledTime + 1f;
+                    if (touch.press.wasPressedThisFrame && IsSwitchArea(touch.position.ReadValue()))
+                        touchSwitch = true;
+                }
+            if (!IsHouse || loading) return;
+            bool mouseSwitch = Time.unscaledTime >= ignoreMouseUntil && Mouse.current != null
+                && Mouse.current.leftButton.wasPressedThisFrame && IsSwitchArea(Mouse.current.position.ReadValue());
+            if (touchSwitch || mouseSwitch || (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)) Switch();
         }
 
         private void OnGUI()
@@ -50,7 +65,10 @@ namespace VirtualHouse
             GUI.enabled = !loading;
             string name = SceneManager.GetActiveScene().name;
             string current = name == Before ? "BEFORE (1/3) > PLAN A" : name == After ? "PLAN A (2/3) > PLAN B" : "PLAN B (3/3) > BEFORE";
-            if (GUI.Button(ButtonRect, loading ? "Loading..." : current + "  [R]")) Switch();
+            if (buttonStyle == null) buttonStyle = new GUIStyle(GUI.skin.button);
+            buttonStyle.fontSize = Mathf.RoundToInt(ButtonRect.height * .25f);
+            // Rendering only: all activation goes through Update, never IMGUI mouse-up.
+            GUI.Box(ButtonRect, loading ? "Loading..." : current + "\n[R] / TAP", buttonStyle);
             GUI.enabled = true;
         }
 
@@ -65,8 +83,18 @@ namespace VirtualHouse
                 return;
             }
             loading = true;
+            var player = FindFirstObjectByType<HouseFirstPersonController>();
+            bool restore = player != null;
+            Vector3 position = restore ? player.transform.position : Vector3.zero;
+            Quaternion rotation = restore ? player.transform.rotation : Quaternion.identity;
+            float pitch = restore ? player.ViewPitch : 0;
             var operation = SceneManager.LoadSceneAsync(target);
-            operation.completed += _ => loading = false;
+            operation.completed += _ =>
+            {
+                var nextPlayer = FindFirstObjectByType<HouseFirstPersonController>();
+                if (restore && nextPlayer != null) nextPlayer.RestoreScenePose(position, rotation, pitch);
+                loading = false;
+            };
         }
     }
 }
