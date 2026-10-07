@@ -8,6 +8,7 @@ namespace VirtualHouse
     {
         public const string Before = "HouseBlockout";
         public const string After = "HouseRenovated";
+        public const string Alternative = "HouseRenovatedAlternative";
         private bool loading;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -32,7 +33,7 @@ namespace VirtualHouse
             }
         }
 
-        private bool IsHouse => SceneManager.GetActiveScene().name == Before || SceneManager.GetActiveScene().name == After;
+        private bool IsHouse => SceneManager.GetActiveScene().name == Before || SceneManager.GetActiveScene().name == After || SceneManager.GetActiveScene().name == Alternative;
 
         private void Update()
         {
@@ -47,7 +48,8 @@ namespace VirtualHouse
         {
             if (!IsHouse) return;
             GUI.enabled = !loading;
-            string current = SceneManager.GetActiveScene().name == Before ? "BEFORE > AFTER" : "AFTER > BEFORE";
+            string name = SceneManager.GetActiveScene().name;
+            string current = name == Before ? "BEFORE (1/3) > PLAN A" : name == After ? "PLAN A (2/3) > PLAN B" : "PLAN B (3/3) > BEFORE";
             if (GUI.Button(ButtonRect, loading ? "Loading..." : current + "  [R]")) Switch();
             GUI.enabled = true;
         }
@@ -55,7 +57,8 @@ namespace VirtualHouse
         private void Switch()
         {
             if (loading) return;
-            string target = SceneManager.GetActiveScene().name == Before ? After : Before;
+            string name = SceneManager.GetActiveScene().name;
+            string target = name == Before ? After : name == After ? Alternative : Before;
             if (!Application.CanStreamedLevelBeLoaded(target))
             {
                 Debug.LogError("Scene is missing from Build Settings: " + target);

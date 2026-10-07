@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HouseRenovated.unity
     guid: 35dc82e47f0adb148a17229f7f6845d1
+  - enabled: 1
+    path: Assets/Scenes/HouseRenovatedAlternative.unity
+    guid: f5b6c3a5188415c40a263eb92862cab4
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

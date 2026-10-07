@@ -4,7 +4,9 @@
 
 - リフォーム前: `Assets/Scenes/HouseBlockout.unity`（元シーンを保存したまま使用）
 - リフォーム後: `Assets/Scenes/HouseRenovated.unity`
-- Play中は `R` キー、または右上の `BEFORE > AFTER` / `AFTER > BEFORE` ボタンで切り替え。PCでボタンを押す場合はEscでカーソルを解放。スマートフォンではボタンをタップ。
+- 第3案: `Assets/Scenes/HouseRenovatedAlternative.unity`（PLAN B）。添付「間取り図 (3).png」に合わせ、脱衣所のDK側張出しを撤去し、旧洗面スペースまで北側へ拡張。入口は北西側、洗濯機は北東隅、洗面台は西側の旧収納区画へ移設。既存の柱は新しい南側間仕切り内に残しています。IKEAキッチン・浴室・統合トイレはPLAN Aから引き継ぎます。
+- Play中は `R` キー、または右上のボタンで `BEFORE (1/3)` → `PLAN A (2/3)` → `PLAN B (3/3)` → 元の間取りの順に切り替え。PCでボタンを押す場合はEscでカーソルを解放。スマートフォンではボタンをタップ。
+- `Virtual House > Create Renovation Plan B` は保存済みPLAN Aから第3案だけを再生成します。第3案への手動編集は置き換わります。`HouseBlockoutGenerator.BuildAndValidateAlternative` で開口・壁・柱と脱衣所～浴室、拡張DK、キッチンの往復歩行を検証し、`renovation-plan-b-preview.png` を出力します。
 - 切り替え後は玄関から開始。旧勝手口・新しい柱や設備へのめり込みを防ぎます。
 - 浴室は旧給湯・勝手口部分まで拡張し、屋外側とDK側の開口を壁で閉鎖。脱衣所は旧物入まで広げ、図面の柱を残して南東側へ洗濯機を配置。トイレは中央の壁をなくして1室化。
 - 浴槽・洗濯機・便器・洗面台は配置確認用の概形です。製品寸法・仕上げ・柱の断面寸法は仮定です。
@@ -14,7 +16,7 @@
 - IKEA図の上側を住宅の南側、左側を東側へ対応させています。家具寸法は維持し、住宅の壁内寸3548mmとIKEAの3600mmの差52mmは西壁側の小収納・白い縦長ブロックの位置で調整。住宅の窓・北側の脱衣所の張出しは住宅図面を優先しています。冷蔵庫高1800mmと型番不明の白い縦長ブロックは3D表示からの概形です。
 - `renovated-kitchen-preview.png` は室内パース、`renovated-kitchen-plan.png` はIKEA図と同じ向きの俯瞰。キッチン作業通路・対面収納脇・トイレ・脱衣所はCharacterControllerで往復歩行を検証しています。
 - `Virtual House > Create Renovated Scene` で元シーンからリフォーム後だけ再作成します。リフォーム後シーンへの手動編集は置き換わります。
-- 両シーンをBuild Settingsに登録済み。Web公開用`docs/`へ反映する場合は `Virtual House > Build WebGL` で再ビルドが必要です。
+- 3シーンをBuild Settingsに登録。Web公開用`docs/`へ反映する場合は `Virtual House > Build WebGL` で再ビルドが必要です。
 - `HouseBlockoutGenerator.BuildAndValidateRenovation` は別シーン生成、通路と閉鎖壁・柱の検査、玄関側廊下〜脱衣所〜浴室の往復歩行検査、`renovation-preview.png` 出力を実施します。
 
 ## 添付画像からの再構築（現行）

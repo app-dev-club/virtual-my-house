@@ -39,7 +39,7 @@ namespace VirtualHouse.Editor
                 if (!EditorApplication.isPlaying || EditorApplication.isCompiling) return;
                 var switcher = UnityEngine.Object.FindFirstObjectByType<HouseSceneSwitcher>();
                 if (switcher == null) return;
-                string expected = stage == 1 ? HouseSceneSwitcher.After : HouseSceneSwitcher.Before;
+                string expected = stage == 1 ? HouseSceneSwitcher.After : stage == 2 ? HouseSceneSwitcher.Alternative : HouseSceneSwitcher.Before;
                 if (SceneManager.GetActiveScene().name != expected) { settledFrames = 0; return; }
                 if (++settledFrames < 15) return;
                 settledFrames = 0;
@@ -47,8 +47,13 @@ namespace VirtualHouse.Editor
                     throw new Exception("Renovated fixtures are not active at runtime");
                 if (stage == 2)
                 {
+                    if (GameObject.Find("壁_688_254_746_254") == null || GameObject.Find("壁_688_291_764_291") != null)
+                        throw new Exception("Alternative dressing layout is not active");
+                }
+                if (stage == 3)
+                {
                     if (GameObject.Find("壁_651_141_651_179") == null) throw new Exception("Original WC partition was not restored");
-                    Debug.Log("SCENE SWITCH VALIDATION PASSED: original -> renovated -> original, fixtures active, original partition restored.");
+                    Debug.Log("SCENE SWITCH VALIDATION PASSED: original -> plan A -> plan B -> original, fixtures active, original partition restored.");
                     Finish(0);
                     return;
                 }
