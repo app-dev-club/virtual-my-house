@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HouseBlockout.unity
     guid: 298df47ddbcab8a43b1472928aa308bc
+  - enabled: 1
+    path: Assets/Scenes/HouseRenovated.unity
+    guid: 35dc82e47f0adb148a17229f7f6845d1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

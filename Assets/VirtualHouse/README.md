@@ -1,5 +1,17 @@
 # 住宅概形モデル
 
+## リフォーム前後の比較（2026-10-07）
+
+- リフォーム前: `Assets/Scenes/HouseBlockout.unity`（元シーンを保存したまま使用）
+- リフォーム後: `Assets/Scenes/HouseRenovated.unity`
+- Play中は `R` キー、または右上の `BEFORE > AFTER` / `AFTER > BEFORE` ボタンで切り替え。PCでボタンを押す場合はEscでカーソルを解放。スマートフォンではボタンをタップ。
+- 切り替え後は玄関から開始。旧勝手口・新しい柱や設備へのめり込みを防ぎます。
+- 浴室は旧給湯・勝手口部分まで拡張し、屋外側とDK側の開口を壁で閉鎖。脱衣所は旧物入まで広げ、図面の柱を残して南東側へ洗濯機を配置。トイレは中央の壁をなくして1室化。
+- 浴槽・洗濯機・便器・洗面台は配置確認用の概形です。製品寸法・仕上げ・柱の断面寸法は仮定です。
+- `Virtual House > Create Renovated Scene` で元シーンからリフォーム後だけ再作成します。リフォーム後シーンへの手動編集は置き換わります。
+- 両シーンをBuild Settingsに登録済み。Web公開用`docs/`へ反映する場合は `Virtual House > Build WebGL` で再ビルドが必要です。
+- `HouseBlockoutGenerator.BuildAndValidateRenovation` は別シーン生成、通路と閉鎖壁・柱の検査、玄関側廊下〜脱衣所〜浴室の往復歩行検査、`renovation-preview.png` 出力を実施します。
+
 ## 添付画像からの再構築（現行）
 
 現行の生成処理は `Editor/HouseTracedPlan.cs` です。画像内の階数を基準に、960×540画像の太線の端点を直接座標化しています（ファイル名の階数は逆）。75pxの尺度線を1.82mとして換算します。

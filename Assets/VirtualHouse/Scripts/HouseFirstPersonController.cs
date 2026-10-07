@@ -131,7 +131,8 @@ namespace VirtualHouse
 
             if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
                 ReleaseCursor();
-            else if (mouse != null && mouse.leftButton.wasPressedThisFrame && Cursor.lockState != CursorLockMode.Locked)
+            else if (mouse != null && mouse.leftButton.wasPressedThisFrame && Cursor.lockState != CursorLockMode.Locked
+                && !HouseSceneSwitcher.IsSwitchArea(mouse.position.ReadValue()))
                 CaptureCursor();
         }
 
@@ -233,6 +234,7 @@ namespace VirtualHouse
                 Vector2 position = touch.position.ReadValue();
                 if (phase == UnityEngine.InputSystem.TouchPhase.Began)
                 {
+                    if (HouseSceneSwitcher.IsSwitchArea(position)) continue;
                     useTouchControls = true;
                     ReleaseCursor();
                     if (IsInsideJumpArea(position))
