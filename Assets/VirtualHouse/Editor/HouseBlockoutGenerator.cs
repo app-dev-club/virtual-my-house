@@ -47,7 +47,6 @@ namespace VirtualHouse.Editor
             SceneManager.SetActiveScene(scene);
 
             GameObject house = new("住宅概形_図面ベース");
-            CreateReferenceGrid(house.transform);
             CreateGround(house.transform);
             CreateTracedHouse(house.transform);
             CombineRepeatedDecorations(house.transform);
@@ -872,8 +871,7 @@ namespace VirtualHouse.Editor
 
         private static void CreateGround(Transform root)
         {
-            CreateBox("敷地_仮", new Vector3(7.5f, -0.18f, 2.8f), new Vector3(24f, 0.18f, 16f),
-                GetMaterial("Ground"), root);
+            CreateTracedSite(root);
         }
 
         private static void CreateLightingAndPlayer()
