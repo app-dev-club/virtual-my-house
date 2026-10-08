@@ -19,6 +19,7 @@ namespace VirtualHouse.Editor
 
         private static void CreateRenovatedKitchen(Transform first)
         {
+            RelocateOriginalSink(first);
             RemoveRequired(first,"キッチン_写真ベース");
             Transform kitchen=NewGroup("キッチン_IKEA共有プラン",first);
             Material bamboo=WesternMaterial("RenovationBamboo",new Color(.72f,.56f,.34f));
@@ -78,12 +79,13 @@ namespace VirtualHouse.Editor
                 KitchenRod(sink,"混合栓吐水管",IkeaPoint(center,.055f,1.18f),IkeaPoint(center,.24f,1.18f),.027f,steel);
                 KitchenRod(sink,"吐水先端",IkeaPoint(center,.24f,1.18f),IkeaPoint(center,.24f,1.13f),.034f,steel);
             }
-            // Printed top view: 630 + 12mm from left wall, then 800 + 600 + 600.
-            Cabinet("07_METOD_対面収納800",.642f,1.984f,.80f,false,true);
-            Cabinet("06_METOD_対面収納600",1.442f,1.984f,.60f,false,true);
-            Cabinet("05_METOD_対面収納600",2.042f,1.984f,.60f,false,true);
-            Box(kitchen,"対面ワークトップ_幅2024mm",1.642f,2.284f,.896f,2.024f,.028f,.63f,white);
-            Box(kitchen,"対面収納背面パネル",1.642f,2.592f,.481f,2.024f,.802f,.016f,bamboo);
+            // North-facing compact fridge door aligns with the south end of the storage opening.
+            float northDoorDepth=(423f-329f)*PlanScale-WallThickness/2;
+            float islandBack=northDoorDepth-.615f;
+            Cabinet("07_対面収納_調整幅750",1.192f,islandBack,.75f,false,true);
+            Cabinet("05_METOD_対面収納600",1.942f,islandBack,.60f,false,true);
+            Box(kitchen,"対面ワークトップ_幅1374mm",1.867f,islandBack+.30f,.896f,1.374f,.028f,.63f,white);
+            Box(kitchen,"対面収納背面パネル",1.867f,islandBack+.608f,.481f,1.374f,.802f,.016f,bamboo);
             // White 400 x 410 cabinet is rotated against the right wall in the source plan.
             float clearWidth=152*PlanScale-WallThickness;
             Transform small=NewGroup("04_METOD_側壁収納400x410",kitchen);
@@ -93,11 +95,17 @@ namespace VirtualHouse.Editor
             // Existing unnumbered items shown in the shared plan, dimensions inferred from
             // the plan drawing. The white tall block has no specified product identity.
             Transform fridge=NewGroup("既存冷蔵庫_幅630_奥行550_高さ推定1800",kitchen);
-            Box(fridge,"冷蔵庫本体",.315f,1.715f,.90f,.630f,1.80f,.550f,steel);
-            Box(fridge,"上段パネル",.315f,1.997f,1.28f,.606f,1.00f,.018f,steel);
-            Box(fridge,"下段パネル",.315f,1.997f,.38f,.606f,.73f,.018f,steel);
-            Box(fridge,"上段取手",.055f,2.02f,1.20f,.022f,.48f,.026f,basin,false);
-            Box(fridge,"下段取手",.315f,2.02f,.70f,.46f,.022f,.026f,basin,false);
+            float fridgeDepth=northDoorDepth-.275f; // Large fridge back aligns with compact fridge door face.
+            Box(fridge,"冷蔵庫本体",.315f,fridgeDepth,.90f,.630f,1.80f,.550f,steel);
+            Box(fridge,"上段パネル_南向き",.315f,fridgeDepth-.282f,1.28f,.606f,1.00f,.018f,steel);
+            Box(fridge,"下段パネル_南向き",.315f,fridgeDepth-.282f,.38f,.606f,.73f,.018f,steel);
+            Box(fridge,"上段取手",.055f,fridgeDepth-.305f,1.20f,.022f,.48f,.026f,basin,false);
+            Box(fridge,"下段取手",.315f,fridgeDepth-.305f,.70f,.46f,.022f,.026f,basin,false);
+            float compactDepth=northDoorDepth-.291f;
+            Transform compact=NewGroup("小型冷蔵庫_北向き_幅500_奥行550_高さ1200_仮寸法",kitchen);
+            Box(compact,"冷蔵庫本体",.902f,compactDepth,.60f,.50f,1.20f,.55f,white);
+            Box(compact,"ドア_北向き",.902f,compactDepth+.282f,.60f,.476f,1.17f,.018f,white);
+            Box(compact,"取手",1.10f,compactDepth+.305f,.82f,.022f,.30f,.026f,steel,false);
             Box(kitchen,"既存白い縦長ブロック_プラン概形",clearWidth-.225f,.867f,1.20f,.450f,2.40f,.900f,white);
             Transform hood=NewGroup("08_ANPASSA_白いレンジフード600",kitchen);
             Box(hood,"フード下端",.45f,.28f,1.81f,.60f,.06f,.50f,white);
@@ -105,6 +113,27 @@ namespace VirtualHouse.Editor
             Box(hood,"白い煙突",.45f,.16f,2.15f,.30f,.50f,.28f,white,false);
             CreateWarmLight(kitchen,"キッチン照明",IkeaPoint(1.8f,1.25f,2.45f),5f,.8f);
             CreateWarmLight(kitchen,"対面収納照明",IkeaPoint(1.8f,2.9f,2.45f),4f,.5f);
+        }
+
+        private static void RelocateOriginalSink(Transform first)
+        {
+            Transform original=first.Find("キッチン_写真ベース");
+            Transform reused=NewGroup("旧キッチン_再利用シンクと水切り",first);
+            // Detachable unit to the right of the photographed seam, excluding the
+            // separate preparation cabinet, cooker stand and wooden side table.
+            reused.position=PlanPoint(745,423,0)+Vector3.forward*.40f;
+            foreach(Transform part in original)
+                if(part.name=="流し台" || part.name.StartsWith("シンク") ||
+                   part.name.StartsWith("水切り") || part.name.StartsWith("蛇口"))
+                {
+                    GameObject copy=Object.Instantiate(part.gameObject,reused,true);
+                    copy.name=part.name;
+                }
+            if(reused.Find("流し台")==null || reused.Find("シンク底")==null || reused.Find("水切り天板")==null)
+                throw new InvalidOperationException("Original detachable sink unit is incomplete");
+            // Under the bathroom's south wall, facing south into DK in both plans.
+            reused.rotation=Quaternion.Euler(0,180,0);
+            reused.position=PlanPoint(812,270,0);
         }
 
         private static void CreateRenovationHoodSlope(Transform parent,Material white)
@@ -142,7 +171,7 @@ namespace VirtualHouse.Editor
                 throw new InvalidOperationException("Two independent IKEA sinks required");
             // Verify the working aisle and the route from the west hall past the island.
             CharacterController player=GameObject.Find("Player").GetComponent<CharacterController>();
-            Vector3[] route={PlanPoint(670,328,0),IkeaPoint(3.08f,2.30f,0),IkeaPoint(3.08f,1.65f,0),IkeaPoint(1.8f,1.15f,0),IkeaPoint(.45f,1.05f,0)};
+            Vector3[] route={PlanPoint(670,328,0),IkeaPoint(3.08f,2.30f,0),IkeaPoint(3.08f,1.65f,0),IkeaPoint(2.80f,1.65f,0),IkeaPoint(2.80f,1.12f,0),IkeaPoint(1.8f,1.15f,0),IkeaPoint(.45f,.93f,0)};
             foreach(bool reverse in new[]{false,true})
             {
                 player.enabled=false;player.transform.position=route[reverse?route.Length-1:0]+Vector3.up*.04f;player.enabled=true;
@@ -160,6 +189,17 @@ namespace VirtualHouse.Editor
                         throw new InvalidOperationException("IKEA kitchen walk failed at leg "+leg+": "+player.transform.position);
                 }
             }
+            ValidateAlternativeRoute(new[] {IkeaPoint(3.08f,2.8f,0),IkeaPoint(1.8f,2.8f,0),PlanPoint(860,310,0)});
+            Transform compact=kitchen.Find("小型冷蔵庫_北向き_幅500_奥行550_高さ1200_仮寸法");
+            if(compact==null || Mathf.Abs(compact.Find("ドア_北向き").GetComponent<Renderer>().bounds.max.z-PlanPoint(840,329,0).z)>.002f)
+                throw new InvalidOperationException("Compact fridge door must align with storage opening south end");
+            Transform large=kitchen.Find("既存冷蔵庫_幅630_奥行550_高さ推定1800");
+            if(Mathf.Abs(large.Find("冷蔵庫本体").GetComponent<Renderer>().bounds.max.z-compact.Find("ドア_北向き").GetComponent<Renderer>().bounds.max.z)>.002f)
+                throw new InvalidOperationException("Large fridge back and compact fridge door must align");
+            Transform reused=GameObject.Find("旧キッチン_再利用シンクと水切り").transform;
+            if(reused.Find("流し台")==null || reused.Find("水切り天板")==null)
+                throw new InvalidOperationException("Reused sink and drainer required in northeast DK");
+            ValidateAlternativeRoute(new[] {PlanPoint(778,310,0),PlanPoint(812,310,0),PlanPoint(812,298,0)});
             Debug.Log("IKEA KITCHEN VALIDATION PASSED: two sinks, hall/island/working aisle walk in both directions.");
         }
 

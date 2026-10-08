@@ -33,23 +33,28 @@ namespace VirtualHouse.Editor
             if (!loaded) EditorSceneManager.CloseScene(source, true);
             Transform first = scene.GetRootGameObjects().First(g => g.name == "住宅概形_図面ベース").transform.Find("1階");
             Transform walls = first.Find("壁"), floors = first.Find("床_部屋別");
-            foreach (string name in new[] { "壁_764_254_764_291", "壁_688_291_764_291", "壁_688_216_726_216", "壁_726_179_726_216" })
+            foreach (string name in new[] { "壁_764_254_764_291", "壁_688_291_764_291", "壁_688_216_726_216", "壁_726_179_726_216", "壁_651_216_651_367", "壁_746_179_746_216" })
                 RemoveRequired(walls, name);
+            PlanWall(walls,651,255,651,367); // Washbasin entry faces the hall.
+            PlanWall(walls,613,216,613,255);
+            PlanWall(walls,746,216,746,254); // Bathroom entry moves north.
             PlanWall(walls,688,254,746,254);
             PlanWall(walls,688,254,688,291);
             // The previously retained post now falls within the new southern partition.
-            foreach (string name in new[] { "洗面", "洗面横通路", "脱衣所_拡張北", "脱衣所_拡張南", "DK北接続" })
+            foreach (string name in new[] { "洗面", "洗面横通路", "脱衣所_拡張北", "脱衣所_拡張南", "DK北接続", "階段北物入" })
             {
                 RemoveRequired(floors,name);
                 foreach (TextMesh label in floors.GetComponentsInChildren<TextMesh>())
                     if (label.text == name) Object.DestroyImmediate(label.gameObject);
             }
+            PlanFloor(floors,"洗面_階段北",613,216,651,255,"Wet");
             PlanFloor(floors,"脱衣所_1.5畳",688,179,746,254,"FloorWood");
             PlanFloor(floors,"DK_張出し撤去部分",688,254,840,291,"FloorWood");
             Transform fittings = first.Find("リフォーム後_設備");
-            fittings.Find("洗濯機").position = PlanPoint(730,198,.46f);
-            fittings.Find("洗濯機上蓋").position = PlanPoint(730,198,.92f);
-            fittings.Find("洗面台").position = PlanPoint(555,197,.40f);
+            fittings.Find("洗濯機").position = PlanPoint(705,236,.46f);
+            fittings.Find("洗濯機上蓋").position = PlanPoint(705,236,.92f);
+            fittings.Find("洗面台").position = PlanPoint(625,235,.40f);
+            fittings.Find("洗面台").rotation = Quaternion.Euler(0,-90,0);
             fittings.Find("脱衣所照明").position = PlanPoint(712,216,2.4f);
             EditorSceneManager.SaveScene(scene,AlternativeScene);
             var builds = EditorBuildSettings.scenes.Where(s=>s.path != OutputScene && s.path != RenovatedScene && s.path != AlternativeScene).ToList();
@@ -60,17 +65,24 @@ namespace VirtualHouse.Editor
             if (previous.IsValid() && previous.isLoaded) SceneManager.SetActiveScene(previous);
         }
 
+        public static void BuildAndValidateBothRenovations()
+        {
+            BuildAndValidateRenovation();
+            BuildAndValidateAlternative();
+        }
+
         public static void BuildAndValidateAlternative()
         {
             CreateRenovationAlternative();
             EditorSceneManager.OpenScene(AlternativeScene);
             Physics.SyncTransforms();
-            ValidateTracedOpenings(false,new float[,] { {688,179,688,216},{746,216,746,254},{688,291,688,367},{613,179,651,179} });
-            foreach (Vector3 point in new[] {PlanPoint(709,254,1),PlanPoint(688,274,1),PlanPoint(726,254,1)})
+            ValidateTracedOpenings(false,new float[,] { {688,179,688,216},{746,179,746,216},{651,216,651,255},{688,291,688,367},{613,179,651,179} });
+            foreach (Vector3 point in new[] {PlanPoint(709,254,1),PlanPoint(688,274,1),PlanPoint(726,254,1),PlanPoint(613,235,1),PlanPoint(746,235,1)})
                 if (!Physics.OverlapSphere(point,.025f).Any(c=>c.name.StartsWith("壁_") || c.name=="脱衣所_残す柱"))
                     throw new InvalidOperationException("Plan B partition or post missing: " + point);
-            ValidateAlternativeRoute(new[] {PlanPoint(592,197,0),PlanPoint(670,197,0),PlanPoint(704,197,0),PlanPoint(704,234,0),PlanPoint(765,234,0),PlanPoint(776,206,0)});
+            ValidateAlternativeRoute(new[] {PlanPoint(592,197,0),PlanPoint(670,197,0),PlanPoint(723,197,0),PlanPoint(765,197,0),PlanPoint(776,206,0)});
             ValidateAlternativeRoute(new[] {PlanPoint(670,328,0),PlanPoint(705,328,0),PlanPoint(710,274,0),PlanPoint(778,274,0)});
+            ValidateAlternativeRoute(new[] {PlanPoint(670,274,0),PlanPoint(670,240,0),PlanPoint(646,235,0)});
             ValidateRenovatedKitchen();
             Camera camera = Camera.main;
             GameObject.Find("外観_写真ベース").SetActive(false);
