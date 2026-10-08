@@ -107,6 +107,7 @@ namespace VirtualHouse.Editor
             CreateBathroomInterior(first);
             CreateUpperSmallRoom(second);
             CreateTracedExterior(root);
+            CreateNorthHallOpening(root);
             Physics.SyncTransforms();
             ValidateTracedOpenings(false,new float[,] {
                 {348,367,422,367},{504,367,578,367},{310,367,310,405},

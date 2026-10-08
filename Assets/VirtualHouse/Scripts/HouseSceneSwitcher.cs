@@ -9,6 +9,7 @@ namespace VirtualHouse
         public const string Before = "HouseBlockout";
         public const string After = "HouseRenovated";
         public const string Alternative = "HouseRenovatedAlternative";
+        public const string PlanC = "HouseRenovatedPlanC";
         private bool loading;
         private float ignoreMouseUntil;
         private GUIStyle buttonStyle;
@@ -38,7 +39,7 @@ namespace VirtualHouse
             }
         }
 
-        private bool IsHouse => SceneManager.GetActiveScene().name == Before || SceneManager.GetActiveScene().name == After || SceneManager.GetActiveScene().name == Alternative;
+        private bool IsHouse => SceneManager.GetActiveScene().name == Before || SceneManager.GetActiveScene().name == After || SceneManager.GetActiveScene().name == Alternative || SceneManager.GetActiveScene().name == PlanC;
 
         private void Update()
         {
@@ -64,7 +65,7 @@ namespace VirtualHouse
             if (!IsHouse) return;
             GUI.enabled = !loading;
             string name = SceneManager.GetActiveScene().name;
-            string current = name == Before ? "BEFORE (1/3) > PLAN A" : name == After ? "PLAN A (2/3) > PLAN B" : "PLAN B (3/3) > BEFORE";
+            string current = name == Before ? "BEFORE (1/4) > PLAN A" : name == After ? "PLAN A (2/4) > PLAN B" : name == Alternative ? "PLAN B (3/4) > PLAN C" : "PLAN C (4/4) > BEFORE";
             if (buttonStyle == null) buttonStyle = new GUIStyle(GUI.skin.button);
             buttonStyle.fontSize = Mathf.RoundToInt(ButtonRect.height * .25f);
             // Rendering only: all activation goes through Update, never IMGUI mouse-up.
@@ -76,7 +77,7 @@ namespace VirtualHouse
         {
             if (loading) return;
             string name = SceneManager.GetActiveScene().name;
-            string target = name == Before ? After : name == After ? Alternative : Before;
+            string target = name == Before ? After : name == After ? Alternative : name == Alternative ? PlanC : Before;
             if (!Application.CanStreamedLevelBeLoaded(target))
             {
                 Debug.LogError("Scene is missing from Build Settings: " + target);
