@@ -56,6 +56,8 @@ namespace VirtualHouse.Editor
             fittings.Find("洗面台").position = PlanPoint(625,235,.40f);
             fittings.Find("洗面台").rotation = Quaternion.Euler(0,-90,0);
             fittings.Find("脱衣所照明").position = PlanPoint(712,216,2.4f);
+            Physics.SyncTransforms();
+            AddReusedPreparationCabinet(first);
             EditorSceneManager.SaveScene(scene,AlternativeScene);
             var builds = EditorBuildSettings.scenes.Where(s=>s.path != OutputScene && s.path != RenovatedScene && s.path != AlternativeScene).ToList();
             builds.InsertRange(0,new[] { new EditorBuildSettingsScene(OutputScene,true),new EditorBuildSettingsScene(RenovatedScene,true),new EditorBuildSettingsScene(AlternativeScene,true) });
@@ -81,7 +83,7 @@ namespace VirtualHouse.Editor
                 if (!Physics.OverlapSphere(point,.025f).Any(c=>c.name.StartsWith("壁_") || c.name=="脱衣所_残す柱"))
                     throw new InvalidOperationException("Plan B partition or post missing: " + point);
             ValidateAlternativeRoute(new[] {PlanPoint(592,197,0),PlanPoint(670,197,0),PlanPoint(723,197,0),PlanPoint(765,197,0),PlanPoint(776,206,0)});
-            ValidateAlternativeRoute(new[] {PlanPoint(670,328,0),PlanPoint(705,328,0),PlanPoint(710,274,0),PlanPoint(778,274,0)});
+            ValidateAlternativeRoute(new[] {PlanPoint(670,328,0),PlanPoint(705,328,0),PlanPoint(710,298,0),PlanPoint(778,298,0)});
             ValidateAlternativeRoute(new[] {PlanPoint(670,274,0),PlanPoint(670,240,0),PlanPoint(646,235,0)});
             ValidateRenovatedKitchen();
             Camera camera = Camera.main;

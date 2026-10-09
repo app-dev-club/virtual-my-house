@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -134,6 +135,74 @@ namespace VirtualHouse.Editor
             // Under the bathroom's south wall, facing south into DK in both plans.
             reused.rotation=Quaternion.Euler(0,180,0);
             reused.position=PlanPoint(812,270,0);
+            AddReusedPreparationCabinet(first);
+        }
+
+        // Photo IMG_20260930_111349922: the separate two-door preparation unit.
+        // Match the existing photo-based estimate; do not shrink it to fit Plan A/C.
+        private static bool AddReusedPreparationCabinet(Transform first)
+        {
+            const string name="旧キッチン_再利用調理台";
+            if(first.Find(name)!=null) return true;
+            Transform sink=first.Find("旧キッチン_再利用シンクと水切り");
+            Vector3 center=sink.position+Vector3.left*(1.14f/2+.67f/2);
+            // Clear the bathroom wall face; the old sink estimate overlaps it by 2mm.
+            center.z=Mathf.Min(center.z,PlanPoint(812,254,0).z-WallThickness/2-.32f-.002f);
+            Bounds footprint=new Bounds(center+Vector3.up*.44f,new Vector3(.67f,.88f,.64f));
+            Physics.SyncTransforms();
+            var blockingWalls=first.Find("壁").GetComponentsInChildren<Collider>().Where(c=>c.bounds.Intersects(footprint)).ToArray();
+            if(blockingWalls.Length>0)
+            {
+                Debug.Log("Preparation cabinet skipped: insufficient space beside northeast sink: "+string.Join(", ",blockingWalls.Select(c=>c.name))+" at "+center);
+                return false;
+            }
+            Transform unit=NewGroup(name,first);
+            Material cream=GetMaterial("KitchenCream"),steel=GetMaterial("KitchenSteel");
+            CreateBox("本体",center+Vector3.up*.41f,new Vector3(.67f,.82f,.60f),cream,unit);
+            CreateBox("ステンレス天板",center+Vector3.up*.85f,new Vector3(.67f,.035f,.64f),steel,unit);
+            CreateDecorationBox("蹴込み",center+new Vector3(0,.045f,-.305f),new Vector3(.67f,.09f,.025f),GetMaterial("DarkWood"),unit);
+            foreach(int sign in new[]{-1,1})
+            {
+                CreateDecorationBox("扉",center+new Vector3(sign*.67f/4,.44f,-.315f),new Vector3(.321f,.70f,.022f),cream,unit);
+                CreateDecorationBox("金属取手",center+new Vector3(sign*.67f/4,.75f,-.34f),new Vector3(.201f,.018f,.025f),steel,unit);
+            }
+            return true;
+        }
+
+        [MenuItem("Virtual House/Update And Validate Reused Preparation Cabinet")]
+        public static void UpdateAndValidateReusedPreparationCabinet()
+        {
+            if(!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            var setup=EditorSceneManager.GetSceneManagerSetup();
+            try
+            {
+                foreach(string path in new[]{RenovatedScene,AlternativeScene,PlanCScene})
+                {
+                    Materials.Clear();
+                    var scene=EditorSceneManager.OpenScene(path);
+                    Transform first=GameObject.Find("住宅概形_図面ベース").transform.Find("1階");
+                    Physics.SyncTransforms();
+                    bool placed=AddReusedPreparationCabinet(first);
+                    if(placed!=(path==AlternativeScene)) throw new InvalidOperationException("Unexpected preparation cabinet fit: "+path);
+                    if(placed) EditorSceneManager.SaveScene(scene);
+                    Physics.SyncTransforms();
+                    ValidateRenovatedKitchen();
+                    if(placed)
+                    {
+                        ValidateAlternativeRoute(new[]{PlanPoint(710,310,0),PlanPoint(774,310,0),PlanPoint(774,298,0),PlanPoint(812,298,0)});
+                        Camera camera=Camera.main;
+                        camera.transform.position=PlanPoint(762,336,1.9f);
+                        camera.transform.LookAt(PlanPoint(795,270,.65f));
+                        camera.orthographic=false;camera.fieldOfView=65;
+                        foreach(TextMesh label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None)) label.GetComponent<Renderer>().enabled=false;
+                        RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/reused-preparation-cabinet-preview.png"));
+                        AssetDatabase.ImportAsset("Assets/VirtualHouse/reused-preparation-cabinet-preview.png");
+                    }
+                    Debug.Log("REUSED PREPARATION CABINET VALIDATED: "+path+" placed="+placed);
+                }
+                AssetDatabase.SaveAssets();
+            }
+            finally { if(setup.Length>0) EditorSceneManager.RestoreSceneManagerSetup(setup); }
         }
 
         private static void CreateRenovationHoodSlope(Transform parent,Material white)
