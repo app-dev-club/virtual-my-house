@@ -58,6 +58,7 @@ namespace VirtualHouse.Editor
             fittings.Find("脱衣所照明").position = PlanPoint(712,216,2.4f);
             Physics.SyncTransforms();
             AddReusedPreparationCabinet(first);
+            CreateOutdoorLayout(first.parent);
             EditorSceneManager.SaveScene(scene,AlternativeScene);
             var builds = EditorBuildSettings.scenes.Where(s=>s.path != OutputScene && s.path != RenovatedScene && s.path != AlternativeScene).ToList();
             builds.InsertRange(0,new[] { new EditorBuildSettingsScene(OutputScene,true),new EditorBuildSettingsScene(RenovatedScene,true),new EditorBuildSettingsScene(AlternativeScene,true) });

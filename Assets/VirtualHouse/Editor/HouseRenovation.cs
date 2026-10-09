@@ -79,6 +79,7 @@ namespace VirtualHouse.Editor
             CreateWarmLight(fittings,"浴室照明",PlanPoint(779,216,2.4f),3f,.7f);
             CreateWarmLight(fittings,"脱衣所照明",PlanPoint(710,246,2.4f),2f,.6f);
             CreateRenovatedKitchen(first);
+            CreateOutdoorLayout(house);
             EditorSceneManager.SaveScene(scene,RenovatedScene);
             var builds = EditorBuildSettings.scenes.Where(s => s.path != OutputScene && s.path != RenovatedScene).ToList();
             builds.Insert(0,new EditorBuildSettingsScene(RenovatedScene,true));

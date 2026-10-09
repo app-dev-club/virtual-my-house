@@ -20,6 +20,7 @@ namespace VirtualHouse.Editor
 
         private static void CreateTracedSite(Transform house)
         {
+            bool hasOutdoorLayout=house.Find("敷地_図面7/"+OutdoorName)!=null;
             foreach(string name in new[]{"敷地_仮","基準グリッド_1マス0.909m","敷地_図面7"})
             {
                 Transform old=house.Find(name);
@@ -55,6 +56,7 @@ namespace VirtualHouse.Editor
                 Object.DestroyImmediate(edge.GetComponent<Collider>());
             }
             CreatePhotoGarden(site);
+            if(hasOutdoorLayout) CreateOutdoorLayout(house);
         }
 
         [MenuItem("Virtual House/Update And Validate Site All Plans")]
@@ -82,6 +84,8 @@ namespace VirtualHouse.Editor
                         if(collider.Raycast(new Ray(SitePoint(p.x,p.y,5),Vector3.down),out _,10))
                             throw new InvalidOperationException("Ground extends beyond trapezoid: "+p);
                     Vector3[] perimeter={SitePoint(325,166),SitePoint(835,166),SitePoint(835,310),SitePoint(600,375),SitePoint(325,430),SitePoint(325,166)};
+                    if(house.Find("敷地_図面7/"+OutdoorName)!=null)
+                        perimeter=new[]{SitePoint(325,166),SitePoint(835,166),SitePoint(841,320),SitePoint(735,344),SitePoint(600,385),SitePoint(475,406),SitePoint(440,405),SitePoint(365,405),SitePoint(325,430),SitePoint(325,166)};
                     var route=new List<Vector3>{perimeter[0]};
                     // The indoor walk helper allows four seconds per leg; subdivide long garden edges.
                     for(int i=1;i<perimeter.Length;i++)

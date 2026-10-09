@@ -213,14 +213,15 @@ namespace VirtualHouse.Editor
         private static void ValidatePhotoGarden(Transform house)
         {
             Transform garden=house.Find("敷地_図面7/庭_外観写真20260930");
-            if(garden==null || garden.Find("西庭_錆色の物置")==null || garden.GetComponentsInChildren<CapsuleCollider>().Length!=8)
+            bool planned=house.Find("敷地_図面7/"+OutdoorName)!=null;
+            if(garden==null || garden.Find("西庭_錆色の物置")==null || garden.GetComponentsInChildren<CapsuleCollider>().Length!=(planned?2:8))
                 throw new InvalidOperationException("Photo garden contents missing");
             // Southern apron, entry approach and eastern paving are reachable in both directions.
             ValidateAlternativeRoute(new[]{SitePoint(486,330,-.04f),SitePoint(550,330,-.04f),SitePoint(597,330,-.04f)});
-            ValidateAlternativeRoute(new[]{SitePoint(631,375,-.04f),SitePoint(690,352,-.04f),SitePoint(750,332,-.04f),SitePoint(810,310,-.04f)});
+            ValidateAlternativeRoute(new[]{SitePoint(631,375,-.04f),SitePoint(690,352,-.04f),SitePoint(750,332,-.04f),SitePoint(810,planned?323:310,-.04f)});
             ValidateAlternativeRoute(new[]{SitePoint(331,230),SitePoint(331,260),SitePoint(342,270)});
             ValidateAlternativeRoute(new[]{SitePoint(379,205),SitePoint(379,240)});
-            Debug.Log("PHOTO GARDEN VALIDATION PASSED: detached shed, 8 standing trees/shrubs, south apron, entry/east paving and front/rear shed access.");
+            Debug.Log("PHOTO GARDEN VALIDATION PASSED: detached shed, retained trees/shrubs, south apron, entry/east paving and front/rear shed access.");
         }
 
         private static void RenderGardenPreviews(Camera camera)

@@ -62,6 +62,7 @@ namespace VirtualHouse.Editor
             fittings.Find("洗面台").position=PlanPoint(625,239,.40f);
             fittings.Find("洗面台").rotation=Quaternion.Euler(0,-90,0);
             CreateNorthHallOpening(house);
+            CreateOutdoorLayout(house);
             EditorSceneManager.SaveScene(scene,PlanCScene);
             string[] paths={OutputScene,RenovatedScene,AlternativeScene,PlanCScene};
             EditorBuildSettings.scenes=paths.Select(p=>new EditorBuildSettingsScene(p,true)).Concat(EditorBuildSettings.scenes.Where(s=>!paths.Contains(s.path))).ToArray();
