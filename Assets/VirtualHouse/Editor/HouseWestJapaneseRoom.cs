@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -135,15 +136,90 @@ namespace VirtualHouse.Editor
 
         private static void CreateWestRoomNorthFeatures(Transform parent, float west, float east, float north)
         {
-            // Keep simple open recesses inside the traced northern storage footprint.
-            // No decorative doors or false back walls project into the tatami room.
+            // Photo IMG_20260930_111559981: left alcove, right overhead doors and low cupboard.
+            // Keep everything in the northern storage footprint, behind the tatami edge.
             float divider = PlanPoint(386f, 216f, 0f).x;
             float back = PlanPoint(310f, 179f, 0f).z;
             float storageDepth = back - north - 0.16f;
             float centerZ = (north + back) * 0.5f;
-            CreateBox("床の間_床板", new Vector3((divider + east) * 0.5f, 0.04f, centerZ),
-                new Vector3(east - divider - 0.18f, 0.08f, storageDepth),
-                GetMaterial("DarkWood"), parent);
+            Material wood=GetMaterial("LightWood"),dark=GetMaterial("DarkWood"),sand=GetMaterial("SandWall");
+            Material paper=WesternMaterial("WestStorageOchre",new Color(.68f,.49f,.25f));
+            float face=north+.02f;
+            void Part(string name,float x,float y,float z,float w,float h,float d,Material mat)
+                => CreateBox(name,new Vector3(x,y,z),new Vector3(w,h,d),mat,parent);
+            foreach(var span in new[]{new Vector2(west,divider),new Vector2(divider,east)})
+            {
+                float cx=(span.x+span.y)/2,w=span.y-span.x-.14f;
+                Part("床の間_床板",cx,.055f,centerZ,w,.11f,storageDepth,dark);
+                Part("窓のない砂壁_奥壁",cx,1.35f,back-.30f,w,2.60f,.035f,sand);
+                Part("上部砂壁",cx,2.39f,face,w,.48f,.055f,sand);
+                Part("上部横木",cx,2.13f,face-.015f,w,.10f,.09f,wood);
+            }
+            foreach(float x in new[]{west+.08f,divider,east-.08f})
+                Part("床柱",x,1.32f,face,.17f,2.64f,.25f,wood);
+            Part("左床の間_奥の段",(west+divider)/2,.22f,back-.25f,divider-west-.18f,.08f,.32f,dark);
+            float rightWidth=east-divider-.17f,rightX=(divider+east)/2;
+            Part("天袋本体",rightX,1.91f,face+.26f,rightWidth,.45f,.52f,dark);
+            for(int i=0;i<4;i++)
+            {
+                float x=divider+.085f+rightWidth*(i+.5f)/4;
+                Part("天袋_引戸",x,1.91f,face-.018f,rightWidth/4-.032f,.36f,.025f,paper);
+                Part("天袋_丸引手",x+rightWidth/4*.32f,1.91f,face-.035f,.027f,.035f,.012f,dark);
+            }
+            float cabinetWidth=rightWidth*.62f,cabinetX=east-.12f-cabinetWidth/2;
+            Part("地袋本体",cabinetX,.40f,face+.29f,cabinetWidth,.58f,.52f,dark);
+            Part("地袋天板",cabinetX,.705f,face+.29f,cabinetWidth+.04f,.04f,.55f,wood);
+            for(int i=0;i<2;i++)
+            {
+                float x=cabinetX+(i==0?-.25f:.25f)*cabinetWidth;
+                Part("地袋_引戸",x,.40f,face+.018f,cabinetWidth/2-.035f,.49f,.025f,paper);
+                Part("地袋_丸引手",x+(i==0?-.15f:.15f),.39f,face,.028f,.035f,.015f,dark);
+            }
+        }
+
+        [MenuItem("Virtual House/Update West Room North Storage All Plans")]
+        public static void UpdateWestRoomNorthStorageAllPlans()
+        {
+            if(!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            var setup=EditorSceneManager.GetSceneManagerSetup();
+            try
+            {
+                foreach(string path in new[]{OutputScene,RenovatedScene,AlternativeScene,PlanCScene})
+                {
+                    Materials.Clear();
+                    var scene=EditorSceneManager.OpenScene(path);
+                    Transform house=scene.GetRootGameObjects().First(g=>g.name=="住宅概形_図面ベース").transform;
+                    Transform trim=house.Find("外観_写真ベース/腰壁と窓");
+                    Transform window=trim.Find("北西腰窓");
+                    if(window!=null)
+                    {
+                        Object.DestroyImmediate(window.gameObject);
+                        foreach(Transform hood in trim.Cast<Transform>().ToArray())
+                            if(hood.name=="窓庇" && Mathf.Abs(hood.position.x-PlanPoint(383,174,0).x)<.01f && Mathf.Abs(hood.position.y-2.14f)<.01f)
+                                Object.DestroyImmediate(hood.gameObject);
+                        CreateBox("北西旧窓_壁復旧",PlanPoint(383,179,1.45f),new Vector3(115*PlanScale,1.10f,WallThickness),GetMaterial("Wall"),house.Find("1階/壁"));
+                        CreateBox("北西旧窓_腰壁復旧",PlanPoint(383,175,1.02f),new Vector3(115*PlanScale,.24f,.05f),GetMaterial("Cladding"),trim);
+                    }
+                    Transform room=house.Find("1階/和室_西_写真ベース");
+                    Transform old=room.Find("北側_押入・床の間・地袋");
+                    if(old!=null) Object.DestroyImmediate(old.gameObject);
+                    Transform storage=NewGroup("北側_押入・床の間・地袋",room);
+                    CreateWestRoomNorthFeatures(storage,PlanPoint(310,216,0).x,PlanPoint(462,216,0).x,PlanPoint(310,216,0).z);
+                    Physics.SyncTransforms();ValidateNandoOpening();
+                    if(trim.Find("北西腰窓")!=null) throw new System.InvalidOperationException("Unexpected north window");
+                    foreach(float x in new[]{345f,415f})
+                        if(!Physics.Raycast(PlanPoint(x,205,1.4f),Vector3.forward,out var hit,1f) || !hit.collider.name.Contains("奥壁"))
+                            throw new System.InvalidOperationException("North alcove must have a solid back wall");
+                    EditorSceneManager.SaveScene(scene);
+                    foreach(var label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None)) label.GetComponent<Renderer>().enabled=false;
+                    Camera camera=Camera.main;camera.transform.position=PlanPoint(385,311,1.6f);
+                    camera.transform.LookAt(PlanPoint(386,194,1.25f));camera.fieldOfView=70;
+                    RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/west-north-storage-"+Path.GetFileNameWithoutExtension(path)+".png"));
+                    Debug.Log("West north solid wall, storage and nando clearance passed: "+path);
+                }
+                AssetDatabase.SaveAssets();AssetDatabase.Refresh();
+            }
+            finally { if(!Application.isBatchMode) EditorSceneManager.RestoreSceneManagerSetup(setup); }
         }
 
         private static void CreateNandoShelf(Transform firstFloor)

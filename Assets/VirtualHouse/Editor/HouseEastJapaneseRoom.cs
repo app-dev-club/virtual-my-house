@@ -140,28 +140,37 @@ namespace VirtualHouse.Editor
 
         private static void CreateNorthBayStorage(Transform parent, float west, float east, float north)
         {
-            float left = west + 0.35f;
-            float right = east - 0.82f;
-            float width = right - left;
-            float center = (left + right) * 0.5f;
-            Transform bay = NewGroup("北出窓収納", parent);
-            CreateBox("収納天板", new Vector3(center, 0.82f, north - 0.25f),
-                new Vector3(width, 0.075f, 0.52f), GetMaterial("LightWood"), bay);
-            CreateBox("収納背板", new Vector3(center, 0.40f, north - 0.48f),
-                new Vector3(width, 0.80f, 0.045f), GetMaterial("Cabinet"), bay);
-            CreateDecorationBox("引戸_中央", new Vector3(center, 0.40f, north - 0.515f),
-                new Vector3(width * 0.47f, 0.72f, 0.035f), GetMaterial("LightWood"), bay);
-            CreateDecorationBox("窓ガラス", new Vector3(center, 1.45f, north - 0.49f),
-                new Vector3(width - 0.12f, 1.03f, 0.035f), GetMaterial("Glass"), bay);
-            foreach (float y in new[] { 0.91f, 1.45f, 1.99f })
-                CreateDecorationBox($"窓横框_{y:0.00}", new Vector3(center, y, north - 0.52f),
-                    new Vector3(width, 0.055f, 0.065f), GetMaterial("DarkWood"), bay);
-            for (int i = 0; i <= 6; i++)
+            // Northern recess occupies the traced storage bay x=462..537, not the hall.
+            float left=west+.085f,right=PlanPoint(537,216,0).x-.085f;
+            float width=right-left,center=(left+right)/2;
+            float front=north+.045f,back=PlanPoint(499.5f,179,0).z-.075f;
+            Transform bay=NewGroup("北出窓収納",parent);
+            Material wood=GetMaterial("LightWood"),dark=GetMaterial("DarkWood"),sand=GetMaterial("SandWall");
+            void Part(string name,float x,float y,float z,float w,float h,float d,Material mat)
+                => CreateBox(name,new Vector3(x,y,z),new Vector3(w,h,d),mat,bay);
+            Part("収納天板",center,.84f,(front+back)/2,width,.07f,back-front,wood);
+            Part("収納底板",center,.075f,(front+back)/2,width,.07f,back-front,dark);
+            Part("収納背板",center,.44f,back,width,.70f,.035f,sand);
+            Part("収納中棚",center,.51f,(front+back)/2,width,.035f,back-front-.04f,dark);
+            foreach(float x in new[]{left,right})
             {
-                float x = left + width * i / 6f;
-                CreateDecorationBox($"窓縦框_{i:00}", new Vector3(x, 1.45f, north - 0.52f),
-                    new Vector3(0.045f, 1.10f, 0.065f), GetMaterial("DarkWood"), bay);
+                Part("窓脇砂壁",x,1.40f,(front+back)/2,.035f,1.08f,back-front,sand);
+                Part("収納側板",x,.44f,(front+back)/2,.035f,.70f,back-front,wood);
+                Part("木柱",x,1.32f,front,.09f,2.64f,.10f,wood);
             }
+            Part("窓上砂壁",center,2.33f,front,width,.58f,.055f,sand);
+            Part("窓上見込み",center,2.01f,(front+back)/2,width,.07f,back-front,wood);
+            // One sliding leaf parked centrally, with shelf openings visible at either side.
+            Part("引戸_黒枠",center,.44f,front-.018f,width*.48f,.73f,.04f,dark);
+            Part("引戸_木製面",center,.44f,front-.042f,width*.48f-.06f,.66f,.018f,wood);
+            Part("引戸_引手",center+width*.18f,.36f,front-.054f,.035f,.045f,.01f,dark);
+            // Fine paired vertical bars over the actual transparent exterior sash.
+            float sashZ=PlanPoint(499.5f,174,0).z-.055f;
+            for(int i=1;i<8;i++)
+                foreach(float offset in new[]{-.009f,.009f})
+                    Part("窓の細格子",left+width*i/8+offset,1.45f,sashZ,.012f,1.03f,.015f,dark);
+            foreach(float y in new[]{1.18f,1.70f})
+                Part("窓の横格子",center,y,sashZ,width,.016f,.015f,dark);
             CreateShojiPanelX(parent, "北側引戸", east - 0.38f, north - 0.04f, 0.68f);
         }
 
