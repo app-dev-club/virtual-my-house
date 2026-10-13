@@ -78,6 +78,7 @@ namespace VirtualHouse.Editor
             // Western room's west bay is a built-in shelf, confirmed from the interior photo.
             PhotoWindow(trim,"洋室北腰窓",195,291,58,0.85f,1.25f,2);
             PhotoWindow(trim,"東DK腰窓",845,376,65,0.9f,1.1f,2,false,true);
+            CreateKitchenWindowRecesses(root);
             PhotoWindow(trim,"東収納窓",920,291,49,1.15f,0.70f,2,false,true);
             PhotoWindow(trim,"北西腰窓",383,174,115,0.9f,1.10f,3);
             PhotoWindow(trim,"浴室小窓",764,174,60,1.08f,0.95f,2);

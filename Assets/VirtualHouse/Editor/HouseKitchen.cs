@@ -66,11 +66,8 @@ namespace VirtualHouse.Editor
                 CreateBox("木製補助台",new Vector3(x,.79f,z),new Vector3(.35f,.045f,.60f),wood,room);
                 foreach(int sign in new[]{-1,1}) CreateBox("補助台脚",new Vector3(x+sign*.14f,.38f,z+.24f),new Vector3(.04f,.76f,.04f),wood,room);
             }
-            // Window reveals are thin trim only: keep the transparent opening unobstructed.
+            // The shared architectural window recesses are created with the exterior.
             foreach(float px in new[]{708f,820f,837f}) CreateDecorationBox("南壁木柱",PlanPoint(px,420,1.34f),new Vector3(.065f,2.68f,.07f),wood,room);
-            CreateDecorationBox("南窓敷居",PlanPoint(764,419,.91f),new Vector3(108*PlanScale,.055f,.22f),wood,room);
-            CreateDecorationBox("南窓上枠",PlanPoint(764,419,2.02f),new Vector3(112*PlanScale,.075f,.12f),wood,room);
-            CreateDecorationBox("東窓敷居",PlanPoint(837,376,.89f),new Vector3(.22f,.055f,65*PlanScale),wood,room);
             CreateDecorationBox("流し元灯",PlanPoint(764,416,2.12f),new Vector3(.58f,.075f,.10f),cream,room);
             CreateWarmLight(room,"キッチン照明",PlanPoint(764,385,2.4f),5f,.7f);
             CreateDecorationBox("換気扇枠",PlanPoint(813,419,2.36f),new Vector3(.36f,.38f,.085f),cream,room);
