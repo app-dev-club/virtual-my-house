@@ -183,7 +183,7 @@ namespace VirtualHouse.Editor
                     Transform first=GameObject.Find("住宅概形_図面ベース").transform.Find("1階");
                     Physics.SyncTransforms();
                     bool placed=AddReusedPreparationCabinet(first);
-                    if(placed!=(path==AlternativeScene)) throw new InvalidOperationException("Unexpected preparation cabinet fit: "+path);
+                    if(placed) throw new InvalidOperationException("Unexpected preparation cabinet fit: "+path);
                     if(placed) EditorSceneManager.SaveScene(scene);
                     Physics.SyncTransforms();
                     ValidateRenovatedKitchen();
