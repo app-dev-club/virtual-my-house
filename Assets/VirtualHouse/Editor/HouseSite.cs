@@ -16,7 +16,7 @@ namespace VirtualHouse.Editor
         // Image (612,316) corresponds to floor-plan (613,423). Do not rescale the house.
         private const float SiteScale = 1.82f / 37.5f;
         private static Vector3 SitePoint(float x,float v,float y=-.09f)
-            => PlanPoint(613,423,y)+new Vector3((x-612)*SiteScale,0,(316-v)*SiteScale);
+            => PlanPoint(613,423,y-EntryRise)+new Vector3((x-612)*SiteScale,0,(316-v)*SiteScale);
 
         private static void CreateTracedSite(Transform house)
         {

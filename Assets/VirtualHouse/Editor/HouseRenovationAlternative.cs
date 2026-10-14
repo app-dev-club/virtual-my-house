@@ -55,6 +55,7 @@ namespace VirtualHouse.Editor
             Physics.SyncTransforms();
             AddReusedPreparationCabinet(first);
             CreateOutdoorLayout(first.parent);
+            ApplyRaisedEntry(first.parent);
             CreateHomeOffice(first);
             EditorSceneManager.SaveScene(scene,AlternativeScene);
             var builds = EditorBuildSettings.scenes.Where(s=>s.path != OutputScene && s.path != RenovatedScene && s.path != AlternativeScene).ToList();

@@ -37,7 +37,7 @@ namespace VirtualHouse.Editor
             Transform old=site.Find(OutdoorName);if(old!=null) Object.DestroyImmediate(old.gameObject);
             Transform garden=site.Find("庭_外観写真20260930");
             // Remove only trees occupying the new beds, parking and bench/access areas.
-            foreach(string name in new[]{"南西_赤い実の木","北西_葉の密な木","玄関脇_低木","DK前_針葉低木","東側_大きな葉の低木","北東_低木"})
+            foreach(string name in new[]{"南西_赤い実の木","北西_葉の密な木","北側_カエデ状の木","玄関脇_低木","DK前_針葉低木","東側_大きな葉の低木","北東_低木"})
             {
                 Transform tree=garden?.Find(name);if(tree!=null) Object.DestroyImmediate(tree.gameObject);
             }
@@ -63,7 +63,7 @@ namespace VirtualHouse.Editor
             OutdoorBox(bench,"開閉式座面",new Vector3(0,.46f,0),new Vector3(.62f,.06f,1.70f),wood);
             OutdoorBox(bench,"背もたれ",new Vector3(-.27f,.70f,0),new Vector3(.065f,.45f,1.70f),wood);
             OutdoorBox(bench,"収納取手",new Vector3(.283f,.33f,0),new Vector3(.025f,.04f,.22f),black);
-            Transform laundry=OutdoorGroup(root,"北出口すぐ_物干し",569,175);
+            Transform laundry=OutdoorGroup(root,"北西_物干し",467+1f/SiteScale,175);
             foreach(float x in new[]{-1.25f,1.25f})
             {
                 OutdoorRod(laundry,"物干し支柱",new Vector3(x,0,0),new Vector3(x,1.85f,0),.055f,steel);
@@ -100,7 +100,7 @@ namespace VirtualHouse.Editor
             GameObject water=OutdoorBox(pool,"水面_深さ0.6m",new Vector3(0,.66f,0),new Vector3(1.59f,.015f,1.19f),OutdoorMat("Water",.18f,.69f,.79f));
             Object.DestroyImmediate(water.GetComponent<Collider>());
             Transform bbq=OutdoorGroup(root,"洋室南_バーベキュー",420,369);
-            for(int table=0;table<2;table++)
+            for(int table=1;table<2;table++)
             {
                 float x=table==0?-1.04f:1.04f;
                 Transform t=NewGroup("テーブル_"+(table+1),bbq);t.position=bbq.position+new Vector3(x,0,-.50f);
@@ -117,7 +117,7 @@ namespace VirtualHouse.Editor
             }
             for(int i=0;i<2;i++)
             {
-                Transform grill=NewGroup("バーベキュー台_"+(i+1),bbq);grill.position=bbq.position+new Vector3(-3.15f,0,i==0?-.65f:.65f);
+                Transform grill=NewGroup("バーベキュー台_"+(i+1),bbq);grill.position=bbq.position+new Vector3(-1.04f,0,i==0?-.65f:.65f);
                 OutdoorBox(grill,"火床",new Vector3(0,.71f,0),new Vector3(.85f,.25f,.46f),black);
                 foreach(float x in new[]{-.32f,.32f})foreach(float z in new[]{-.16f,.16f}) OutdoorBox(grill,"脚",new Vector3(x,.30f,z),new Vector3(.04f,.60f,.04f),steel);
                 for(int j=0;j<13;j++) OutdoorRod(grill,"焼き網",new Vector3(-.39f+j*.065f,.85f,-.22f),new Vector3(-.39f+j*.065f,.85f,.22f),.012f,steel);
@@ -171,9 +171,9 @@ namespace VirtualHouse.Editor
                     if(Vector3.Distance(ovenBounds.size,new Vector3(.69f,.585f,.69f))>.01f)
                         throw new InvalidOperationException("Pizza oven must be 69cm wide, 69cm deep, 58.5cm tall.");
                     foreach(Transform t in bbq)
-                        if(t.name.StartsWith("バーベキュー台_") && t.position.x>=bbq.Find("テーブル_1").position.x)
+                        if(t.name.StartsWith("バーベキュー台_") && t.position.x>=bbq.Find("テーブル_2").position.x)
                             throw new InvalidOperationException("Grills must be west of the tables.");
-                    if(bbq.Cast<Transform>().Count(t=>t.name.StartsWith("椅子_"))!=12 || bbq.Cast<Transform>().Count(t=>t.name.StartsWith("テーブル_"))!=2 || bbq.Cast<Transform>().Count(t=>t.name.StartsWith("バーベキュー台_"))!=2)
+                    if(bbq.Cast<Transform>().Count(t=>t.name.StartsWith("椅子_"))!=6 || bbq.Cast<Transform>().Count(t=>t.name.StartsWith("テーブル_"))!=1 || bbq.Cast<Transform>().Count(t=>t.name.StartsWith("バーベキュー台_"))!=2)
                         throw new InvalidOperationException("Outdoor furniture counts differ from the requested layout.");
                     var ground=house.Find("敷地_図面7/庭_台形").GetComponent<Collider>();
                     foreach(Renderer r in root.GetComponentsInChildren<Renderer>())
@@ -194,6 +194,10 @@ namespace VirtualHouse.Editor
                     Debug.Log("OUTDOOR VALIDATION PASSED: "+path+"; counts, lot bounds, entrance / parking approach, north exit, BBQ aisle and south garden walk.");
                 }
                 Camera camera=Camera.main;
+                camera.orthographic=false;camera.fieldOfView=65;
+                camera.transform.position=PlanPoint(500,250,1.6f);
+                camera.transform.LookAt(PlanPoint(499.5f,174,1.55f));
+                RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/outdoor-laundry-window-preview.png"));
                 GameObject.Find("外観_写真ベース")?.SetActive(false);GameObject.Find("2階")?.SetActive(false);
                 camera.transform.position=SitePoint(582,312,35);camera.transform.LookAt(SitePoint(582,312,0),Vector3.forward);
                 camera.orthographic=true;camera.orthographicSize=8.5f;

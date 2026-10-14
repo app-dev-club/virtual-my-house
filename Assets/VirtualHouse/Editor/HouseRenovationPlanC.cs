@@ -63,6 +63,7 @@ namespace VirtualHouse.Editor
             fittings.Find("洗面台").rotation=Quaternion.Euler(0,-90,0);
             CreateNorthHallOpening(house);
             CreateOutdoorLayout(house);
+            ApplyRaisedEntry(house);
             CreateHomeOffice(house.Find("1階"));
             EditorSceneManager.SaveScene(scene,PlanCScene);
             string[] paths={OutputScene,RenovatedScene,AlternativeScene,PlanCScene};
