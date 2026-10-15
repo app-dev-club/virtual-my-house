@@ -26,6 +26,7 @@ namespace VirtualHouse.Editor
             Transform group = NewGroup("キッチン窓_くぼみと窓台", first);
             AddKitchenWindowRecess(group, "南窓", PlanPoint(764,423,0), 108*PlanScale, .92f, 1.05f, false);
             AddKitchenWindowRecess(group, "東窓", PlanPoint(840,376,0), 65*PlanScale, .90f, 1.10f, true);
+            CreateKitchenAppliances(house);
         }
 
         private static void AddKitchenWindowRecess(Transform parent, string name, Vector3 wall,
