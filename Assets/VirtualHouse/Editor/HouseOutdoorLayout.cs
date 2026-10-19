@@ -25,7 +25,14 @@ namespace VirtualHouse.Editor
             GameObject o=GameObject.CreatePrimitive(PrimitiveType.Sphere);o.name=name;
             o.transform.SetParent(t,false);o.transform.localPosition=p;o.transform.localScale=size;
             o.GetComponent<Renderer>().sharedMaterial=mat;
-            if(!solid) Object.DestroyImmediate(o.GetComponent<Collider>());return o;
+            Object.DestroyImmediate(o.GetComponent<Collider>());
+            if(solid)
+            {
+                // SphereCollider uses the largest scale on every axis; use the actual air-ring shape.
+                var shape=o.AddComponent<MeshCollider>();
+                shape.sharedMesh=o.GetComponent<MeshFilter>().sharedMesh;shape.convex=true;
+            }
+            return o;
         }
         private static void OutdoorRod(Transform t,string name,Vector3 a,Vector3 b,float d,Material mat)
             => KitchenRod(t,name,t.position+a,t.position+b,d,mat);

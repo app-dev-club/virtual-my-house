@@ -251,6 +251,48 @@ namespace VirtualHouse.Editor
             Debug.Log("Nando opening validation passed: visible opening and collider clearance.");
         }
 
+        [MenuItem("Virtual House/Remove Shared Japanese Room Partition All Plans")]
+        public static void RemoveSharedJapaneseRoomPartitionAllPlans()
+        {
+            if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            var setup = EditorSceneManager.GetSceneManagerSetup();
+            try
+            {
+                foreach (string path in new[] { OutputScene, RenovatedScene, AlternativeScene, PlanCScene })
+                {
+                    Materials.Clear();
+                    var scene = EditorSceneManager.OpenScene(path);
+                    Transform house = scene.GetRootGameObjects().First(g => g.name == "住宅概形_図面ベース").transform;
+                    Transform walls = house.Find("1階/壁");
+                    foreach (string name in new[] { "壁_462_179_462_250", "壁_462_326_462_367" })
+                    {
+                        Transform wall = walls.Find(name);
+                        if (wall != null) Object.DestroyImmediate(wall.gameObject);
+                    }
+                    if (walls.Find("壁_462_179_462_216") == null)
+                        PlanWall(walls, 462, 179, 462, 216);
+                    Transform fittings = house.Find("1階/和室_東_写真ベース/障子・襖・出窓収納");
+                    foreach (string name in new[] { "西襖_南", "西襖_北" })
+                    {
+                        Transform leaf = fittings.Find(name);
+                        if (leaf != null) Object.DestroyImmediate(leaf.gameObject);
+                    }
+                    Physics.SyncTransforms();
+                    Vector3 a = PlanPoint(462, 224, .15f), b = PlanPoint(462, 359, 1.95f);
+                    Bounds opening = new Bounds((a + b) / 2, new Vector3(.12f, b.y - a.y, a.z - b.z));
+                    foreach (Collider hit in Physics.OverlapBox(opening.center, opening.extents))
+                        throw new System.InvalidOperationException("Shared room opening blocked by " + hit.name);
+                    foreach (Renderer renderer in Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None))
+                        if (renderer.enabled && renderer.GetComponent<TextMesh>() == null && renderer.bounds.Intersects(opening))
+                            throw new System.InvalidOperationException("Shared room opening obscured by " + renderer.name);
+                    EditorSceneManager.SaveScene(scene);
+                    Debug.Log("Shared Japanese room opening visual and collider clearance passed: " + path);
+                }
+                AssetDatabase.SaveAssets();
+            }
+            finally { if (!Application.isBatchMode) EditorSceneManager.RestoreSceneManagerSetup(setup); }
+        }
+
         private static void CreateWestRoomCeiling(Transform parent, float x, float z, float width, float depth)
         {
             CreateDecorationBox("棹縁天井", new Vector3(x, 2.57f, z),

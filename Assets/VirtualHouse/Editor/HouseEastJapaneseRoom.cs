@@ -48,7 +48,7 @@ namespace VirtualHouse.Editor
                 new Vector3(width, 0.16f, 0.12f), GetMaterial("LightWood"), walls);
 
             CreateSouthShoji(fittings, west, east, south);
-            CreateWestFusuma(fittings, west, south, north);
+            // Shared fusuma removed to leave the two tatami rooms connected.
             CreateNorthBayStorage(fittings, west, east, north);
             CreateChabudai(furniture, centerX, centerZ);
             CreateJapaneseCeiling(lighting, centerX, centerZ, width, depth);

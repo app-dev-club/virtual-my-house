@@ -16,6 +16,8 @@ namespace VirtualHouse.Editor
             Transform first=house.Find("1階");
             Transform old=first.Find("キッチン窓_家電");
             if(old!=null) Object.DestroyImmediate(old.gameObject);
+            // Keep BEFORE free of planned appliances, including after regeneration.
+            if(house.gameObject.scene.path==OutputScene || house.gameObject.scene.name=="HouseBlockout") return;
             Transform group=NewGroup("キッチン窓_家電",first);
             Material black=WesternMaterial("ApplianceCharcoal",new Color(.025f,.028f,.03f));
             Material glass=WesternMaterial("ApplianceDarkGlass",new Color(.012f,.022f,.024f));
@@ -93,6 +95,14 @@ namespace VirtualHouse.Editor
                     var scene=EditorSceneManager.OpenScene(path);
                     Transform house=GameObject.Find("住宅概形_図面ベース").transform;
                     CreateKitchenAppliances(house);
+                    if(path==OutputScene)
+                    {
+                        if(house.Find("1階/キッチン窓_家電")!=null)
+                            throw new InvalidOperationException("BEFORE must not contain kitchen appliances");
+                        EditorSceneManager.SaveScene(scene);
+                        Debug.Log("BEFORE KITCHEN APPLIANCES REMOVED: "+path);
+                        continue;
+                    }
                     Physics.SyncTransforms();
                     Transform first=house.Find("1階"),group=first.Find("キッチン窓_家電");
                     var units=group.GetComponentsInChildren<BoxCollider>().Where(c=>c.name.StartsWith("ER-") || c.name.StartsWith("SERIE_") || c.name.StartsWith("EGL-")).ToArray();

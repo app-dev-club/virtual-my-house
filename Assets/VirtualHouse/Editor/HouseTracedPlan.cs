@@ -76,7 +76,8 @@ namespace VirtualHouse.Editor
                 {802,179,802,254},{840,179,840,216},{688,179,840,179},
                 {688,141,688,179},{613,141,688,141},{613,141,613,179},{651,141,651,179},
                 {310,179,613,179},{310,179,310,216},{235,216,310,216},{235,216,235,291},
-                {386,179,386,216},{462,179,462,250},{462,326,462,367},
+                // The room boundary is removable fusuma, not a fixed wall. Only divide storage.
+                {386,179,386,216},{462,179,462,216},
                 {537,179,537,216},{537,216,574,216},{613,216,651,216},{651,216,651,367},
                 {613,255,651,255},{613,255,613,367}
             });
@@ -106,9 +107,11 @@ namespace VirtualHouse.Editor
             CreateKitchenInterior(first);
             CreateBathroomInterior(first);
             CreateUpperSmallRoom(second);
+            CreateUpperLargeRoom(second);
             CreateTracedExterior(root);
             CreateNorthHallOpening(root);
             ApplyRaisedEntry(root);
+            CreateSouthOutdoorEngawa(root);
             Physics.SyncTransforms();
             ValidateTracedOpenings(false,new float[,] {
                 {348,367,422,367},{504,367,578,367},{310,367,310,405},
@@ -119,7 +122,8 @@ namespace VirtualHouse.Editor
             });
             ValidateTracedOpenings(true,new float[,] {
                 {402,310,515,310},{591,310,667,310},{515,158,515,194},
-                {515,194,515,275},{553,275,553,310},{591,194,667,194},{667,194,704,194},
+                // 515/194..275 is the photographed large-room cupboard, with shelves, not a passage.
+                {553,275,553,310},{591,194,667,194},{667,194,704,194},
                 {402,310,402,346},{667,310,667,346}
             });
         }
