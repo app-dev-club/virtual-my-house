@@ -105,6 +105,9 @@ namespace VirtualHouse.Editor
         private static void MakePageTouchFriendly(string indexPath)
         {
             string html = File.ReadAllText(indexPath);
+            const string verificationTag = "<meta name=\"google-site-verification\" content=\"OA5s9yIMl7WCZNGj8AVgmbwWLvOmzXItWap2xrlWY5w\" />";
+            if (!html.Contains(verificationTag))
+                html = html.Replace("</head>", "    " + verificationTag + Environment.NewLine + "  </head>");
             // Replace our previous style too, so repairing an existing output is idempotent.
             html = Regex.Replace(html, "<style id=\"virtual-house-fullscreen\">.*?</style>",
                 string.Empty, RegexOptions.Singleline);
