@@ -83,6 +83,7 @@ namespace VirtualHouse.Editor
             ApplyRaisedEntry(house);
             CreateHomeOffice(house.Find("1階"));
             CreateWestRoomSofa(house.Find("1階"));
+            CreateGuestFurniture(house.Find("1階"));
             EditorSceneManager.SaveScene(scene,RenovatedScene);
             var builds = EditorBuildSettings.scenes.Where(s => s.path != OutputScene && s.path != RenovatedScene).ToList();
             builds.Insert(0,new EditorBuildSettingsScene(RenovatedScene,true));
