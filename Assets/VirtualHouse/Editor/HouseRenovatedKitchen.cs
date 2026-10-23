@@ -114,6 +114,87 @@ namespace VirtualHouse.Editor
             Box(hood,"白い煙突",.45f,.16f,2.15f,.30f,.50f,.28f,white,false);
             CreateWarmLight(kitchen,"キッチン照明",IkeaPoint(1.8f,1.25f,2.45f),5f,.8f);
             CreateWarmLight(kitchen,"対面収納照明",IkeaPoint(1.8f,2.9f,2.45f),4f,.5f);
+            ApplyCompactFridgeAndCounterLayout(first);
+        }
+
+        private const string RelocatedCompactName="小型冷蔵庫_再利用シンク西隣_南向き_幅500_奥行550_高さ1200_仮寸法";
+
+        private static Bounds KitchenVisibleBounds(Transform item)
+        {
+            var renderers=item.GetComponentsInChildren<Renderer>();
+            Bounds result=renderers[0].bounds;
+            foreach(var renderer in renderers)result.Encapsulate(renderer.bounds);
+            return result;
+        }
+
+        private static void ApplyCompactFridgeAndCounterLayout(Transform first)
+        {
+            Transform kitchen=first.Find("キッチン_IKEA共有プラン");
+            Transform compact=kitchen.Find(RelocatedCompactName) ?? kitchen.Find("小型冷蔵庫_北向き_幅500_奥行550_高さ1200_仮寸法");
+            Transform body=compact.Find("冷蔵庫本体");
+            if(compact.name!=RelocatedCompactName)
+            {
+                compact.RotateAround(body.position,Vector3.up,180);
+                compact.name=RelocatedCompactName;
+                compact.Find("ドア_北向き").name="ドア_南向き";
+            }
+            Bounds sink=KitchenVisibleBounds(first.Find("旧キッチン_再利用シンクと水切り"));
+            Vector3 target=new Vector3(sink.min.x-.02f-.25f,.60f,sink.center.z);
+            compact.position+=target-body.position;
+
+            // Keep the opposite end fixed and fill the former compact-fridge bay.
+            float islandBack=(423f-329f)*PlanScale-WallThickness/2-.615f;
+            Transform top=kitchen.Find("対面ワークトップ_幅1914mm") ?? kitchen.Find("対面ワークトップ_幅1374mm");
+            top.name="対面ワークトップ_幅1914mm";
+            top.position=IkeaPoint(1.597f,islandBack+.30f,.896f);
+            top.localScale=new Vector3(1.914f,.028f,.63f);
+            Transform back=kitchen.Find("対面収納背面パネル");
+            back.position=IkeaPoint(1.597f,islandBack+.608f,.481f);
+            back.localScale=new Vector3(1.914f,.802f,.016f);
+            if(kitchen.Find("対面収納_小型冷蔵庫跡の延長500")!=null)return;
+            Transform extension=NewGroup("対面収納_小型冷蔵庫跡の延長500",kitchen);
+            Material bamboo=WesternMaterial("RenovationBamboo",new Color(.72f,.56f,.34f));
+            Material carcass=WesternMaterial("RenovationCabinetWhite",new Color(.84f,.84f,.80f));
+            void Box(string name,float x,float depth,float height,Vector3 size,Material mat)
+                => CreateBox(name,IkeaPoint(x,depth,height),size,mat,extension);
+            Box("キャビネット本体",.902f,islandBack+.30f,.481f,new Vector3(.50f,.802f,.60f),carcass);
+            Box("蹴込み板",.902f,islandBack+.05f,.04f,new Vector3(.50f,.08f,.03f),bamboo);
+            Box("端部カバーパネル",.646f,islandBack+.30f,.481f,new Vector3(.012f,.802f,.63f),bamboo);
+            Box("接続フィラー",1.166f,islandBack,.481f,new Vector3(.028f,.802f,.02f),bamboo);
+            float bottom=.08f;
+            foreach(float height in new[]{.40f,.20f,.20f})
+            {
+                Box("バンブー引出し前板",.902f,islandBack,bottom+height/2,new Vector3(.496f,height-.004f,.02f),bamboo);
+                CreateDecorationBox("掘込引手",IkeaPoint(.902f,islandBack-.012f,bottom+height-.018f),new Vector3(.12f,.009f,.005f),GetMaterial("DarkWood"),extension);
+                bottom+=height;
+            }
+        }
+
+        [MenuItem("Virtual House/Update Compact Fridge And Counter A-C")]
+        public static void UpdateCompactFridgeAndCounter()
+        {
+            if(!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())return;
+            var setup=EditorSceneManager.GetSceneManagerSetup();
+            try
+            {
+                foreach(string path in new[]{RenovatedScene,AlternativeScene,PlanCScene})
+                {
+                    Materials.Clear();var scene=EditorSceneManager.OpenScene(path);
+                    Transform first=GameObject.Find("住宅概形_図面ベース").transform.Find("1階");
+                    Transform player=GameObject.Find("Player").transform;Vector3 position=player.position;
+                    ApplyCompactFridgeAndCounterLayout(first);Physics.SyncTransforms();
+                    ValidateRenovatedKitchen();
+                    player.GetComponent<CharacterController>().enabled=false;player.position=position;player.GetComponent<CharacterController>().enabled=true;
+                    EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
+                    Camera camera=Camera.main;camera.orthographic=false;camera.fieldOfView=75;
+                    foreach(TextMesh label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))label.GetComponent<Renderer>().enabled=false;
+                    camera.transform.position=PlanPoint(744,360,2.2f);camera.transform.LookAt(PlanPoint(796,274,.8f));
+                    RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/compact-fridge-"+Path.GetFileNameWithoutExtension(path)+".png"));
+                    Debug.Log("COMPACT FRIDGE AND COUNTER VALIDATED: "+path);
+                }
+                AssetDatabase.Refresh();
+            }
+            finally {if(!Application.isBatchMode)EditorSceneManager.RestoreSceneManagerSetup(setup);}
         }
 
         private static void RelocateOriginalSink(Transform first)
@@ -259,12 +340,19 @@ namespace VirtualHouse.Editor
                 }
             }
             ValidateAlternativeRoute(new[] {IkeaPoint(3.08f,2.8f,0),IkeaPoint(1.8f,2.8f,0),PlanPoint(860,310,0)});
-            Transform compact=kitchen.Find("小型冷蔵庫_北向き_幅500_奥行550_高さ1200_仮寸法");
-            if(compact==null || Mathf.Abs(compact.Find("ドア_北向き").GetComponent<Renderer>().bounds.max.z-PlanPoint(840,329,0).z)>.002f)
-                throw new InvalidOperationException("Compact fridge door must align with storage opening south end");
-            Transform large=kitchen.Find("既存冷蔵庫_幅630_奥行550_高さ推定1800");
-            if(Mathf.Abs(large.Find("冷蔵庫本体").GetComponent<Renderer>().bounds.max.z-compact.Find("ドア_北向き").GetComponent<Renderer>().bounds.max.z)>.002f)
-                throw new InvalidOperationException("Large fridge back and compact fridge door must align");
+            Transform compact=kitchen.Find(RelocatedCompactName);
+            if(compact==null)throw new InvalidOperationException("Compact fridge must be beside reused sink.");
+            Bounds compactBounds=KitchenVisibleBounds(compact);
+            Bounds sinkBounds=KitchenVisibleBounds(GameObject.Find("旧キッチン_再利用シンクと水切り").transform);
+            if(Mathf.Abs(sinkBounds.min.x-compactBounds.max.x-.02f)>.003f || compact.Find("ドア_南向き").position.z>=compact.Find("冷蔵庫本体").position.z)
+                throw new InvalidOperationException("Compact fridge must face south with a 20mm gap beside reused sink.");
+            foreach(Collider wall in kitchen.parent.Find("壁").GetComponentsInChildren<Collider>())
+                if(wall.bounds.Intersects(compactBounds))throw new InvalidOperationException("Compact fridge intersects wall: "+wall.name);
+            if(compactBounds.Intersects(sinkBounds))throw new InvalidOperationException("Compact fridge overlaps reused sink.");
+            Transform extendedTop=kitchen.Find("対面ワークトップ_幅1914mm");
+            if(extendedTop==null || Mathf.Abs(extendedTop.GetComponent<Renderer>().bounds.size.x-1.914f)>.002f)
+                throw new InvalidOperationException("Island worktop must extend by 540mm.");
+            ValidateAlternativeRoute(new[]{PlanPoint(778,310,0),new Vector3(compactBounds.center.x,0,compactBounds.min.z-.45f)});
             Transform reused=GameObject.Find("旧キッチン_再利用シンクと水切り").transform;
             if(reused.Find("流し台")==null || reused.Find("水切り天板")==null)
                 throw new InvalidOperationException("Reused sink and drainer required in northeast DK");
