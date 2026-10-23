@@ -36,6 +36,8 @@ namespace VirtualHouse
         private Vector2 touchLookDelta;
         private bool touchJumpPressed;
         private bool useTouchControls;
+        private Vector3 fallRecoveryPosition;
+        private Quaternion fallRecoveryRotation;
 
         public float ViewPitch => pitch;
 
@@ -87,6 +89,16 @@ namespace VirtualHouse
         private void Awake()
         {
             characterController = GetComponent<CharacterController>();
+            fallRecoveryPosition = transform.position;
+            fallRecoveryRotation = transform.rotation;
+            GameObject entry = GameObject.Find("住宅概形_図面ベース/1階/床_部屋別/玄関");
+            Collider entryFloor = entry != null ? entry.GetComponent<Collider>() : null;
+            if (entryFloor != null)
+            {
+                Bounds floor = entryFloor.bounds;
+                fallRecoveryPosition = new Vector3(floor.center.x, floor.max.y + .05f, floor.center.z);
+                fallRecoveryRotation = Quaternion.identity;
+            }
             useTouchControls = DetectTouchControls();
             HideDoorModels();
             if (view == null)
@@ -157,10 +169,26 @@ namespace VirtualHouse
 
         private void Update()
         {
+            if (RecoverIfFallen()) return;
             ReadTouchInput();
             HandleCursor();
             HandleLook();
             HandleMovement();
+        }
+
+        private bool RecoverIfFallen()
+        {
+            // Allow normal jumps, stairs and drops from upstairs; recover below the site.
+            if (transform.position.y >= fallRecoveryPosition.y - 4f) return false;
+            characterController.enabled = false;
+            transform.SetPositionAndRotation(fallRecoveryPosition, fallRecoveryRotation);
+            verticalVelocity = 0;
+            pitch = 0;
+            if (view != null) view.localRotation = Quaternion.identity;
+            ResetTouchInput();
+            characterController.enabled = true;
+            Physics.SyncTransforms();
+            return true;
         }
 
         private void HandleCursor()
