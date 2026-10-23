@@ -17,21 +17,10 @@ namespace VirtualHouse.Editor
             Transform old=first.Find(GuestFurnitureName);
             if(old!=null)Object.DestroyImmediate(old.gameObject);
             Transform root=NewGroup(GuestFurnitureName,first);
-            void PlacePrefab(string asset,string name,float x,float v,float yaw)
-            {
-                GameObject prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/VirtualHouse/Prefabs/"+asset+".prefab");
-                if(prefab==null)throw new InvalidOperationException("Missing existing furniture prefab: "+asset);
-                Transform item=((GameObject)PrefabUtility.InstantiatePrefab(prefab,root)).transform;
-                item.name=name;item.position=PlanPoint(x,v,.036f);item.rotation=Quaternion.Euler(0,yaw,0);
-            }
-            PlacePrefab("WesternSofa","洋室既存ソファ_2人掛け",537,242,0);
-            PlacePrefab("WesternArmchair","洋室既存ソファ_1人掛け",591,285,90);
-            PlacePrefab("WesternCoffeeTable","洋室既存テーブル",537,287,0);
-
-            // Retain the photographed low table; move it beside the new sofa bed.
+            // Restore the photographed low table to the centre of the east tatami room.
             Transform lowTable=first.Find("和室_東_写真ベース/家具/黒漆塗りのちゃぶ台");
             Bounds lowBounds=KitchenVisibleBounds(lowTable);
-            Vector3 tableTarget=PlanPoint(414,344,lowBounds.center.y);
+            Vector3 tableTarget=PlanPoint((462f+613f)/2,(216f+367f)/2,lowBounds.center.y);
             lowTable.position+=tableTarget-lowBounds.center;
 
             Transform bed=NewGroup("濃いグレーのソファベッド_幅140cm_ソファ状態",root);
@@ -84,6 +73,12 @@ namespace VirtualHouse.Editor
                     Transform root=first.Find(GuestFurnitureName);
                     if(root.Cast<Transform>().Count(t=>t.name.StartsWith("洋室_布団_"))!=3)
                         throw new InvalidOperationException("Three futons required in western room.");
+                    if(root.Cast<Transform>().Any(t=>t.name.StartsWith("洋室既存")))
+                        throw new InvalidOperationException("Western sofas and coffee table must remain unplaced.");
+                    Bounds lowTable=KitchenVisibleBounds(first.Find("和室_東_写真ベース/家具/黒漆塗りのちゃぶ台"));
+                    Vector3 originalTable=PlanPoint(537.5f,291.5f,lowTable.center.y);
+                    if(Vector3.Distance(lowTable.center,originalTable)>.002f)
+                        throw new InvalidOperationException("Low table must return to the east tatami room centre.");
                     foreach(Transform futon in root.Cast<Transform>().Where(t=>t.name.StartsWith("洋室_布団_")))
                         if(Quaternion.Angle(futon.rotation,Quaternion.Euler(0,90,0))>.01f)
                             throw new InvalidOperationException("All futons must face the same direction.");
@@ -113,7 +108,7 @@ namespace VirtualHouse.Editor
                         if(renderer.name.Contains("天井"))renderer.enabled=false;
                     camera.transform.position=PlanPoint(390,325,15);camera.transform.LookAt(PlanPoint(390,325,0),Vector3.forward);
                     RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/guest-furniture-"+Path.GetFileNameWithoutExtension(path)+".png"));
-                    Debug.Log("GUEST FURNITURE VALIDATED: "+path+"; three futons, 140cm charcoal sofa bed, existing sofa/chair/table, collisions and routes.");
+                    Debug.Log("GUEST FURNITURE VALIDATED: "+path+"; three aligned futons, 140cm charcoal sofa bed, western furniture removed, low table restored, collisions and routes.");
                 }
                 AssetDatabase.Refresh();
             }
