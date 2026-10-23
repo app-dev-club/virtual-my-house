@@ -115,7 +115,7 @@ namespace VirtualHouse.Editor
             OutdoorBox(car,"後部ナンバー",new Vector3(-2.125f,.83f,0),new Vector3(.012f,.16f,.32f),white);
 
             car.rotation=Quaternion.Euler(0,90,0);
-            Transform bike=OutdoorGroup(root,"黒のST250風バイク",755,214);
+            Transform bike=OutdoorGroup(root,"黒のST250風バイク",755,186);
             foreach(float x in new[]{-.68f,.68f})
             {
                 Vector3 hub=new Vector3(x,.32f,0);
@@ -213,6 +213,10 @@ namespace VirtualHouse.Editor
                 OutdoorBox(cycle,"ペダル",crank+new Vector3(z,.02f,z),new Vector3(.10f,.025f,.09f),black);
             OutdoorRod(cycle,"スタンド",crank,new Vector3(-.20f,.02f,-.21f),.015f,steel);
             cycle.rotation=Quaternion.Euler(0,90,0);
+            cycle.position+=Vector3.left*.38f;
+            Transform second=Object.Instantiate(cycle.gameObject,shelter).transform;
+            second.name="クロスバイク_2";
+            second.position=cycle.position+Vector3.right*.76f;
         }
     }
 }

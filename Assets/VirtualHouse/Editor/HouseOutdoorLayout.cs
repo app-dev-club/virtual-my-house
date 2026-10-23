@@ -166,8 +166,17 @@ namespace VirtualHouse.Editor
                     Vector3 savedPlayerPosition=player.position;
                     Transform root=house.Find("敷地_図面7/"+OutdoorName);
                     Transform shelter=root.Find("キッチン東_屋根付き壁なし収納");
-                    if(shelter==null || shelter.Cast<Transform>().Count(t=>t.name=="独立柱")!=4 || shelter.Find("クロスバイク")==null)
-                        throw new InvalidOperationException("Open cycle storage requires four posts and a cross bike.");
+                    if(shelter==null || shelter.Cast<Transform>().Count(t=>t.name=="独立柱")!=4 || shelter.Cast<Transform>().Count(t=>t.name.StartsWith("クロスバイク"))!=2)
+                        throw new InvalidOperationException("Open cycle storage requires four posts and two cross bikes.");
+                    Bounds firstCycle=new Bounds(shelter.Find("クロスバイク").position,Vector3.zero);
+                    Bounds secondCycle=new Bounds(shelter.Find("クロスバイク_2").position,Vector3.zero);
+                    foreach(Renderer r in shelter.Find("クロスバイク").GetComponentsInChildren<Renderer>())firstCycle.Encapsulate(r.bounds);
+                    foreach(Renderer r in shelter.Find("クロスバイク_2").GetComponentsInChildren<Renderer>())secondCycle.Encapsulate(r.bounds);
+                    if(firstCycle.Intersects(secondCycle))throw new InvalidOperationException("Parked cross bikes overlap.");
+                    foreach(Renderer r in root.Find("黒のST250風バイク").GetComponentsInChildren<Renderer>())
+                        foreach(Collider hit in Physics.OverlapBox(r.bounds.center,r.bounds.extents,Quaternion.identity,~0,QueryTriggerInteraction.Ignore))
+                            if(hit.transform.IsChildOf(house) && !hit.transform.IsChildOf(root.parent))
+                                throw new InvalidOperationException("Motorcycle intersects house: "+r.name+" / "+hit.name);
                     foreach(string vehicle in new[]{"グレーのシエンタ_概形","黒のST250風バイク"})
                         if(Quaternion.Angle(root.Find(vehicle).rotation,Quaternion.Euler(0,90,0))>.1f)
                             throw new InvalidOperationException("Vehicle must face north-south: "+vehicle);
@@ -223,7 +232,7 @@ namespace VirtualHouse.Editor
                 Vector3 carPosition=SitePoint(791,249);
                 camera.transform.position=carPosition+new Vector3(4.3f,2.8f,-5.4f);camera.transform.LookAt(carPosition+Vector3.up*.82f);
                 RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/outdoor-car-preview.png"));
-                Vector3 bikePosition=SitePoint(755,214);
+                Vector3 bikePosition=SitePoint(755,186);
                 camera.transform.position=bikePosition+new Vector3(1.85f,1.48f,3.1f);camera.transform.LookAt(bikePosition+Vector3.up*.64f);
                 RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/outdoor-bike-preview.png"));
                 AssetDatabase.Refresh();
