@@ -62,9 +62,9 @@ namespace VirtualHouse.Editor
                 Part(futon,"枕",new Vector3(0,.135f,.73f),new Vector3(.55f,.09f,.32f),sheet,false);
                 foreach(float z in new[]{-.70f,-.30f,.10f})
                     Part(futon,"キルト縫い目",new Vector3(0,.161f,z),new Vector3(.94f,.002f,.008f),seam,false);
-                // Two lengthwise, one crosswise at their feet; keep the east entrance clear.
-                futon.position=i<2?PlanPoint(i==0?185:232,353,.045f):PlanPoint(232,418,.045f);
-                if(i==2)futon.rotation=Quaternion.Euler(0,90,0);
+                // All three face east; the east side remains an entrance aisle.
+                futon.position=PlanPoint(228,332+i*42.5f,.045f);
+                futon.rotation=Quaternion.Euler(0,90,0);
             }
         }
 
@@ -84,6 +84,9 @@ namespace VirtualHouse.Editor
                     Transform root=first.Find(GuestFurnitureName);
                     if(root.Cast<Transform>().Count(t=>t.name.StartsWith("洋室_布団_"))!=3)
                         throw new InvalidOperationException("Three futons required in western room.");
+                    foreach(Transform futon in root.Cast<Transform>().Where(t=>t.name.StartsWith("洋室_布団_")))
+                        if(Quaternion.Angle(futon.rotation,Quaternion.Euler(0,90,0))>.01f)
+                            throw new InvalidOperationException("All futons must face the same direction.");
                     foreach(Transform item in root)
                     {
                         Bounds b=KitchenVisibleBounds(item);
@@ -115,6 +118,43 @@ namespace VirtualHouse.Editor
                 AssetDatabase.Refresh();
             }
             finally {if(!Application.isBatchMode)EditorSceneManager.RestoreSceneManagerSetup(setup);}
+        }
+
+        // Image (11): continue the storage's west boundary across the south corridor.
+        private static void CreateUpperSouthPartition(Transform second)
+        {
+            Transform walls=second.Find("壁");
+            if(walls.Find("壁_515_310_515_346")==null)PlanWall(walls,515,310,515,346,true);
+        }
+
+        [MenuItem("Virtual House/Update Upper South Partition And Aligned Futons A-C")]
+        public static void UpdateUpperSouthPartitionAndFutons()
+        {
+            UpdateAndValidateGuestFurniture();
+            foreach(string path in new[]{RenovatedScene,AlternativeScene,PlanCScene})
+            {
+                var scene=EditorSceneManager.OpenScene(path);
+                Transform house=GameObject.Find("住宅概形_図面ベース").transform,second=house.Find("2階");
+                CreateUpperSouthPartition(second);Physics.SyncTransforms();
+                Collider wall=second.Find("壁/壁_515_310_515_346").GetComponent<Collider>();
+                foreach(float v in new[]{314f,328f,342f})
+                    if(!wall.Raycast(new Ray(PlanPoint(495,v,SecondFloorY+1,true),Vector3.right),out _,1))
+                        throw new InvalidOperationException("Upper south partition has a gap at "+v);
+                Transform player=GameObject.Find("Player").transform;Vector3 saved=player.position;
+                ValidateAlternativeRoute(new[]{PlanPoint(458,331,SecondFloorY,true),PlanPoint(458,286,SecondFloorY,true)});
+                ValidateAlternativeRoute(new[]{PlanPoint(630,330,SecondFloorY,true),PlanPoint(630,240,SecondFloorY,true),PlanPoint(630,176,SecondFloorY,true),PlanPoint(490,176,SecondFloorY,true)});
+                player.GetComponent<CharacterController>().enabled=false;player.position=saved;player.GetComponent<CharacterController>().enabled=true;
+                EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
+                GameObject.Find("外観_写真ベース")?.SetActive(false);house.Find("1階").gameObject.SetActive(false);
+                foreach(Renderer renderer in second.GetComponentsInChildren<Renderer>())
+                    if(renderer.name.Contains("天井"))renderer.enabled=false;
+                foreach(TextMesh label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))label.GetComponent<Renderer>().enabled=false;
+                Camera camera=Camera.main;camera.orthographic=true;camera.orthographicSize=4.8f;
+                camera.transform.position=PlanPoint(535,252,SecondFloorY+15,true);camera.transform.LookAt(PlanPoint(535,252,SecondFloorY,true),Vector3.forward);
+                RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/upper-south-partition-"+Path.GetFileNameWithoutExtension(path)+".png"));
+                Debug.Log("UPPER SOUTH PARTITION VALIDATED: "+path+"; image (11) x515 / y310-346, solid wall and room / north hall access.");
+            }
+            AssetDatabase.Refresh();
         }
     }
 }
