@@ -165,6 +165,12 @@ namespace VirtualHouse.Editor
                     Transform player=GameObject.Find("Player").transform;
                     Vector3 savedPlayerPosition=player.position;
                     Transform root=house.Find("敷地_図面7/"+OutdoorName);
+                    Transform shelter=root.Find("キッチン東_屋根付き壁なし収納");
+                    if(shelter==null || shelter.Cast<Transform>().Count(t=>t.name=="独立柱")!=4 || shelter.Find("クロスバイク")==null)
+                        throw new InvalidOperationException("Open cycle storage requires four posts and a cross bike.");
+                    foreach(string vehicle in new[]{"グレーのシエンタ_概形","黒のST250風バイク"})
+                        if(Quaternion.Angle(root.Find(vehicle).rotation,Quaternion.Euler(0,90,0))>.1f)
+                            throw new InvalidOperationException("Vehicle must face north-south: "+vehicle);
                     Transform bbq=root.Find("洋室南_バーベキュー");
                     if(root.Cast<Transform>().Count(t=>t.name.StartsWith("和室南_ブランコ_"))!=1)
                         throw new InvalidOperationException("Expected one shared swing frame.");
@@ -214,7 +220,7 @@ namespace VirtualHouse.Editor
                 camera.orthographic=false;camera.transform.position=SitePoint(685,570,15);camera.transform.LookAt(SitePoint(540,300,0));
                 RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/outdoor-layout-perspective-preview.png"));
                 camera.fieldOfView=45;
-                Vector3 carPosition=SitePoint(791,292);
+                Vector3 carPosition=SitePoint(791,249);
                 camera.transform.position=carPosition+new Vector3(4.3f,2.8f,-5.4f);camera.transform.LookAt(carPosition+Vector3.up*.82f);
                 RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/outdoor-car-preview.png"));
                 Vector3 bikePosition=SitePoint(755,214);

@@ -53,7 +53,7 @@ namespace VirtualHouse.Editor
             Material amber=OutdoorMat("IndicatorAmber",.95f,.38f,.03f),white=OutdoorMat("Ivory",.91f,.91f,.84f);
             foreach(Material m in new[]{steel,chrome,grey}){m.SetFloat("_Metallic",m==grey?.45f:.85f);m.SetFloat("_Smoothness",.7f);EditorUtility.SetDirty(m);}
             glass.SetFloat("_Smoothness",.92f);rubber.SetFloat("_Smoothness",.12f);
-            Transform car=OutdoorGroup(root,"グレーのシエンタ_概形",791,292);
+            Transform car=OutdoorGroup(root,"グレーのシエンタ_概形",791,249);
             // Longitudinal sections form a continuous rounded minivan body and sloped windscreen.
             float[] xs={-2.11f,-2.02f,-1.80f,.65f,1.19f,1.61f,2.04f,2.13f};
             float[] tops={1.34f,1.56f,1.69f,1.69f,1.52f,1.04f,1.00f,.87f};
@@ -114,6 +114,7 @@ namespace VirtualHouse.Editor
             OutdoorBox(car,"ナンバープレート",new Vector3(2.19f,.55f,0),new Vector3(.012f,.16f,.32f),white);
             OutdoorBox(car,"後部ナンバー",new Vector3(-2.125f,.83f,0),new Vector3(.012f,.16f,.32f),white);
 
+            car.rotation=Quaternion.Euler(0,90,0);
             Transform bike=OutdoorGroup(root,"黒のST250風バイク",755,214);
             foreach(float x in new[]{-.68f,.68f})
             {
@@ -175,6 +176,43 @@ namespace VirtualHouse.Editor
             OutdoorBox(bike,"尾灯",new Vector3(-.97f,.70f,0),new Vector3(.05f,.09f,.12f),red);
             OutdoorBox(bike,"後部ナンバー",new Vector3(-1.0f,.58f,0),new Vector3(.016f,.12f,.17f),white);
             OutdoorRod(bike,"サイドスタンド",new Vector3(-.20f,.31f,0),new Vector3(-.32f,.025f,-.27f),.022f,steel);
+            bike.rotation=Quaternion.Euler(0,90,0);
+            CreateOpenCycleStorage(root,steel,black,rubber);
+        }
+        // Image (10). Assumed roof footprint: 1.75m east-west by 2.10m north-south.
+        private static void CreateOpenCycleStorage(Transform root,Material steel,Material black,Material rubber)
+        {
+            Transform shelter=OutdoorGroup(root,"キッチン東_屋根付き壁なし収納",743,294);
+            foreach(float x in new[]{-.77f,.77f})foreach(float z in new[]{-.94f,.94f})
+                OutdoorBox(shelter,"独立柱",new Vector3(x,1.10f,z),new Vector3(.075f,2.20f,.075f),steel);
+            OutdoorBox(shelter,"屋根",new Vector3(0,2.25f,0),new Vector3(1.75f,.10f,2.10f),steel);
+            foreach(float x in new[]{-.77f,.77f})
+                OutdoorBox(shelter,"屋根梁",new Vector3(x,2.16f,0),new Vector3(.075f,.10f,2.02f),steel);
+            Transform cycle=NewGroup("クロスバイク",shelter);cycle.position=shelter.position;
+            Material frame=OutdoorMat("CycleBlue",.055f,.30f,.42f);
+            foreach(float x in new[]{-.55f,.55f})
+            {
+                Vector3 hub=new Vector3(x,.35f,0);
+                VehicleRing(cycle,"細いタイヤ_"+x,hub,.325f,.023f,.023f,rubber);
+                VehicleRing(cycle,"リム_"+x,hub,.302f,.009f,.014f,steel);
+                for(int i=0;i<24;i++)
+                {
+                    float a=i*Mathf.PI/12;
+                    OutdoorRod(cycle,"スポーク",hub,hub+new Vector3(Mathf.Cos(a)*.30f,Mathf.Sin(a)*.30f,0),.004f,steel);
+                }
+            }
+            Vector3 rear=new Vector3(-.55f,.35f,0),front=new Vector3(.55f,.35f,0);
+            Vector3 crank=new Vector3(-.05f,.29f,0),seat=new Vector3(-.18f,.80f,0),head=new Vector3(.36f,.83f,0);
+            foreach(Vector3[] edge in new[]{new[]{rear,crank},new[]{rear,seat},new[]{seat,crank},new[]{seat,head},new[]{head,crank},new[]{head,front}})
+                OutdoorRod(cycle,"ダイヤモンドフレーム",edge[0],edge[1],.035f,frame);
+            OutdoorRod(cycle,"シートポスト",seat,new Vector3(-.20f,.96f,0),.025f,steel);
+            OutdoorBox(cycle,"サドル",new Vector3(-.20f,.97f,0),new Vector3(.26f,.05f,.15f),black);
+            OutdoorRod(cycle,"ステム",head,new Vector3(.33f,1.02f,0),.025f,steel);
+            OutdoorRod(cycle,"フラットハンドル",new Vector3(.33f,1.02f,-.30f),new Vector3(.33f,1.02f,.30f),.025f,black);
+            foreach(float z in new[]{-.14f,.14f})
+                OutdoorBox(cycle,"ペダル",crank+new Vector3(z,.02f,z),new Vector3(.10f,.025f,.09f),black);
+            OutdoorRod(cycle,"スタンド",crank,new Vector3(-.20f,.02f,-.21f),.015f,steel);
+            cycle.rotation=Quaternion.Euler(0,90,0);
         }
     }
 }
