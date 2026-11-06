@@ -70,22 +70,7 @@ namespace VirtualHouse.Editor
             OutdoorBox(bench,"開閉式座面",new Vector3(0,.46f,0),new Vector3(.62f,.06f,1.70f),wood);
             OutdoorBox(bench,"背もたれ",new Vector3(-.27f,.70f,0),new Vector3(.065f,.45f,1.70f),wood);
             OutdoorBox(bench,"収納取手",new Vector3(.283f,.33f,0),new Vector3(.025f,.04f,.22f),black);
-            Transform laundry=OutdoorGroup(root,"北西_物干し",467+1f/SiteScale,175);
-            foreach(float x in new[]{-1.25f,1.25f})
-            {
-                OutdoorRod(laundry,"物干し支柱",new Vector3(x,0,0),new Vector3(x,1.85f,0),.055f,steel);
-                OutdoorBox(laundry,"脚",new Vector3(x,.055f,0),new Vector3(.35f,.11f,.65f),white);
-            }
-            OutdoorRod(laundry,"物干し竿",new Vector3(-1.45f,1.85f,0),new Vector3(1.45f,1.85f,0),.032f,steel);
-            for(int i=0;i<5;i++)
-            {
-                float x=-.96f+i*.48f;Material cloth=i%2==0?white:blue;
-                OutdoorRod(laundry,"ハンガー",new Vector3(x,1.84f,0),new Vector3(x,1.65f,0),.014f,steel);
-                OutdoorRod(laundry,"ハンガー肩",new Vector3(x,1.65f,0),new Vector3(x,1.56f,-.23f),.012f,steel);
-                OutdoorRod(laundry,"ハンガー肩",new Vector3(x,1.65f,0),new Vector3(x,1.56f,.23f),.012f,steel);
-                OutdoorBox(laundry,"干したシャツ",new Vector3(x,1.32f,0),new Vector3(.035f,.59f,.34f),cloth);
-                OutdoorBox(laundry,"袖",new Vector3(x,1.55f,0),new Vector3(.035f,.17f,.46f),cloth);
-            }
+            CreateWallMountedLaundry(root);
             Transform swing=OutdoorGroup(root,"和室南_ブランコ_共通フレーム",508.5f,377);
             foreach(float x in new[]{-1.62f,1.62f})foreach(float z in new[]{-.74f,.74f})
                 OutdoorRod(swing,"A型支柱",new Vector3(x,0,z),new Vector3(x,2.15f,0),.11f,wood);
@@ -150,6 +135,60 @@ namespace VirtualHouse.Editor
             Material soil=GardenSurface("OutdoorTilledSoil",new Color(.26f,.15f,.085f),new Color(.13f,.07f,.035f),false);
             OutdoorBox(farm,"一面の土",new Vector3(0,.07f,0),new Vector3(1.61f,.14f,2.20f),soil);
         }
+        private static void CreateWallMountedLaundry(Transform root)
+        {
+            Material steel=OutdoorMat("Steel",.60f,.63f,.65f),white=OutdoorMat("Ivory",.91f,.91f,.84f),blue=OutdoorMat("PoolBlue",.08f,.48f,.79f);
+            Transform old=root.Find("北西_物干し");if(old!=null)Object.DestroyImmediate(old.gameObject);
+            Transform laundry=OutdoorGroup(root,"北西_物干し",467+1f/SiteScale,175);
+            float wallZ=PlanPoint(310,179,0).z+.06f-laundry.position.z;
+            foreach(float x in new[]{-1.25f,1.25f})
+            {
+                OutdoorBox(laundry,"壁付け取付板",new Vector3(x,1.65f,wallZ),new Vector3(.12f,.50f,.07f),steel);
+                OutdoorRod(laundry,"壁付けアーム",new Vector3(x,1.85f,wallZ),new Vector3(x,1.85f,0),.045f,steel);
+                OutdoorRod(laundry,"壁付け斜め補強",new Vector3(x,1.43f,wallZ),new Vector3(x,1.85f,-.08f),.035f,steel);
+            }
+            OutdoorRod(laundry,"物干し竿",new Vector3(-1.45f,1.85f,0),new Vector3(1.45f,1.85f,0),.032f,steel);
+            for(int i=0;i<5;i++)
+            {
+                float x=-.96f+i*.48f;Material cloth=i%2==0?white:blue;
+                OutdoorRod(laundry,"ハンガー",new Vector3(x,1.84f,0),new Vector3(x,1.65f,0),.014f,steel);
+                OutdoorRod(laundry,"ハンガー肩",new Vector3(x,1.65f,0),new Vector3(x,1.56f,-.23f),.012f,steel);
+                OutdoorRod(laundry,"ハンガー肩",new Vector3(x,1.65f,0),new Vector3(x,1.56f,.23f),.012f,steel);
+                OutdoorBox(laundry,"干したシャツ",new Vector3(x,1.32f,0),new Vector3(.035f,.59f,.34f),cloth);
+                OutdoorBox(laundry,"袖",new Vector3(x,1.55f,0),new Vector3(.035f,.17f,.46f),cloth);
+            }
+        }
+        [MenuItem("Virtual House/Update Wall Mounted Laundry A-C")]
+        public static void UpdateWallMountedLaundry()
+        {
+            if(!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())return;
+            var setup=EditorSceneManager.GetSceneManagerSetup();
+            try
+            {
+                foreach(string path in new[]{RenovatedScene,AlternativeScene,PlanCScene})
+                {
+                    Materials.Clear();var scene=EditorSceneManager.OpenScene(path);
+                    Transform house=GameObject.Find("住宅概形_図面ベース").transform;
+                    Transform root=house.Find("敷地_図面7/"+OutdoorName);
+                    CreateWallMountedLaundry(root);Physics.SyncTransforms();
+                    Transform laundry=root.Find("北西_物干し");
+                    if(laundry.Find("物干し支柱")!=null || laundry.Find("脚")!=null)
+                        throw new InvalidOperationException("Freestanding laundry supports remain.");
+                    foreach(Transform plate in laundry.Cast<Transform>().Where(t=>t.name=="壁付け取付板"))
+                        if(!Physics.OverlapBox(plate.position,new Vector3(.04f,.12f,.08f)).Any(c=>(c.name.StartsWith("壁_310_179_613_179") || c.name=="北西旧窓_壁復旧")))
+                            throw new InvalidOperationException("Laundry bracket is not attached to the north wall.");
+                    EditorSceneManager.SaveScene(scene);
+                    Camera camera=Camera.main;camera.orthographic=false;camera.fieldOfView=55;
+                    camera.transform.position=laundry.position+new Vector3(-3,2.5f,3.6f);
+                    camera.transform.LookAt(laundry.position+new Vector3(0,1.5f,-.3f));
+                    RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/wall-laundry-"+Path.GetFileNameWithoutExtension(path)+".png"));
+                    Debug.Log("WALL LAUNDRY VALIDATED: "+path);
+                }
+                AssetDatabase.SaveAssets();AssetDatabase.Refresh();
+            }
+            finally{if(!Application.isBatchMode)EditorSceneManager.RestoreSceneManagerSetup(setup);}
+        }
+
         [MenuItem("Virtual House/Update And Validate Outdoor Layout A-C")]
         public static void UpdateAndValidateOutdoorLayout()
         {

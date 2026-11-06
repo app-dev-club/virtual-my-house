@@ -17,10 +17,11 @@ namespace VirtualHouse.Editor
             Transform old=first.Find(GuestFurnitureName);
             if(old!=null)Object.DestroyImmediate(old.gameObject);
             Transform root=NewGroup(GuestFurnitureName,first);
-            // Restore the photographed low table to the centre of the east tatami room.
+            // Turn the low table across the west-facing sofa, leaving a 36cm reach gap.
             Transform lowTable=first.Find("和室_東_写真ベース/家具/黒漆塗りのちゃぶ台");
+            lowTable.rotation=Quaternion.Euler(0,90,0);
             Bounds lowBounds=KitchenVisibleBounds(lowTable);
-            Vector3 tableTarget=PlanPoint((462f+613f)/2,(216f+367f)/2,lowBounds.center.y);
+            Vector3 tableTarget=PlanPoint(528,328,lowBounds.center.y);
             lowTable.position+=tableTarget-lowBounds.center;
 
             Transform bed=NewGroup("濃いグレーのソファベッド_幅140cm_ソファ状態",root);
@@ -38,7 +39,7 @@ namespace VirtualHouse.Editor
             Part(bed,"背もたれ",new Vector3(0,.62f,.36f),new Vector3(1.40f,.36f,.18f),grey);
             foreach(float x in new[]{-.59f,.59f})foreach(float z in new[]{-.32f,.32f})
                 Part(bed,"脚",new Vector3(x,.04f,z),new Vector3(.07f,.08f,.07f),dark);
-            bed.position=PlanPoint(580,344,.036f);bed.rotation=Quaternion.Euler(0,180,0);
+            bed.position=PlanPoint(580,328,.036f);bed.rotation=Quaternion.Euler(0,90,0);
 
             Material sheet=WesternMaterial("GuestFutonSheet",new Color(.91f,.90f,.84f));
             Material quilt=WesternMaterial("GuestFutonQuilt",new Color(.58f,.65f,.69f));
@@ -76,9 +77,9 @@ namespace VirtualHouse.Editor
                     if(root.Cast<Transform>().Any(t=>t.name.StartsWith("洋室既存")))
                         throw new InvalidOperationException("Western sofas and coffee table must remain unplaced.");
                     Bounds lowTable=KitchenVisibleBounds(first.Find("和室_東_写真ベース/家具/黒漆塗りのちゃぶ台"));
-                    Vector3 originalTable=PlanPoint(537.5f,291.5f,lowTable.center.y);
+                    Vector3 originalTable=PlanPoint(528,328,lowTable.center.y);
                     if(Vector3.Distance(lowTable.center,originalTable)>.002f)
-                        throw new InvalidOperationException("Low table must return to the east tatami room centre.");
+                        throw new InvalidOperationException("Low table must be in front of the west-facing sofa.");
                     foreach(Transform futon in root.Cast<Transform>().Where(t=>t.name.StartsWith("洋室_布団_")))
                         if(Quaternion.Angle(futon.rotation,Quaternion.Euler(0,90,0))>.01f)
                             throw new InvalidOperationException("All futons must face the same direction.");
@@ -95,10 +96,20 @@ namespace VirtualHouse.Editor
                                 if(!hit.transform.IsChildOf(item))throw new InvalidOperationException("Guest furniture collision: "+item.name+" / "+hit.name);
                     }
                     Bounds sofa=KitchenVisibleBounds(root.Find("濃いグレーのソファベッド_幅140cm_ソファ状態"));
-                    if(Mathf.Abs(sofa.size.x-1.40f)>.002f)throw new InvalidOperationException("Sofa bed width must be 140cm.");
+                    if(Mathf.Abs(sofa.size.z-1.40f)>.002f)throw new InvalidOperationException("Sofa bed width must be 140cm.");
+                    Transform sofaTransform=root.Find("濃いグレーのソファベッド_幅140cm_ソファ状態");
+                    if(Quaternion.Angle(sofaTransform.rotation,Quaternion.Euler(0,90,0))>.01f ||
+                       Quaternion.Angle(first.Find("和室_東_写真ベース/家具/黒漆塗りのちゃぶ台").rotation,Quaternion.Euler(0,90,0))>.01f)
+                        throw new InvalidOperationException("Sofa and table must face west.");
+                    if(sofa.min.x-lowTable.max.x<.35f || Mathf.Abs(sofa.center.z-lowTable.center.z)>.002f)
+                        throw new InvalidOperationException("Table must align in front of the sofa with a 35cm minimum gap.");
+                    Transform tableTransform=first.Find("和室_東_写真ベース/家具/黒漆塗りのちゃぶ台");
+                    foreach(Collider collider in tableTransform.GetComponentsInChildren<Collider>())
+                        foreach(Collider hit in Physics.OverlapBox(collider.bounds.center,collider.bounds.extents-Vector3.one*.004f))
+                            if(!hit.transform.IsChildOf(tableTransform))throw new InvalidOperationException("Low table collision: "+hit.name);
                     ValidateNandoOpening();
                     ValidateAlternativeRoute(new[]{PlanPoint(330,386,0),PlanPoint(291,386,0),PlanPoint(291,425,0)});
-                    ValidateAlternativeRoute(new[]{PlanPoint(325,310,0),PlanPoint(390,313,0),PlanPoint(475,313,0),PlanPoint(520,327,0)});
+                    ValidateAlternativeRoute(new[]{PlanPoint(325,310,0),PlanPoint(390,313,0),PlanPoint(475,313,0),PlanPoint(475,285,0),PlanPoint(530,275,0)});
                     player.GetComponent<CharacterController>().enabled=false;player.position=saved;player.GetComponent<CharacterController>().enabled=true;
                     EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
                     foreach(TextMesh label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))label.GetComponent<Renderer>().enabled=false;
@@ -108,7 +119,7 @@ namespace VirtualHouse.Editor
                         if(renderer.name.Contains("天井"))renderer.enabled=false;
                     camera.transform.position=PlanPoint(390,325,15);camera.transform.LookAt(PlanPoint(390,325,0),Vector3.forward);
                     RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/guest-furniture-"+Path.GetFileNameWithoutExtension(path)+".png"));
-                    Debug.Log("GUEST FURNITURE VALIDATED: "+path+"; three aligned futons, 140cm charcoal sofa bed, western furniture removed, low table restored, collisions and routes.");
+                    Debug.Log("GUEST FURNITURE VALIDATED: "+path+"; three aligned futons, 140cm charcoal sofa bed, western furniture removed, west-facing sofa moved north, table rotated in front, collisions and routes.");
                 }
                 AssetDatabase.Refresh();
             }
