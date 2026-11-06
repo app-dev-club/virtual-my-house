@@ -38,7 +38,7 @@ namespace VirtualHouse.Editor
             Part(bed,"背もたれ",new Vector3(0,.62f,.36f),new Vector3(1.40f,.36f,.18f),grey);
             foreach(float x in new[]{-.59f,.59f})foreach(float z in new[]{-.32f,.32f})
                 Part(bed,"脚",new Vector3(x,.04f,z),new Vector3(.07f,.08f,.07f),dark);
-            bed.position=PlanPoint(349,344,.036f);bed.rotation=Quaternion.Euler(0,180,0);
+            bed.position=PlanPoint(580,344,.036f);bed.rotation=Quaternion.Euler(0,180,0);
 
             Material sheet=WesternMaterial("GuestFutonSheet",new Color(.91f,.90f,.84f));
             Material quilt=WesternMaterial("GuestFutonQuilt",new Color(.58f,.65f,.69f));
@@ -98,7 +98,7 @@ namespace VirtualHouse.Editor
                     if(Mathf.Abs(sofa.size.x-1.40f)>.002f)throw new InvalidOperationException("Sofa bed width must be 140cm.");
                     ValidateNandoOpening();
                     ValidateAlternativeRoute(new[]{PlanPoint(330,386,0),PlanPoint(291,386,0),PlanPoint(291,425,0)});
-                    ValidateAlternativeRoute(new[]{PlanPoint(325,310,0),PlanPoint(390,313,0),PlanPoint(475,313,0),PlanPoint(551,327,0),PlanPoint(590,340,0)});
+                    ValidateAlternativeRoute(new[]{PlanPoint(325,310,0),PlanPoint(390,313,0),PlanPoint(475,313,0),PlanPoint(520,327,0)});
                     player.GetComponent<CharacterController>().enabled=false;player.position=saved;player.GetComponent<CharacterController>().enabled=true;
                     EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
                     foreach(TextMesh label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))label.GetComponent<Renderer>().enabled=false;
