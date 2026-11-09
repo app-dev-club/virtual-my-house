@@ -193,7 +193,7 @@ namespace VirtualHouse
 
         private void HandleCursor()
         {
-            if (useTouchControls)
+            if (useTouchControls || HouseTennisGuide.IsNearby || HouseInstagramGlobe.IsNearby)
                 return;
 
             Keyboard keyboard = Keyboard.current;

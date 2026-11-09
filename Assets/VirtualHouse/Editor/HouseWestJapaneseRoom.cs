@@ -234,6 +234,7 @@ namespace VirtualHouse.Editor
                     (backSouth.z + frontNorth.z) * 0.5f),
                 new Vector3(shelfDepth, 0.05f, frontNorth.z - backSouth.z - 0.18f),
                 GetMaterial("LightWood"), storage);
+            CreateInstagramGlobe(storage);
         }
 
         private static void ValidateNandoOpening()

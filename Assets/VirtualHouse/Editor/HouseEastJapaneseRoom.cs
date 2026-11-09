@@ -146,9 +146,15 @@ namespace VirtualHouse.Editor
             float front=north+.045f,back=PlanPoint(499.5f,179,0).z-.075f;
             Transform bay=NewGroup("北出窓収納",parent);
             Material wood=GetMaterial("LightWood"),dark=GetMaterial("DarkWood"),sand=GetMaterial("SandWall");
+            // Photo IMG_20260930_111615579: a pale, polished counter over timber storage,
+            // with a dark framed sliding leaf and exposed shelving on either side.
+            Material counter=WesternMaterial("EastNorthShelfCounter",new Color(.78f,.76f,.67f));
+            counter.SetFloat("_Smoothness",.55f);
+            Material frame=WesternMaterial("EastNorthShelfFrame",new Color(.055f,.065f,.060f));
             void Part(string name,float x,float y,float z,float w,float h,float d,Material mat)
                 => CreateBox(name,new Vector3(x,y,z),new Vector3(w,h,d),mat,bay);
-            Part("収納天板",center,.84f,(front+back)/2,width,.07f,back-front,wood);
+            Part("収納天板",center,.84f,(front+back)/2,width,.045f,back-front,counter);
+            Part("天板前縁_木口",center,.805f,front+.018f,width,.035f,.036f,wood);
             Part("収納底板",center,.075f,(front+back)/2,width,.07f,back-front,dark);
             Part("収納背板",center,.44f,back,width,.70f,.035f,sand);
             Part("収納中棚",center,.51f,(front+back)/2,width,.035f,back-front-.04f,dark);
@@ -161,9 +167,12 @@ namespace VirtualHouse.Editor
             Part("窓上砂壁",center,2.33f,front,width,.58f,.055f,sand);
             Part("窓上見込み",center,2.01f,(front+back)/2,width,.07f,back-front,wood);
             // One sliding leaf parked centrally, with shelf openings visible at either side.
-            Part("引戸_黒枠",center,.44f,front-.018f,width*.48f,.73f,.04f,dark);
-            Part("引戸_木製面",center,.44f,front-.042f,width*.48f-.06f,.66f,.018f,wood);
-            Part("引戸_引手",center+width*.18f,.36f,front-.054f,.035f,.045f,.01f,dark);
+            float leafCenter=center+width*.045f;
+            Part("引戸_黒枠",leafCenter,.44f,front-.018f,width*.54f,.73f,.04f,frame);
+            Part("引戸_木製面",leafCenter,.44f,front-.042f,width*.54f-.065f,.66f,.018f,wood);
+            Part("引戸_引手",leafCenter+width*.20f,.36f,front-.054f,.035f,.045f,.01f,frame);
+            foreach(float y in new[]{.065f,.815f})
+                Part("収納引戸レール",center,y,front-.012f,width,.018f,.06f,frame);
             // Fine paired vertical bars over the actual transparent exterior sash.
             float sashZ=PlanPoint(499.5f,174,0).z-.055f;
             for(int i=1;i<8;i++)

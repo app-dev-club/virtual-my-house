@@ -10,6 +10,12 @@ namespace VirtualHouse.Editor
 {
     public static partial class HouseBlockoutGenerator
     {
+        public static void UpdateNorthShelfAndBuildWebGL()
+        {
+            UpdateEastRoomNorthWindowAllPlans();
+            WebBuild.BuildWebGL();
+        }
+
         [MenuItem("Virtual House/Update East Room North Window All Plans")]
         public static void UpdateEastRoomNorthWindowAllPlans()
         {
@@ -44,6 +50,11 @@ namespace VirtualHouse.Editor
                     var bay=fittings.Find("北出窓収納");
                     if(bay.Find("収納天板").GetComponent<Collider>().bounds.min.z<PlanPoint(462,216,0).z)
                         throw new InvalidOperationException("Storage projects into tatami room");
+                    foreach(string name in new[]{"収納天板","収納中棚","収納底板","収納側板","引戸_黒枠","引戸_木製面","引戸_引手","天板前縁_木口","収納引戸レール"})
+                        if(bay.Find(name)==null) throw new InvalidOperationException("Missing north window shelf part: "+name);
+                    Bounds top=bay.Find("収納天板").GetComponent<Collider>().bounds;
+                    if(top.size.x<1.4f || top.size.z<.6f || top.max.y>.91f)
+                        throw new InvalidOperationException("North window shelf does not fit below the window");
                     EditorSceneManager.SaveScene(scene);
                     foreach(var label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None)) label.GetComponent<Renderer>().enabled=false;
                     Camera camera=Camera.main;camera.transform.position=PlanPoint(508,289,1.6f);
