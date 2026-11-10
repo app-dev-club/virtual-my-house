@@ -97,6 +97,51 @@ namespace VirtualHouse.Editor
             Cushion("置きクッション東", new Vector3(-.37f, .285f, -1.34f), new Vector3(.30f, .25f, .09f), pillow, -14, 90);
             Vector3 corner = PlanPoint(462, 216, .036f);
             sofa.localPosition = corner + new Vector3(-.14f, 0, -.14f);
+            CreateWestRoomChabudai(first);
+        }
+
+        private static void CreateWestRoomChabudai(Transform first)
+        {
+            const string name = "西和室_ソファ前のちゃぶ台";
+            Transform old = first.Find(name);
+            if (old != null) Object.DestroyImmediate(old.gameObject);
+            Transform sofa = first.Find(SofaName);
+            if (sofa == null) return;
+            Transform furniture = NewGroup(name, first);
+            // Place within the L, leaving 31cm at the east seat and 35cm at the north seat.
+            Vector3 center = sofa.position + new Vector3(-1.80f, 0, -1.55f);
+            CreateChabudai(furniture, center.x, center.z);
+            furniture.position += Vector3.up * .036f;
+        }
+
+        public static void UpdateWestRoomChabudaiAndBuildWebGL()
+        {
+            foreach (string path in new[] { RenovatedScene, AlternativeScene, PlanCScene })
+            {
+                Materials.Clear();
+                var scene = EditorSceneManager.OpenScene(path);
+                Transform first = GameObject.Find("住宅概形_図面ベース/1階").transform;
+                CreateWestRoomChabudai(first);
+                Physics.SyncTransforms();
+                Transform table = first.Find("西和室_ソファ前のちゃぶ台");
+                if (table == null) throw new InvalidOperationException("West sofa or table missing: " + path);
+                foreach (Collider part in table.GetComponentsInChildren<Collider>())
+                    foreach (Collider hit in Physics.OverlapBox(part.bounds.center, part.bounds.extents - Vector3.one * .005f))
+                        if (!hit.transform.IsChildOf(table))
+                            throw new InvalidOperationException("West table collision: " + hit.name);
+                EditorSceneManager.SaveScene(scene);
+                foreach (TextMesh label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))
+                    label.GetComponent<Renderer>().enabled = false;
+                Camera camera = Camera.main;
+                Vector3 target = KitchenVisibleBounds(table).center;
+                camera.transform.position = target + new Vector3(-.25f, 1.3f, -1.35f);
+                camera.transform.LookAt(target + new Vector3(.35f, 0, .35f));
+                camera.orthographic = false; camera.fieldOfView = 65;
+                RenderCameraToPng(camera, Path.Combine(Application.dataPath, "VirtualHouse/sofa-" + Path.GetFileNameWithoutExtension(path) + ".png"));
+                Debug.Log("WEST CHABUDAI VALIDATED: " + path);
+            }
+            AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
+            WebBuild.BuildWebGL();
         }
 
         // Rounded boxes retain flat upholstered faces and softly bulging cushion edges.

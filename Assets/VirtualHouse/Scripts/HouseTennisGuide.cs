@@ -49,6 +49,7 @@ namespace VirtualHouse
             pad.transform.localScale = new Vector3(3f, .03f, 3f);
             pad.GetComponent<Renderer>().sharedMaterial = material;
             Destroy(pad.GetComponent<Collider>());
+            CreateCourtLines();
             var sign = new GameObject("テニスコート案内看板");
             sign.transform.SetParent(transform);
             sign.transform.position = center + Vector3.up * 1.8f;
@@ -61,6 +62,37 @@ namespace VirtualHouse
             text.fontSize = 64;
             text.characterSize = .055f;
             text.color = new Color(.08f, .25f, .16f);
+        }
+
+        private void CreateCourtLines()
+        {
+            var white = new Material(Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Color"));
+            white.color = Color.white;
+            // A miniature court fits within the existing green guide area.
+            const float halfWidth = .62f, singlesWidth = .465f, halfLength = 1.35f;
+            const float serviceDistance = .73f, lineWidth = .025f;
+            void Line(string name, float x, float z, float width, float length)
+            {
+                var line = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                line.name = name;
+                line.transform.SetParent(transform);
+                line.transform.position = center + new Vector3(x, .033f, z);
+                line.transform.localScale = new Vector3(width, .004f, length);
+                line.GetComponent<Renderer>().sharedMaterial = white;
+                Destroy(line.GetComponent<Collider>());
+            }
+            foreach (float x in new[] { -halfWidth, halfWidth })
+                Line("ダブルスサイドライン", x, 0, lineWidth, halfLength * 2);
+            foreach (float x in new[] { -singlesWidth, singlesWidth })
+                Line("シングルスサイドライン", x, 0, lineWidth, halfLength * 2);
+            foreach (float z in new[] { -halfLength, halfLength })
+            {
+                Line("ベースライン", 0, z, halfWidth * 2 + lineWidth, lineWidth);
+                Line("センターマーク", 0, z - Mathf.Sign(z) * .035f, lineWidth, .07f);
+            }
+            foreach (float z in new[] { -serviceDistance, serviceDistance })
+                Line("サービスライン", 0, z, singlesWidth * 2, lineWidth);
+            Line("センターサービスライン", 0, 0, lineWidth, serviceDistance * 2);
         }
 
         private void Update()
