@@ -12,6 +12,7 @@ namespace VirtualHouse.Editor
     {
         public static void UpdateNorthShelfAndBuildWebGL()
         {
+            UpdateInstagramGlobeAllPlans();
             UpdateEastRoomNorthWindowAllPlans();
             WebBuild.BuildWebGL();
         }

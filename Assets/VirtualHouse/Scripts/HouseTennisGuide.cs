@@ -26,7 +26,14 @@ namespace VirtualHouse
             if (ground == null || FindFirstObjectByType<HouseTennisGuide>() != null) return;
             var guide = new GameObject("北西_テニスコート案内").AddComponent<HouseTennisGuide>();
             var bounds = ground.GetComponent<Collider>().bounds;
-            guide.center = new Vector3(bounds.min.x + 2f, bounds.max.y, bounds.max.z - 2f);
+            // Keep the entire 4m interaction area outside the western site boundary.
+            guide.center = new Vector3(bounds.min.x - 2.5f, bounds.max.y, bounds.max.z - 2f);
+            var approach = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            approach.name = "テニス案内_敷地外の足場";
+            approach.transform.SetParent(guide.transform);
+            approach.transform.position = new Vector3(bounds.min.x - 2.25f, bounds.max.y - .09f, guide.center.z);
+            approach.transform.localScale = new Vector3(4.5f, .18f, 4f);
+            approach.GetComponent<Renderer>().sharedMaterial = ground.GetComponent<Renderer>().sharedMaterial;
             guide.CreateArea();
         }
 

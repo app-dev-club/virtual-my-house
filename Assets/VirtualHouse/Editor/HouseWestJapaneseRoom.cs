@@ -175,6 +175,7 @@ namespace VirtualHouse.Editor
                 Part("地袋_引戸",x,.40f,face+.018f,cabinetWidth/2-.035f,.49f,.025f,paper);
                 Part("地袋_丸引手",x+(i==0?-.15f:.15f),.39f,face,.028f,.035f,.015f,dark);
             }
+            CreateInstagramGlobe(parent);
         }
 
         [MenuItem("Virtual House/Update West Room North Storage All Plans")]
@@ -234,7 +235,6 @@ namespace VirtualHouse.Editor
                     (backSouth.z + frontNorth.z) * 0.5f),
                 new Vector3(shelfDepth, 0.05f, frontNorth.z - backSouth.z - 0.18f),
                 GetMaterial("LightWood"), storage);
-            CreateInstagramGlobe(storage);
         }
 
         private static void ValidateNandoOpening()

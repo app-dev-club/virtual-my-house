@@ -15,7 +15,9 @@ namespace VirtualHouse.Editor
         {
             Transform old = storage.Find("地球儀_Instagram");
             if (old != null) Object.DestroyImmediate(old.gameObject);
-            Bounds shelf = storage.Find("納戸_中棚").GetComponent<Collider>().bounds;
+            if (storage.gameObject.scene.path == OutputScene) return;
+            Physics.SyncTransforms();
+            Bounds shelf = storage.Find("地袋天板").GetComponent<Collider>().bounds;
             Transform globe = NewGroup("地球儀_Instagram", storage);
             globe.position = new Vector3(shelf.center.x, shelf.max.y, shelf.center.z);
             globe.gameObject.AddComponent<HouseInstagramGlobe>();
@@ -56,14 +58,14 @@ namespace VirtualHouse.Editor
             var plaque = GameObject.CreatePrimitive(PrimitiveType.Cube);
             plaque.name = "Instagram案内札_背板";
             plaque.transform.SetParent(globe, false);
-            plaque.transform.localPosition = new Vector3(.175f, .065f, 0);
-            plaque.transform.localScale = new Vector3(.012f, .10f, .40f);
+            plaque.transform.localPosition = new Vector3(.175f, .065f, -.015f);
+            plaque.transform.localScale = new Vector3(.40f, .10f, .012f);
             plaque.GetComponent<Renderer>().sharedMaterial = baseMat;
             Object.DestroyImmediate(plaque.GetComponent<Collider>());
             var label = new GameObject("Instagram案内札").AddComponent<TextMesh>();
             label.transform.SetParent(globe, false);
-            label.transform.localPosition = new Vector3(.183f, .065f, 0);
-            label.transform.localRotation = Quaternion.Euler(0, -90, 0);
+            label.transform.localPosition = new Vector3(.175f, .065f, -.022f);
+            label.transform.localRotation = Quaternion.identity;
             label.text = "Instagram\n@yuka_mama_triplife";
             label.anchor = TextAnchor.MiddleCenter; label.alignment = TextAlignment.Center;
             label.fontSize = 48; label.characterSize = .007f; label.color = new Color(.94f, .87f, .72f);
@@ -127,9 +129,17 @@ namespace VirtualHouse.Editor
                 {
                     Materials.Clear();
                     var scene = EditorSceneManager.OpenScene(path);
-                    Transform storage = GameObject.Find("住宅概形_図面ベース/1階/納戸_棚").transform;
+                    Transform legacy = GameObject.Find("住宅概形_図面ベース/1階/納戸_棚/地球儀_Instagram")?.transform;
+                    if (legacy != null) Object.DestroyImmediate(legacy.gameObject);
+                    Transform storage = GameObject.Find("住宅概形_図面ベース/1階/和室_西_写真ベース/北側_押入・床の間・地袋").transform;
                     CreateInstagramGlobe(storage);
-                    Bounds shelf = storage.Find("納戸_中棚").GetComponent<Collider>().bounds;
+                    if (path == OutputScene)
+                    {
+                        EditorSceneManager.SaveScene(scene);
+                        Debug.Log("BEFORE GLOBE ABSENCE VALIDATION PASSED: " + path);
+                        continue;
+                    }
+                    Bounds shelf = storage.Find("地袋天板").GetComponent<Collider>().bounds;
                     Transform globe = storage.Find("地球儀_Instagram");
                     Physics.SyncTransforms();
                     // Renderer.bounds rotates the enclosing cube and overestimates a tilted sphere.
@@ -137,17 +147,18 @@ namespace VirtualHouse.Editor
                     Bounds earth = new Bounds(earthMesh.transform.position, Vector3.zero);
                     foreach (Vector3 vertex in earthMesh.sharedMesh.vertices)
                         earth.Encapsulate(earthMesh.transform.TransformPoint(vertex));
-                    if (earth.min.y < shelf.max.y || earth.min.x < shelf.min.x || earth.max.x > shelf.max.x)
+                    if (earth.min.y < shelf.max.y || earth.min.x < shelf.min.x || earth.max.x > shelf.max.x
+                        || earth.min.z < shelf.min.z || earth.max.z > shelf.max.z)
                         throw new InvalidOperationException("Globe is not supported by west shelf: earth=" + earth + "; shelf=" + shelf);
                     var guide = globe.GetComponent<HouseInstagramGlobe>();
-                    Vector3 approach = new Vector3(shelf.max.x + .6f, .1f, shelf.center.z);
+                    Vector3 approach = new Vector3(shelf.center.x, .1f, shelf.min.z - .6f);
                     if (!guide.IsInRange(approach) || guide.IsInRange(approach + Vector3.up * 3f)
                         || guide.IsInRange(approach + Vector3.right * 3f))
                         throw new InvalidOperationException("Globe proximity link range is incorrect");
                     ValidateNandoOpening();
                     EditorSceneManager.SaveScene(scene);
                     Camera camera = Camera.main;
-                    camera.transform.position = globe.position + new Vector3(1.9f, .65f, -.65f);
+                    camera.transform.position = globe.position + new Vector3(.35f, .65f, -1.9f);
                     camera.transform.LookAt(globe.position + Vector3.up * .27f); camera.fieldOfView = 48;
                     foreach (var text in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))
                         if (text.transform.parent != globe) text.GetComponent<Renderer>().enabled = false;
