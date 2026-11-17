@@ -177,10 +177,10 @@ namespace VirtualHouse.Editor
                 }
                 CreateSouthKitchenIH(first);
                 CreateOfficeWallOutlets(first);
-                Transform outlets=first.Find("仕事部屋_東物入/壁コンセント_2口x2");
-                if(outlets.GetComponentsInChildren<Transform>().Count(t=>t.name=="差込口_1口")!=4)
-                    throw new InvalidOperationException("Office requires two duplex outlets, four sockets total");
-                Debug.Log("OFFICE OUTLETS VALIDATED: two sockets on the east wall and two on the south wall");
+                Transform outlets=first.Find("仕事部屋_東物入/壁コンセント_2口x3");
+                if(outlets.GetComponentsInChildren<Transform>().Count(t=>t.name=="差込口_1口")!=6)
+                    throw new InvalidOperationException("Office requires three duplex outlets, six sockets total");
+                Debug.Log("OFFICE OUTLETS VALIDATED: four sockets on the east wall and two on the south wall, at 300mm");
                 Transform kitchen=first.Find("キッチン_IKEA共有プラン");
                 Bounds body=kitchen.Find("南シンク東端_薄型2口IH/薄型本体_幅600奥行480厚さ28mm").GetComponent<Renderer>().bounds;
                 Bounds top=kitchen.Find("白いワークトップ_コンロと空きスペース").GetComponent<Renderer>().bounds;

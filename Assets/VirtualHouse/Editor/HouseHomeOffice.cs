@@ -101,14 +101,18 @@ namespace VirtualHouse.Editor
         private static void CreateOfficeWallOutlets(Transform first)
         {
             Transform office=first.Find("仕事部屋_東物入");
-            Transform old=office.Find("壁コンセント_2口x2");
-            if(old!=null) Object.DestroyImmediate(old.gameObject);
-            Transform group=NewGroup("壁コンセント_2口x2",office);
+            foreach(string name in new[]{"壁コンセント_2口x2","壁コンセント_2口x3"})
+            {
+                Transform old=office.Find(name);
+                if(old!=null) Object.DestroyImmediate(old.gameObject);
+            }
+            Transform group=NewGroup("壁コンセント_2口x3",office);
             Material ivory=WesternMaterial("OfficeOutletIvory",new Color(.9f,.89f,.84f));
             Material slot=GetMaterial("OfficeCharcoal");
-            foreach(bool east in new[]{true,false})
+            for(int index=0;index<3;index++)
             {
-                Transform plate=NewGroup(east?"東壁中央_2口":"南壁_2口",group);
+                bool east=index!=1;
+                Transform plate=NewGroup(index==0?"東壁中央_低位置2口":index==1?"南壁_低位置2口":"東壁北寄り_追加の低位置2口",group);
                 CreateDecorationBox("コンセントプレート",Vector3.zero,new Vector3(.072f,.12f,.012f),ivory,plate);
                 foreach(float y in new[]{-.027f,.027f})
                 {
@@ -119,9 +123,35 @@ namespace VirtualHouse.Editor
                 foreach(float y in new[]{-.05f,.05f})
                     CreateDecorationBox("取付ねじ",new Vector3(0,y,.007f),new Vector3(.004f,.004f,.002f),GetMaterial("KitchenSteel"),plate);
                 plate.rotation=east?Quaternion.Euler(0,-90,0):Quaternion.identity;
-                plate.position=east?PlanPoint(915,291.5f,1.10f)+Vector3.left*(WallThickness/2+.008f)
-                    :PlanPoint(877.5f,329,1.10f)+Vector3.forward*(WallThickness/2+.008f);
+                plate.position=east?PlanPoint(915,index==0?291.5f:271f,.30f)+Vector3.left*(WallThickness/2+.008f)
+                    :PlanPoint(877.5f,329,.30f)+Vector3.forward*(WallThickness/2+.008f);
             }
+        }
+
+        [MenuItem("Virtual House/Lower Office Outlets A-C And Build")]
+        public static void LowerOfficeOutletsAndBuild()
+        {
+            foreach(string path in new[]{RenovatedScene,AlternativeScene,PlanCScene})
+            {
+                Materials.Clear();var scene=EditorSceneManager.OpenScene(path);
+                Transform first=GameObject.Find("住宅概形_図面ベース").transform.Find("1階");
+                CreateOfficeWallOutlets(first);
+                Transform outlets=first.Find("仕事部屋_東物入/壁コンセント_2口x3");
+                if(outlets.childCount!=3 || outlets.GetComponentsInChildren<Transform>().Count(t=>t.name=="差込口_1口")!=6)
+                    throw new InvalidOperationException("Office requires three duplex plates, six sockets total");
+                foreach(Transform plate in outlets)
+                    if(Mathf.Abs(plate.position.y-.30f)>.001f) throw new InvalidOperationException("Office outlet must be 300mm above floor");
+                if(outlets.Cast<Transform>().Count(t=>t.name.StartsWith("東壁"))!=2)
+                    throw new InvalidOperationException("Two duplex plates required on east wall");
+                EditorSceneManager.SaveScene(scene);
+                foreach(var label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))label.GetComponent<Renderer>().enabled=false;
+                Camera camera=Camera.main;
+                camera.transform.position=PlanPoint(851,265,.75f);camera.transform.LookAt(PlanPoint(910,291,.30f));camera.fieldOfView=80;
+                RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/office-low-outlets-"+Path.GetFileNameWithoutExtension(path)+".png"));
+                Debug.Log("LOW OFFICE OUTLETS VALIDATED: three duplex plates, east wall four sockets, south wall two sockets, all at 300mm: "+path);
+            }
+            AssetDatabase.SaveAssets();AssetDatabase.Refresh();
+            WebBuild.BuildWebGL();
         }
 
         [MenuItem("Virtual House/Update And Validate Home Office A-C")]
