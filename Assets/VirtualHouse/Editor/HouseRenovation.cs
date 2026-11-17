@@ -85,6 +85,7 @@ namespace VirtualHouse.Editor
             CreateWestRoomSofa(house.Find("1階"));
             CreateGuestFurniture(house.Find("1階"));
             CreateUpperSouthPartition(house.Find("2階"));
+            ApplyWetRoomRevision(house,false);
             EditorSceneManager.SaveScene(scene,RenovatedScene);
             var builds = EditorBuildSettings.scenes.Where(s => s.path != OutputScene && s.path != RenovatedScene).ToList();
             builds.Insert(0,new EditorBuildSettingsScene(RenovatedScene,true));

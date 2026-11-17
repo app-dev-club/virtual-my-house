@@ -48,7 +48,7 @@ namespace VirtualHouse
             pad.transform.position = center + Vector3.up * .015f;
             pad.transform.localScale = new Vector3(3f, .03f, 3f);
             pad.GetComponent<Renderer>().sharedMaterial = material;
-            Destroy(pad.GetComponent<Collider>());
+            RemoveGuideCollider(pad);
             CreateCourtLines();
             var sign = new GameObject("テニスコート案内看板");
             sign.transform.SetParent(transform);
@@ -68,18 +68,19 @@ namespace VirtualHouse
         {
             var white = new Material(Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Color"));
             white.color = Color.white;
+            white.SetColor("_BaseColor",Color.white);
             // A miniature court fits within the existing green guide area.
             const float halfWidth = .62f, singlesWidth = .465f, halfLength = 1.35f;
-            const float serviceDistance = .73f, lineWidth = .025f;
+            const float serviceDistance = .73f, lineWidth = .035f;
             void Line(string name, float x, float z, float width, float length)
             {
                 var line = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 line.name = name;
                 line.transform.SetParent(transform);
-                line.transform.position = center + new Vector3(x, .033f, z);
-                line.transform.localScale = new Vector3(width, .004f, length);
+                line.transform.position = center + new Vector3(x, .045f, z);
+                line.transform.localScale = new Vector3(width, .008f, length);
                 line.GetComponent<Renderer>().sharedMaterial = white;
-                Destroy(line.GetComponent<Collider>());
+                RemoveGuideCollider(line);
             }
             foreach (float x in new[] { -halfWidth, halfWidth })
                 Line("ダブルスサイドライン", x, 0, lineWidth, halfLength * 2);
@@ -93,6 +94,15 @@ namespace VirtualHouse
             foreach (float z in new[] { -serviceDistance, serviceDistance })
                 Line("サービスライン", 0, z, singlesWidth * 2, lineWidth);
             Line("センターサービスライン", 0, 0, lineWidth, serviceDistance * 2);
+            // A dashed net reference keeps this walkable guide plane flat.
+            for(int i=0;i<9;i++)
+                Line("ネット位置の点線",-halfWidth+(i+.5f)*(halfWidth*2/9),0,.085f,lineWidth);
+        }
+
+        private static void RemoveGuideCollider(GameObject part)
+        {
+            if(Application.isPlaying) Destroy(part.GetComponent<Collider>());
+            else DestroyImmediate(part.GetComponent<Collider>());
         }
 
         private void Update()

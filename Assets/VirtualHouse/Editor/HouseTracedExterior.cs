@@ -83,6 +83,7 @@ namespace VirtualHouse.Editor
             // Western washitsu north side is a solid-backed tokonoma and storage, not a window.
             PhotoWindow(trim,"東和室北収納窓",499.5f,174,66,.91f,1.08f,2);
             PhotoWindow(trim,"浴室小窓",764,174,60,1.08f,0.95f,2);
+            CreateOriginalWashroomWindow(root);
             PhotoWindow(trim,"二階南西窓",440,350,115,3.76f,1.36f,3,true);
             PhotoWindow(trim,"二階南東窓",610,350,115,3.76f,1.36f,3,true);
             PhotoWindow(trim,"二階北西窓",440,154,100,3.82f,1.25f,3,true);

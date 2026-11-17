@@ -65,6 +65,7 @@ namespace VirtualHouse.Editor
             CreateOutdoorLayout(house);
             ApplyRaisedEntry(house);
             CreateHomeOffice(house.Find("1階"));
+            ApplyWetRoomRevision(house,true);
             EditorSceneManager.SaveScene(scene,PlanCScene);
             string[] paths={OutputScene,RenovatedScene,AlternativeScene,PlanCScene};
             EditorBuildSettings.scenes=paths.Select(p=>new EditorBuildSettingsScene(p,true)).Concat(EditorBuildSettings.scenes.Where(s=>!paths.Contains(s.path))).ToArray();
@@ -95,9 +96,9 @@ namespace VirtualHouse.Editor
             // Approach each side separately: the compact vanity is not a through-corridor.
             ValidateAlternativeRoute(new[]{PlanPoint(632,197,0),PlanPoint(632,214,0)});
             ValidateAlternativeRoute(new[]{PlanPoint(670,274,0),PlanPoint(670,240,0),PlanPoint(646,239,0)});
-            ValidateAlternativeRoute(new[]{PlanPoint(670,328,0),PlanPoint(670,235,0),PlanPoint(710,235,0),PlanPoint(714,197,0),PlanPoint(770,197,0)});
+            ValidateAlternativeRoute(new[]{PlanPoint(670,328,0),PlanPoint(670,235,0),PlanPoint(710,235,0),PlanPoint(770,222,0)});
             ValidateAlternativeRoute(new[]{PlanPoint(670,274,0),PlanPoint(670,235,0),PlanPoint(710,235,0),PlanPoint(710,274,0)});
-            ValidateAlternativeRoute(new[]{PlanPoint(714,197,0),PlanPoint(710,270,0)});
+            ValidateAlternativeRoute(new[]{PlanPoint(702,202,0),PlanPoint(710,270,0)});
             ValidateAlternativeRoute(new[]{PlanPoint(575,197,0),PlanPoint(575,158,0)});
             ValidateRenovatedKitchen();
             GameObject.Find("外観_写真ベース").SetActive(false);
