@@ -93,17 +93,19 @@ namespace VirtualHouse.Editor
             CreateDecorationBox("乾燥機操作パネル",wp+new Vector3(0,1.55f,-.292f),new Vector3(.49f,.08f,.015f),white,laundry);
             KitchenRod(laundry,"乾燥機ダイヤル",wp+new Vector3(.17f,1.55f,-.31f),wp+new Vector3(.17f,1.55f,-.33f),.045f,steel);
 
-            Vector3 cp=PlanPoint(746,274,0);
+            // Front aligns with the bathroom doorway x=746. Keep the rear and sides
+            // within the 18 x 37 plan-pixel recess, allowing for the surrounding walls.
+            Vector3 cp=PlanPoint(746,272.5f,0)+Vector3.right*.18f;
             Transform cabinet=NewGroup("旧洗濯機位置_木天板と引き出し収納",group);
-            CreateBox("収納本体",cp+Vector3.up*.43f,new Vector3(.82f,.84f,.55f),white,cabinet);
-            CreateBox("木製カウンター天板",cp+Vector3.up*.88f,new Vector3(.88f,.045f,.60f),wood,cabinet);
+            CreateBox("収納本体",cp+Vector3.up*.43f,new Vector3(.68f,.84f,.33f),white,cabinet);
+            CreateBox("木製カウンター天板",cp+Vector3.up*.88f,new Vector3(.72f,.045f,.36f),wood,cabinet);
             for(int col=0;col<2;col++) for(int row=0;row<4;row++)
             {
-                Vector3 p=cp+new Vector3((col-.5f)*.40f,.12f+row*.205f,.286f);
-                CreateDecorationBox("白い引き出し",p,new Vector3(.392f,.195f,.025f),white,cabinet);
-                CreateDecorationBox("引き出し上縁の取手",p+new Vector3(0,.078f,.015f),new Vector3(.34f,.018f,.018f),white,cabinet);
+                Vector3 p=cp+new Vector3((col-.5f)*.335f,.12f+row*.205f,.163f);
+                CreateDecorationBox("白い引き出し",p,new Vector3(.327f,.195f,.016f),white,cabinet);
+                CreateDecorationBox("引き出し上縁の取手",p+new Vector3(0,.078f,.006f),new Vector3(.28f,.018f,.008f),white,cabinet);
             }
-            Vector3 outlet=PlanPoint(746,288,1.16f);
+            Vector3 outlet=cp+new Vector3(0,1.16f,-.165f);
             CreateDecorationBox("カウンター上コンセント",outlet,new Vector3(.13f,.075f,.018f),white,cabinet);
             foreach(float x in new[]{-.035f,.035f}) foreach(float dx in new[]{-.009f,.009f})
                 CreateDecorationBox("コンセント差込口",outlet+new Vector3(x+dx,0,.011f),new Vector3(.004f,.023f,.004f),dark,cabinet);

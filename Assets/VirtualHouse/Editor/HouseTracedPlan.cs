@@ -106,6 +106,7 @@ namespace VirtualHouse.Editor
             CreateWesternRoomInterior(first);
             CreateKitchenInterior(first);
             CreateBathroomInterior(first);
+            CreateOriginalPhotoWashbasin(first);
             CreateUpperSmallRoom(second);
             CreateUpperLargeRoom(second);
             CreateTracedExterior(root);

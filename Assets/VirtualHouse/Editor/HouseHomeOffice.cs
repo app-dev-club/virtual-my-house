@@ -95,6 +95,33 @@ namespace VirtualHouse.Editor
             desk.position=corner+new Vector3(-WallThickness/2-.035f-OfficeDepth/2,0,WallThickness/2+.035f+OfficeWidth/2);
             foreach(var label in first.Find("床_部屋別").GetComponentsInChildren<TextMesh>())
                 if(label.text=="東物入") label.text="仕事部屋";
+            CreateOfficeWallOutlets(first);
+        }
+
+        private static void CreateOfficeWallOutlets(Transform first)
+        {
+            Transform office=first.Find("仕事部屋_東物入");
+            Transform old=office.Find("壁コンセント_2口x2");
+            if(old!=null) Object.DestroyImmediate(old.gameObject);
+            Transform group=NewGroup("壁コンセント_2口x2",office);
+            Material ivory=WesternMaterial("OfficeOutletIvory",new Color(.9f,.89f,.84f));
+            Material slot=GetMaterial("OfficeCharcoal");
+            foreach(bool east in new[]{true,false})
+            {
+                Transform plate=NewGroup(east?"東壁中央_2口":"南壁_2口",group);
+                CreateDecorationBox("コンセントプレート",Vector3.zero,new Vector3(.072f,.12f,.012f),ivory,plate);
+                foreach(float y in new[]{-.027f,.027f})
+                {
+                    CreateDecorationBox("差込口_1口",new Vector3(0,y,.008f),new Vector3(.042f,.031f,.006f),ivory,plate);
+                    foreach(float x in new[]{-.008f,.008f})
+                        CreateDecorationBox("差込スリット",new Vector3(x,y,.012f),new Vector3(.0035f,.015f,.002f),slot,plate);
+                }
+                foreach(float y in new[]{-.05f,.05f})
+                    CreateDecorationBox("取付ねじ",new Vector3(0,y,.007f),new Vector3(.004f,.004f,.002f),GetMaterial("KitchenSteel"),plate);
+                plate.rotation=east?Quaternion.Euler(0,-90,0):Quaternion.identity;
+                plate.position=east?PlanPoint(915,291.5f,1.10f)+Vector3.left*(WallThickness/2+.008f)
+                    :PlanPoint(877.5f,329,1.10f)+Vector3.forward*(WallThickness/2+.008f);
+            }
         }
 
         [MenuItem("Virtual House/Update And Validate Home Office A-C")]

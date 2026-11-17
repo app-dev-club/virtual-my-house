@@ -115,6 +115,94 @@ namespace VirtualHouse.Editor
             CreateWarmLight(kitchen,"キッチン照明",IkeaPoint(1.8f,1.25f,2.45f),5f,.8f);
             CreateWarmLight(kitchen,"対面収納照明",IkeaPoint(1.8f,2.9f,2.45f),4f,.5f);
             ApplyCompactFridgeAndCounterLayout(first);
+            CreateSouthKitchenIH(first);
+        }
+
+        private static void CreateSouthKitchenIH(Transform first)
+        {
+            Transform kitchen=first.Find("キッチン_IKEA共有プラン");
+            Transform old=kitchen.Find("南シンク東端_薄型2口IH");
+            if(old!=null) Object.DestroyImmediate(old.gameObject);
+            Transform ih=NewGroup("南シンク東端_薄型2口IH",kitchen);
+            // The eastern 600mm cooker bay is next to the two southern sinks, below the hood.
+            Vector3 p=IkeaPoint(.40f,.315f,.910f);
+            Material black=WesternMaterial("IHBlackGlass",new Color(.015f,.019f,.023f));
+            black.SetFloat("_Smoothness",.85f);
+            Material marks=WesternMaterial("IHMarkings",new Color(.58f,.61f,.63f));
+            Material red=WesternMaterial("IHIndicator",new Color(.65f,.025f,.015f));
+            CreateBox("薄型本体_幅600奥行480厚さ28mm",p+Vector3.up*.019f,new Vector3(.60f,.028f,.48f),GetMaterial("KitchenSteel"),ih);
+            CreateDecorationBox("黒いフラットガラス天板",p+Vector3.up*.035f,new Vector3(.592f,.004f,.472f),black,ih);
+            foreach(float x in new[]{-.145f,.145f})
+            {
+                Vector3 burner=p+new Vector3(x,.038f,-.025f);
+                KitchenRod(ih,"加熱ゾーンの円形表示",burner,burner+Vector3.up*.001f,.235f,marks);
+                KitchenRod(ih,"加熱ゾーンの黒い内側",burner+Vector3.up*.0012f,burner+Vector3.up*.0018f,.222f,black);
+                CreateDecorationBox("操作キー",p+new Vector3(x,.039f,.185f),new Vector3(.10f,.001f,.025f),marks,ih);
+                CreateDecorationBox("電源表示",p+new Vector3(x+.065f,.039f,.185f),new Vector3(.012f,.001f,.012f),red,ih);
+            }
+        }
+
+        [MenuItem("Virtual House/Update South Kitchen IH A-C And Build")]
+        public static void UpdateSouthKitchenIHAndBuild()
+        {
+            Materials.Clear();
+            EditorSceneManager.OpenScene(RenovatedScene);
+            Transform reference=GameObject.Find("住宅概形_図面ベース").transform.Find("1階/リフォーム後_設備/洗面台");
+            Vector3 referencePosition=reference.position;
+            Quaternion referenceRotation=reference.rotation;
+            var before=EditorSceneManager.OpenScene(OutputScene);
+            Transform originalFirst=GameObject.Find("住宅概形_図面ベース").transform.Find("1階");
+            CreateOriginalPhotoWashbasin(originalFirst);
+            Transform original=originalFirst.Find("既存洗面台_写真ベース/洗面台");
+            if(Vector3.Distance(original.position,referencePosition)>.001f || Quaternion.Angle(original.rotation,referenceRotation)>.01f)
+                throw new InvalidOperationException("BEFORE vanity must match Plan A position and orientation");
+            EditorSceneManager.SaveScene(before);
+            foreach(var label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))label.GetComponent<Renderer>().enabled=false;
+            Camera.main.transform.position=PlanPoint(681,209,1.5f);
+            Camera.main.transform.LookAt(PlanPoint(714,195,.95f));Camera.main.fieldOfView=80;
+            RenderCameraToPng(Camera.main,Path.Combine(Application.dataPath,"VirtualHouse/before-washbasin-preview.png"));
+            Debug.Log("BEFORE WASHBASIN VALIDATED: matches Plan A position and orientation");
+            foreach(string path in new[]{RenovatedScene,AlternativeScene,PlanCScene})
+            {
+                Materials.Clear();var scene=EditorSceneManager.OpenScene(path);
+                Transform first=GameObject.Find("住宅概形_図面ベース").transform.Find("1階");
+                if(path!=RenovatedScene)
+                {
+                    ApplyWetRoomRevision(first.parent,true);
+                    Bounds cabinet=first.Find("水回り_写真仕上げ/旧洗濯機位置_木天板と引き出し収納/木製カウンター天板").GetComponent<Renderer>().bounds;
+                    if(Mathf.Abs(cabinet.min.x-PlanPoint(746,254,0).x)>.001f || cabinet.max.x>PlanPoint(764,254,0).x-WallThickness/2 || cabinet.min.z<PlanPoint(764,291,0).z+WallThickness/2 || cabinet.max.z>PlanPoint(764,254,0).z-WallThickness/2)
+                        throw new InvalidOperationException("Laundry shelf must fit the recess and align with the bath doorway");
+                    Debug.Log("LAUNDRY RECESS VALIDATED: width 720mm, depth 360mm, front aligned with bathroom entrance");
+                }
+                CreateSouthKitchenIH(first);
+                CreateOfficeWallOutlets(first);
+                Transform outlets=first.Find("仕事部屋_東物入/壁コンセント_2口x2");
+                if(outlets.GetComponentsInChildren<Transform>().Count(t=>t.name=="差込口_1口")!=4)
+                    throw new InvalidOperationException("Office requires two duplex outlets, four sockets total");
+                Debug.Log("OFFICE OUTLETS VALIDATED: two sockets on the east wall and two on the south wall");
+                Transform kitchen=first.Find("キッチン_IKEA共有プラン");
+                Bounds body=kitchen.Find("南シンク東端_薄型2口IH/薄型本体_幅600奥行480厚さ28mm").GetComponent<Renderer>().bounds;
+                Bounds top=kitchen.Find("白いワークトップ_コンロと空きスペース").GetComponent<Renderer>().bounds;
+                if(body.min.x<top.min.x || body.max.x>top.max.x || body.min.z<top.min.z || body.max.z>top.max.z || body.min.y<top.max.y)
+                    throw new InvalidOperationException("IH must fit on the eastern worktop");
+                EditorSceneManager.SaveScene(scene);
+                foreach(var label in Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None))label.GetComponent<Renderer>().enabled=false;
+                Camera camera=Camera.main;
+                camera.transform.position=IkeaPoint(.95f,1.6f,1.8f);
+                camera.transform.LookAt(IkeaPoint(.75f,.315f,.91f));camera.fieldOfView=65;
+                RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/south-ih-"+Path.GetFileNameWithoutExtension(path)+".png"));
+                camera.transform.position=PlanPoint(848,264,1.65f);camera.transform.LookAt(PlanPoint(896,311,1.05f));camera.fieldOfView=80;
+                RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/office-outlets-"+Path.GetFileNameWithoutExtension(path)+".png"));
+                if(path!=RenovatedScene)
+                {
+                    camera.transform.position=PlanPoint(710,272.5f,1.4f);camera.transform.LookAt(PlanPoint(752,272.5f,.65f));camera.fieldOfView=75;
+                    RenderCameraToPng(camera,Path.Combine(Application.dataPath,"VirtualHouse/laundry-cabinet-"+Path.GetFileNameWithoutExtension(path)+".png"));
+                }
+                Debug.Log("SOUTH TWO-ZONE IH VALIDATED: "+path);
+            }
+            AssetDatabase.SaveAssets();AssetDatabase.Refresh();
+            UpdateEastRoomNorthWindowAllPlans();
+            WebBuild.BuildWebGL();
         }
 
         private const string RelocatedCompactName="小型冷蔵庫_再利用シンク西隣_南向き_幅500_奥行550_高さ1200_仮寸法";

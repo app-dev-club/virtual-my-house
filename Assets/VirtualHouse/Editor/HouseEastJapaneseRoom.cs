@@ -145,7 +145,7 @@ namespace VirtualHouse.Editor
             float width=right-left,center=(left+right)/2;
             float front=north+.045f,back=PlanPoint(499.5f,179,0).z-.075f;
             Transform bay=NewGroup("北出窓収納",parent);
-            Material wood=GetMaterial("LightWood"),dark=GetMaterial("DarkWood"),sand=GetMaterial("SandWall");
+            Material wood=WesternMaterial("EastNorthStorageWood",new Color(.49f,.27f,.13f)),dark=GetMaterial("DarkWood"),sand=GetMaterial("SandWall");
             // Photo IMG_20260930_111615579: a pale, polished counter over timber storage,
             // with a dark framed sliding leaf and exposed shelving on either side.
             Material counter=WesternMaterial("EastNorthShelfCounter",new Color(.78f,.76f,.67f));
@@ -158,6 +158,11 @@ namespace VirtualHouse.Editor
             Part("収納底板",center,.075f,(front+back)/2,width,.07f,back-front,dark);
             Part("収納背板",center,.44f,back,width,.70f,.035f,sand);
             Part("収納中棚",center,.51f,(front+back)/2,width,.035f,back-front-.04f,dark);
+            foreach(float x in new[]{left+width*.26f,right-width*.26f})
+                Part("収納内部の縦仕切り",x,.44f,(front+back)/2,.024f,.69f,back-front-.04f,wood);
+            Material grain=WesternMaterial("EastNorthCounterGrain",new Color(.68f,.64f,.54f));
+            for(int i=0;i<18;i++)
+                Part("天板の細い木目",left+width*(i+.5f)/18,.863f,(front+back)/2,.0013f,.0007f,back-front-.025f,grain);
             foreach(float x in new[]{left,right})
             {
                 Part("窓脇砂壁",x,1.40f,(front+back)/2,.035f,1.08f,back-front,sand);
@@ -171,6 +176,7 @@ namespace VirtualHouse.Editor
             Part("引戸_黒枠",leafCenter,.44f,front-.018f,width*.54f,.73f,.04f,frame);
             Part("引戸_木製面",leafCenter,.44f,front-.042f,width*.54f-.065f,.66f,.018f,wood);
             Part("引戸_引手",leafCenter+width*.20f,.36f,front-.054f,.035f,.045f,.01f,frame);
+            Part("引戸_引手のくぼみ",leafCenter+width*.20f,.36f,front-.060f,.020f,.030f,.004f,GetMaterial("KitchenSteel"));
             foreach(float y in new[]{.065f,.815f})
                 Part("収納引戸レール",center,y,front-.012f,width,.018f,.06f,frame);
             // Fine paired vertical bars over the actual transparent exterior sash.

@@ -35,6 +35,8 @@ namespace VirtualHouse.Editor
             SceneManager.SetActiveScene(scene);
             Transform house = scene.GetRootGameObjects().First(g => g.name == "住宅概形_図面ベース").transform;
             Transform first = house.Find("1階");
+            Transform originalVanity=first.Find("既存洗面台_写真ベース");
+            if(originalVanity!=null) Object.DestroyImmediate(originalVanity.gameObject);
             Transform walls = first.Find("壁"), floors = first.Find("床_部屋別");
             foreach (string name in new[] { "壁_651_141_651_179", "壁_688_254_726_254", "壁_726_179_726_254", "壁_802_179_802_254", "壁_764_254_802_254" })
                 RemoveRequired(walls, name);
@@ -95,6 +97,15 @@ namespace VirtualHouse.Editor
             EditorSceneManager.CloseScene(scene,true);
             if(previous.IsValid() && previous.isLoaded) SceneManager.SetActiveScene(previous);
             Debug.Log("Renovated scene saved; original scene preserved.");
+        }
+
+        private static void CreateOriginalPhotoWashbasin(Transform first)
+        {
+            Transform old=first.Find("既存洗面台_写真ベース");
+            if(old!=null) Object.DestroyImmediate(old.gameObject);
+            Transform fittings=NewGroup("既存洗面台_写真ベース",first);
+            CreatePhotoWashbasin(fittings,PlanPoint(714,197,.40f));
+            fittings.Find("洗面台").rotation=Quaternion.Euler(0,90,0);
         }
 
         // Photo reference: ivory recessed basin, ochre double doors and two separate taps.
