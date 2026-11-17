@@ -80,6 +80,7 @@ namespace VirtualHouse.Editor
             kettle.rotation=Quaternion.Euler(0,-90,0);
             // 80mm between the overall silhouettes, including spout and handle.
             kettle.position=new Vector3(east.center.x,east.max.y,cooker.position.z+.26f/2+.285f/2+.08f);
+            CreateKitchenPower(first);
         }
 
         [MenuItem("Virtual House/Update And Validate Kitchen Appliances All Plans")]

@@ -116,6 +116,7 @@ namespace VirtualHouse.Editor
             CreateWarmLight(kitchen,"対面収納照明",IkeaPoint(1.8f,2.9f,2.45f),4f,.5f);
             ApplyCompactFridgeAndCounterLayout(first);
             CreateSouthKitchenIH(first);
+            CreateKitchenAppliances(first.parent);
         }
 
         private static void CreateSouthKitchenIH(Transform first)

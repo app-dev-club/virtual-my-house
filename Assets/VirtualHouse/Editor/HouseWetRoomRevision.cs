@@ -116,6 +116,57 @@ namespace VirtualHouse.Editor
                 part.position=cp+facing*(part.position-cp);
                 part.rotation=facing*part.rotation;
             }
+            CreateLaundryWallOutlet(first);
+            CreateLaundryShelfMirror(first);
+            ShiftLaundryCounterOutletSouth(first);
+        }
+
+        private static void ShiftLaundryCounterOutletSouth(Transform first)
+        {
+            Transform cabinet=first.Find("水回り_写真仕上げ/旧洗濯機位置_木天板と引き出し収納");
+            if(cabinet==null) return;
+            Transform plate=cabinet.Find("カウンター上コンセント");
+            float offset=PlanPoint(764,272.5f,0).z-.15f-plate.position.z;
+            foreach(Transform part in cabinet)
+                if(part.name=="カウンター上コンセント" || part.name=="コンセント差込口")
+                    part.position+=Vector3.forward*offset;
+        }
+
+        private static void CreateLaundryWallOutlet(Transform first)
+        {
+            Transform laundry=first.Find("水回り_写真仕上げ/北側_洗濯機と上置き乾燥機");
+            if(laundry==null) return;
+            Transform old=laundry.Find("洗濯機と乾燥機の間_2口コンセント");
+            if(old!=null) Object.DestroyImmediate(old.gameObject);
+            Transform outlet=NewGroup("洗濯機と乾燥機の間_2口コンセント",laundry);
+            Vector3 p=PlanPoint(728,179,1.22f)+Vector3.back*(WallThickness/2+.008f);
+            Material white=GetMaterial("WetRoomWarmWhite"),dark=GetMaterial("OfficeCharcoal");
+            CreateDecorationBox("2口プレート",p,new Vector3(.075f,.12f,.012f),white,outlet);
+            foreach(float y in new[]{-.027f,.027f})
+            {
+                CreateDecorationBox("洗濯設備用差込口",p+new Vector3(0,y,-.008f),new Vector3(.043f,.032f,.005f),white,outlet);
+                foreach(float x in new[]{-.008f,.008f})
+                    CreateDecorationBox("差込スリット",p+new Vector3(x,y,-.012f),new Vector3(.0035f,.016f,.002f),dark,outlet);
+            }
+        }
+
+        private static void CreateLaundryShelfMirror(Transform first)
+        {
+            Transform cabinet=first.Find("水回り_写真仕上げ/旧洗濯機位置_木天板と引き出し収納");
+            if(cabinet==null) return;
+            Transform old=cabinet.Find("棚の上_壁付け鏡");
+            if(old!=null) Object.DestroyImmediate(old.gameObject);
+            Transform mirror=NewGroup("棚の上_壁付け鏡",cabinet);
+            Vector3 p=PlanPoint(764,272.5f,1.61f)+Vector3.left*(WallThickness/2+.016f);
+            Material glass=WesternMaterial("LaundryMirrorSilver",new Color(.72f,.78f,.80f));
+            glass.SetFloat("_Metallic",1f);glass.SetFloat("_Smoothness",.98f);
+            Material frame=GetMaterial("KitchenSteel");
+            CreateDecorationBox("鏡面",p,new Vector3(.012f,.58f,.48f),glass,mirror);
+            foreach(int sign in new[]{-1,1})
+            {
+                CreateDecorationBox("鏡の縦枠",p+new Vector3(0,0,sign*.253f),new Vector3(.025f,.63f,.026f),frame,mirror);
+                CreateDecorationBox("鏡の横枠",p+new Vector3(0,sign*.303f,0),new Vector3(.025f,.026f,.53f),frame,mirror);
+            }
         }
 
         [MenuItem("Virtual House/Update Wet Rooms A-C And Build")]
