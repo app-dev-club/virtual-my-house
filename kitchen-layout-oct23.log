@@ -1,0 +1,503 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.24f1 (4e7b9b5b6244) revision 5143451'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) Core' Language: 'ja' Physical Memory: 28476 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-10-23T00:49:08Z
+[Licensing::IpcConnector] Channel LicenseClient-hirot doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 33532)
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.24f1\Editor\Unity.exe
+-batchmode
+-quit
+-projectPath
+C:/Users/hirot/Desktop/Development/Unity/virtual-my-house
+-executeMethod
+VirtualHouse.Editor.HouseBlockoutGenerator.UpdateCompactFridgeAndCounter
+-logFile
+kitchen-layout-oct23.log
+Successfully changed project path to: C:/Users/hirot/Desktop/Development/Unity/virtual-my-house
+C:/Users/hirot/Desktop/Development/Unity/virtual-my-house
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-remapper-allocator-initial-capacity=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+Player connection [34588]  Target information:
+
+Player connection [34588]  * "[IP] 192.168.3.134 [Port] 55504 [Flags] 2 [Guid] 1511169940 [EditorId] 1511169940 [Version] 1048832 [Id] WindowsEditor(7,Lenovo_2025) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [34588] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [34588] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-21356" after 0.2 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-hirot" at "2026-10-23T00:49:08.6164647Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 33532, path: "C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              13fc95a3f6124b2a8feea9c919527a72
+  Correlation Id:          4bed12845f31ff98dccc131f38698328
+  External correlation Id: 8829058893865083118
+  Machine Id:              nJag+EO5V1MQiwWSp86wfkAsNsI=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-hirot" (connect: 0.57s, validation: 0.14s, handshake: 0.03s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-hirot-notifications" at "2026-10-23T00:49:08.7944111Z"
+[Licensing::Module] Connected to LicensingClient (PId: 33532, launch time: 0.00, total connection time: 0.74s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 15668393859854-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.92s
+[Licensing::Module] Licensing is initialized (took 0.46s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 2 unused hashed content files
+Refreshing native plugins compatible for Editor in 0.67 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.3.24f1 (4e7b9b5b6244)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/hirot/Desktop/Development/Unity/virtual-my-house/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+d3d12: failed to query info queue interface (0x80004002).
+Direct3D:
+    Version:         Direct3D 12 [level 12.2]
+    Renderer:        AMD Radeon(TM) 780M Graphics (ID=0x1900)
+    Vendor:          ATI
+    VRAM:            14238 MB
+    App VRAM Budget: 17473 MB
+    Driver:          32.0.21030.11004
+    Unified Memory Architecture
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56356
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.003697 seconds.
+- Loaded All Assemblies, in  0.450 seconds
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.338 seconds
+Domain Reload Profiling: 787ms
+	BeginReloadAssembly (174ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (17ms)
+	RebuildCommonClasses (45ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (46ms)
+	LoadAllAssembliesAndSetupDomain (174ms)
+		LoadAssemblies (157ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (168ms)
+			TypeCache.Refresh (166ms)
+				TypeCache.ScanAssembly (153ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (339ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (307ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (47ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (72ms)
+			ProcessInitializeOnLoadAttributes (117ms)
+			ProcessInitializeOnLoadMethodAttributes (65ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 57 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.14 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.ai.navigation@134dd6a3b97b)
+    com.unity.collab-proxy@2.13.6 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.collab-proxy@4628d2ba6ea4)
+    com.unity.ide.rider@3.0.40 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.ide.rider@e4950c6d131b)
+    com.unity.ide.visualstudio@2.0.26 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.ide.visualstudio@a99d56dec63f)
+    com.unity.inputsystem@1.20.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.timeline@1.8.13 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.timeline@3a22918286f5)
+    com.unity.visualscripting@1.9.12 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.visualscripting@4edfcc09512f)
+    com.unity.searcher@4.9.5 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.searcher@a463122f2c00)
+    com.unity.burst@1.8.30 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.burst@2f3d916873ea)
+    com.unity.mathematics@1.3.3 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.collections@2.6.8 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.collections@84e8eb3fc12e)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.multiplayer.center@1.0.1 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.multiplayer.center@f01f4ba8d00a)
+    com.unity.render-pipelines.universal@17.3.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.render-pipelines.universal@a8b4b2fc3560)
+    com.unity.test-framework@1.6.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.test-framework@bd7f943e9647)
+    com.unity.ugui@2.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.ugui@b996e7548785)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.render-pipelines.core@17.3.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.render-pipelines.core@0bb36005e9ba)
+    com.unity.shadergraph@17.3.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.shadergraph@30c2e3926b79)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.render-pipelines.universal-config@8dc1aab4af1d)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.11 seconds
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.24f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/2000b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/hirot/Desktop/Development/Unity/virtual-my-house
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 3s232ms
+[490/881    0s] WriteResponseFile Library/Bee/artifacts/rsp/4747638433968585886.rsp
+[693/881    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[877/881    1s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+[878/881    1s] ILPostProcess Library/Bee/artifacts/2000b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.dll, with 112 defines and 337 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[879/881    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+[880/881    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+*** Tundra build success (3.19 seconds), 6 items updated, 881 evaluated
+AssetDatabase: script compilation time: 3.753797s
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  1.018 seconds
+Refreshing native plugins compatible for Editor in 5.38 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 4.21 ms, found 4 plugins.
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.789 seconds
+Domain Reload Profiling: 3805ms
+	BeginReloadAssembly (341ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (41ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (135ms)
+	RebuildCommonClasses (39ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (33ms)
+	LoadAllAssembliesAndSetupDomain (591ms)
+		LoadAssemblies (487ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (236ms)
+			TypeCache.Refresh (172ms)
+				TypeCache.ScanAssembly (160ms)
+			BuildScriptInfoCaches (54ms)
+			ResolveRequiredComponents (7ms)
+	FinalizeReload (2789ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2489ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (24ms)
+			SetLoadedEditorAssemblies (3ms)
+			BeforeProcessingInitializeOnLoad (153ms)
+			ProcessInitializeOnLoadAttributes (2222ms)
+			ProcessInitializeOnLoadMethodAttributes (78ms)
+			AfterProcessingInitializeOnLoad (5ms)
+			EditorAssembliesLoaded (4ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (36ms)
+Refreshing native plugins compatible for Editor in 4.06 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=fc6b664c309bf8f45a514cc6875d8aee): Total: 8.492 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=3316 ms
+		Asset DB Callback time: managed=230 ms, native=119 ms
+		Scripting: domain reloads=1, domain reload time=1019 ms, compile time=3755 ms, other=51 ms
+		Project Asset Count: scripts=1344, non-scripts=2730
+		Asset File Changes: new=0, changed=1, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 116.589ms
+	ApplyChangesToAssetFolders: 0.742ms
+	Scan: 109.105ms
+	OnSourceAssetsModified: 0.729ms
+	CategorizeAssetsWithTransientArtifact: 59.677ms
+	ProcessAssetsWithTransientArtifactChanges: 95.922ms
+	CategorizeAssets: 58.244ms
+	ImportOutOfDateAssets: 2805.730ms (-951.269ms without children)
+		CompileScripts: 3755.376ms
+		ReloadNativeAssets: 0.032ms
+		UnloadImportedAssets: 0.728ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.444ms
+		InitializingProgressBar: 0.001ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.419ms
+	PostProcessAllAssets: 231.107ms
+	Hotreload: 7.152ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.002ms
+	UnloadStreamsBegin: 2.541ms
+	PersistCurrentRevisions: 0.101ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 7.402ms
+	Untracked: 5004.856ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
+Scanning for USB devices : 9.097ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-virtual-my-house
+Unloading 19 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6686 unused Assets / (5.6 MB). Loaded Objects now: 7536.
+Memory consumption went from 212.2 MB to 206.7 MB.
+Total: 10.703200 ms (FindLiveObjects: 0.807300 ms CreateObjectMapping: 0.722800 ms MarkObjects: 5.895800 ms  DeleteObjects: 3.276200 ms)
+
+Opening scene 'Assets/Scenes/HouseRenovated.unity'
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Sphere
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateCompactFridgeAndCounter () (at Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs:182)
+
+[Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs line 182]
+
+Loaded scene 'Assets/Scenes/HouseRenovated.unity'
+	Deserialize:            105.628 ms
+	Integration:            514.871 ms
+	Integration of assets:  0.029 ms
+	Thread Wait Time:       0.029 ms
+	Total Operation Time:   620.556 ms
+Unloading 2 unused Assets / (1.0 KB). Loaded Objects now: 18699.
+Memory consumption went from 219.4 MB to 219.4 MB.
+Total: 8.706800 ms (FindLiveObjects: 1.825900 ms CreateObjectMapping: 0.494100 ms MarkObjects: 6.344100 ms  DeleteObjects: 0.041500 ms)
+
+IKEA KITCHEN VALIDATION PASSED: two sinks, hall/island/working aisle walk in both directions.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+VirtualHouse.Editor.HouseBlockoutGenerator:ValidateRenovatedKitchen () (at Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs:360)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateCompactFridgeAndCounter () (at Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs:186)
+
+(Filename: Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs Line: 360)
+
+Start importing Assets/VirtualHouse/Materials/RenovationBamboo.mat using Guid(9d92642698ea30b4fa980931505d19f5) (NativeFormatImporter) -> (artifact id: 'b5ffa001eeae21cdffdfdf14309520cd') in 0.0110319 seconds
+Start importing Assets/VirtualHouse/Materials/RenovationCabinetWhite.mat using Guid(6fdbaae6effae774c85202b132a5c2c7) (NativeFormatImporter) -> (artifact id: '51827d601006f50c43a1bbc7b1c6e6dc') in 0.0051572 seconds
+Refreshing native plugins compatible for Editor in 4.00 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=022299ae4bfaf584a97e885e8f7660e7): Total: 0.098 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Scenes/HouseRenovated.unity using Guid(35dc82e47f0adb148a17229f7f6845d1) (DefaultImporter) -> (artifact id: 'e2015b3f3e22d3149b6c91478ecf1de1') in 0.0026595 seconds
+Refreshing native plugins compatible for Editor in 5.01 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=c9f997b3e25763549a96afa0d3c35d93): Total: 0.049 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+COMPACT FRIDGE AND COUNTER VALIDATED: Assets/Scenes/HouseRenovated.unity
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateCompactFridgeAndCounter () (at Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs:193)
+
+(Filename: Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs Line: 193)
+
+Opening scene 'Assets/Scenes/HouseRenovatedAlternative.unity'
+Unloading 67 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/HouseRenovatedAlternative.unity'
+	Deserialize:            91.084 ms
+	Integration:            225.552 ms
+	Integration of assets:  0.023 ms
+	Thread Wait Time:       0.001 ms
+	Total Operation Time:   316.661 ms
+Unloading 164 unused Assets / (30.8 KB). Loaded Objects now: 18821.
+Memory consumption went from 243.3 MB to 243.3 MB.
+Total: 8.393200 ms (FindLiveObjects: 1.042600 ms CreateObjectMapping: 0.169000 ms MarkObjects: 6.961200 ms  DeleteObjects: 0.219700 ms)
+
+IKEA KITCHEN VALIDATION PASSED: two sinks, hall/island/working aisle walk in both directions.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+VirtualHouse.Editor.HouseBlockoutGenerator:ValidateRenovatedKitchen () (at Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs:360)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateCompactFridgeAndCounter () (at Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs:186)
+
+(Filename: Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs Line: 360)
+
+Start importing Assets/VirtualHouse/Materials/RenovationBamboo.mat using Guid(9d92642698ea30b4fa980931505d19f5) (NativeFormatImporter) -> (artifact id: 'b5ffa001eeae21cdffdfdf14309520cd') in 0.0069434 seconds
+Start importing Assets/VirtualHouse/Materials/RenovationCabinetWhite.mat using Guid(6fdbaae6effae774c85202b132a5c2c7) (NativeFormatImporter) -> (artifact id: '51827d601006f50c43a1bbc7b1c6e6dc') in 0.0050957 seconds
+Refreshing native plugins compatible for Editor in 4.30 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=e8616f5651d4f8b4f96b00dab6909723): Total: 0.051 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Scenes/HouseRenovatedAlternative.unity using Guid(f5b6c3a5188415c40a263eb92862cab4) (DefaultImporter) -> (artifact id: '354fd95b36ab724cf3fb69a0dc18db7d') in 0.0018588 seconds
+Refreshing native plugins compatible for Editor in 3.80 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=6455b4573c6289b4989a1b9b138994fc): Total: 0.047 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+COMPACT FRIDGE AND COUNTER VALIDATED: Assets/Scenes/HouseRenovatedAlternative.unity
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateCompactFridgeAndCounter () (at Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs:193)
+
+(Filename: Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs Line: 193)
+
+Opening scene 'Assets/Scenes/HouseRenovatedPlanC.unity'
+Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/HouseRenovatedPlanC.unity'
+	Deserialize:            93.908 ms
+	Integration:            267.360 ms
+	Integration of assets:  0.026 ms
+	Thread Wait Time:       0.011 ms
+	Total Operation Time:   361.306 ms
+Unloading 164 unused Assets / (30.7 KB). Loaded Objects now: 18811.
+Memory consumption went from 243.6 MB to 243.6 MB.
+Total: 8.860200 ms (FindLiveObjects: 1.113900 ms CreateObjectMapping: 0.342500 ms MarkObjects: 7.161200 ms  DeleteObjects: 0.241900 ms)
+
+IKEA KITCHEN VALIDATION PASSED: two sinks, hall/island/working aisle walk in both directions.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+VirtualHouse.Editor.HouseBlockoutGenerator:ValidateRenovatedKitchen () (at Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs:360)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateCompactFridgeAndCounter () (at Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs:186)
+
+(Filename: Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs Line: 360)
+
+Start importing Assets/VirtualHouse/Materials/RenovationBamboo.mat using Guid(9d92642698ea30b4fa980931505d19f5) (NativeFormatImporter) -> (artifact id: 'b5ffa001eeae21cdffdfdf14309520cd') in 0.0069325 seconds
+Start importing Assets/VirtualHouse/Materials/RenovationCabinetWhite.mat using Guid(6fdbaae6effae774c85202b132a5c2c7) (NativeFormatImporter) -> (artifact id: '51827d601006f50c43a1bbc7b1c6e6dc') in 0.0049925 seconds
+Refreshing native plugins compatible for Editor in 5.06 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=5d6718b7a3e757d40bc90a1fd8c77a4a): Total: 0.053 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Scenes/HouseRenovatedPlanC.unity using Guid(1c846c7be7afa404893cbbabb23a25bf) (DefaultImporter) -> (artifact id: 'e5d6428431e6495339ed5e313597879f') in 0.0020958 seconds
+Refreshing native plugins compatible for Editor in 3.97 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=26e87c9e823a4714ba13e57e06c66373): Total: 0.046 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+COMPACT FRIDGE AND COUNTER VALIDATED: Assets/Scenes/HouseRenovatedPlanC.unity
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateCompactFridgeAndCounter () (at Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs:193)
+
+(Filename: Assets/VirtualHouse/Editor/HouseRenovatedKitchen.cs Line: 193)
+
+Start importing Assets/VirtualHouse/compact-fridge-HouseRenovatedAlternative.png using Guid(c17f430cbdb069a46aa8a0b83e9c3531) (TextureImporter) -> (artifact id: '6d1971a39d8981d48519fd7d162e5935') in 0.0553448 seconds
+Start importing Assets/VirtualHouse/compact-fridge-HouseRenovated.png using Guid(9d363ae4ffb5ac44e80184ca8d533b8a) (TextureImporter) -> (artifact id: 'f1d902bb16455bb097d48fa99e268d8f') in 0.0485579 seconds
+Start importing Assets/VirtualHouse/compact-fridge-HouseRenovatedPlanC.png using Guid(7f90dcd84a4f20249819f00eb109c900) (TextureImporter) -> (artifact id: '6f75fc0e2298ef5a5b59bdbe01c095e5') in 0.045529 seconds
+Refreshing native plugins compatible for Editor in 4.42 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=57ab0109a944eb9458b82258fa27c1e6): Total: 0.242 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Batchmode quit successfully invoked - shutting down!
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-hirot-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-hirot channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

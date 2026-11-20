@@ -66,6 +66,7 @@ namespace VirtualHouse.Editor
             ApplyRaisedEntry(house);
             CreateHomeOffice(house.Find("1階"));
             ApplyWetRoomRevision(house,true);
+            CreateAirConditioners(house);
             EditorSceneManager.SaveScene(scene,PlanCScene);
             string[] paths={OutputScene,RenovatedScene,AlternativeScene,PlanCScene};
             EditorBuildSettings.scenes=paths.Select(p=>new EditorBuildSettingsScene(p,true)).Concat(EditorBuildSettings.scenes.Where(s=>!paths.Contains(s.path))).ToArray();

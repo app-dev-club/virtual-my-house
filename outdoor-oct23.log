@@ -1,0 +1,776 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.24f1 (4e7b9b5b6244) revision 5143451'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) Core' Language: 'ja' Physical Memory: 28476 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-10-23T00:38:02Z
+[Licensing::IpcConnector] Channel LicenseClient-hirot doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 29784)
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.24f1\Editor\Unity.exe
+-batchmode
+-quit
+-projectPath
+C:/Users/hirot/Desktop/Development/Unity/virtual-my-house
+-executeMethod
+VirtualHouse.Editor.HouseBlockoutGenerator.UpdateAndValidateOutdoorLayout
+-logFile
+outdoor-oct23.log
+Successfully changed project path to: C:/Users/hirot/Desktop/Development/Unity/virtual-my-house
+C:/Users/hirot/Desktop/Development/Unity/virtual-my-house
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-remapper-allocator-initial-capacity=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+Player connection [25636]  Target information:
+
+Player connection [25636]  * "[IP] 192.168.3.134 [Port] 55504 [Flags] 2 [Guid] 171070594 [EditorId] 171070594 [Version] 1048832 [Id] WindowsEditor(7,Lenovo_2025) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [25636] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [25636] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-33084" after 0.3 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-hirot" at "2026-10-23T00:38:03.2956008Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 29784, path: "C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              4cf5590a91b346fa9ce4190db1b740f9
+  Correlation Id:          3508049e6a60f168f4585ab246211666
+  External correlation Id: 4547776795491547593
+  Machine Id:              nJag+EO5V1MQiwWSp86wfkAsNsI=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-hirot" (connect: 0.57s, validation: 0.16s, handshake: 0.04s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-hirot-notifications" at "2026-10-23T00:38:03.4978079Z"
+[Licensing::Module] Connected to LicensingClient (PId: 29784, launch time: 0.01, total connection time: 0.77s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 15668393859854-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.88s
+[Licensing::Module] Licensing is initialized (took 0.35s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 1 unused hashed content files
+Refreshing native plugins compatible for Editor in 0.92 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.3.24f1 (4e7b9b5b6244)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/hirot/Desktop/Development/Unity/virtual-my-house/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+d3d12: failed to query info queue interface (0x80004002).
+Direct3D:
+    Version:         Direct3D 12 [level 12.2]
+    Renderer:        AMD Radeon(TM) 780M Graphics (ID=0x1900)
+    Vendor:          ATI
+    VRAM:            14238 MB
+    App VRAM Budget: 17473 MB
+    Driver:          32.0.21030.11004
+    Unified Memory Architecture
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56084
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.24f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.004141 seconds.
+- Loaded All Assemblies, in  0.448 seconds
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.392 seconds
+Domain Reload Profiling: 839ms
+	BeginReloadAssembly (171ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (10ms)
+	RebuildCommonClasses (39ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (47ms)
+	LoadAllAssembliesAndSetupDomain (177ms)
+		LoadAssemblies (162ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (171ms)
+			TypeCache.Refresh (169ms)
+				TypeCache.ScanAssembly (156ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (393ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (352ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (47ms)
+			SetLoadedEditorAssemblies (3ms)
+			BeforeProcessingInitializeOnLoad (79ms)
+			ProcessInitializeOnLoadAttributes (134ms)
+			ProcessInitializeOnLoadMethodAttributes (90ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 57 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.14 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.ai.navigation@134dd6a3b97b)
+    com.unity.collab-proxy@2.13.6 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.collab-proxy@4628d2ba6ea4)
+    com.unity.ide.rider@3.0.40 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.ide.rider@e4950c6d131b)
+    com.unity.ide.visualstudio@2.0.26 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.ide.visualstudio@a99d56dec63f)
+    com.unity.inputsystem@1.20.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.timeline@1.8.13 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.timeline@3a22918286f5)
+    com.unity.visualscripting@1.9.12 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.visualscripting@4edfcc09512f)
+    com.unity.searcher@4.9.5 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.searcher@a463122f2c00)
+    com.unity.burst@1.8.30 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.burst@2f3d916873ea)
+    com.unity.mathematics@1.3.3 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.collections@2.6.8 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.collections@84e8eb3fc12e)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.multiplayer.center@1.0.1 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.multiplayer.center@f01f4ba8d00a)
+    com.unity.render-pipelines.universal@17.3.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.render-pipelines.universal@a8b4b2fc3560)
+    com.unity.test-framework@1.6.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.test-framework@bd7f943e9647)
+    com.unity.ugui@2.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.ugui@b996e7548785)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.render-pipelines.core@17.3.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.render-pipelines.core@0bb36005e9ba)
+    com.unity.shadergraph@17.3.0 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.shadergraph@30c2e3926b79)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: C:\Users\hirot\Desktop\Development\Unity\virtual-my-house\Library\PackageCache\com.unity.render-pipelines.universal-config@8dc1aab4af1d)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.11 seconds
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.24f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/2000b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/hirot/Desktop/Development/Unity/virtual-my-house
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 2s143ms
+[693/881    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[877/881    0s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+[878/881    1s] ILPostProcess Library/Bee/artifacts/2000b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.dll, with 112 defines and 337 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[879/881    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+[880/881    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+*** Tundra build success (2.10 seconds), 5 items updated, 881 evaluated
+AssetDatabase: script compilation time: 2.675188s
+Begin MonoManager ReloadAssembly
+Total cache size 153540097
+Total cache size after purge 153540097, took 00:00:00.1091328
+- Loaded All Assemblies, in  0.977 seconds
+Refreshing native plugins compatible for Editor in 4.08 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 4.75 ms, found 4 plugins.
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  3.559 seconds
+Domain Reload Profiling: 4534ms
+	BeginReloadAssembly (287ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (56ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (52ms)
+	RebuildCommonClasses (43ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (34ms)
+	LoadAllAssembliesAndSetupDomain (599ms)
+		LoadAssemblies (478ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (259ms)
+			TypeCache.Refresh (185ms)
+				TypeCache.ScanAssembly (171ms)
+			BuildScriptInfoCaches (61ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (3559ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (3251ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (28ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (169ms)
+			ProcessInitializeOnLoadAttributes (2849ms)
+			ProcessInitializeOnLoadMethodAttributes (191ms)
+			AfterProcessingInitializeOnLoad (9ms)
+			EditorAssembliesLoaded (1ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (44ms)
+Start importing Assets/VirtualHouse/README.md using Guid(f52f5131d1b981a41a1a92d55cb7bdcb) (TextScriptImporter) -> (artifact id: '9b83d1c1d22c9eba48af13080019cdff') in 0.0150628 seconds
+Refreshing native plugins compatible for Editor in 5.53 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=0396979f2490b1c42b664a15ed757247): Total: 8.204 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=1 (actual=1, local cache=0, cache server=0)
+		Asset DB Process Time: managed=2 ms, native=4122 ms
+		Asset DB Callback time: managed=240 ms, native=128 ms
+		Scripting: domain reloads=1, domain reload time=978 ms, compile time=2677 ms, other=54 ms
+		Project Asset Count: scripts=1344, non-scripts=2730
+		Asset File Changes: new=0, changed=3, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 124.673ms
+	ApplyChangesToAssetFolders: 0.992ms
+	Scan: 116.736ms
+	OnSourceAssetsModified: 0.896ms
+	CategorizeAssetsWithTransientArtifact: 63.593ms
+	ProcessAssetsWithTransientArtifactChanges: 91.301ms
+	CategorizeAssets: 55.757ms
+	ImportOutOfDateAssets: 3592.488ms (897.429ms without children)
+		ImportManagerImport: 16.726ms (1.177ms without children)
+			ImportInProcess: 15.515ms
+			UpdateCategorizedAssets: 0.034ms
+		CompileScripts: 2676.651ms
+		ReloadNativeAssets: 0.034ms
+		UnloadImportedAssets: 0.795ms
+		ReloadImportedAssets: 0.000ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.442ms
+		InitializingProgressBar: 0.007ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.404ms
+	PostProcessAllAssets: 241.176ms
+	Hotreload: 7.809ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.003ms
+	UnloadStreamsBegin: 2.002ms
+	PersistCurrentRevisions: 0.238ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 2.279ms
+	Untracked: 3906.768ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
+Scanning for USB devices : 8.671ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-virtual-my-house
+Unloading 19 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6686 unused Assets / (5.7 MB). Loaded Objects now: 7538.
+Memory consumption went from 209.2 MB to 203.5 MB.
+Total: 11.317100 ms (FindLiveObjects: 0.726700 ms CreateObjectMapping: 0.394000 ms MarkObjects: 6.965600 ms  DeleteObjects: 3.229400 ms)
+
+Opening scene 'Assets/Scenes/HouseRenovated.unity'
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Sphere
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateAndValidateOutdoorLayout () (at Assets/VirtualHouse/Editor/HouseOutdoorLayout.cs:162)
+
+[Assets/VirtualHouse/Editor/HouseOutdoorLayout.cs line 162]
+
+Loaded scene 'Assets/Scenes/HouseRenovated.unity'
+	Deserialize:            197.558 ms
+	Integration:            638.069 ms
+	Integration of assets:  0.098 ms
+	Thread Wait Time:       -0.077 ms
+	Total Operation Time:   835.649 ms
+Unloading 2 unused Assets / (1.0 KB). Loaded Objects now: 18434.
+Memory consumption went from 215.7 MB to 215.7 MB.
+Total: 11.142800 ms (FindLiveObjects: 2.982000 ms CreateObjectMapping: 0.527300 ms MarkObjects: 7.583200 ms  DeleteObjects: 0.048100 ms)
+
+Start importing Assets/VirtualHouse/Materials/Outdoor_CycleBlue.mat using Guid(40a7899fde4109f4ca2f87651e2523fa) (NativeFormatImporter) -> (artifact id: 'f98926a9ccfcf2744343197ef5eb998f') in 0.005538 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Black.mat using Guid(4018e25827a56044c823d081aaa1a7c1) (NativeFormatImporter) -> (artifact id: '615db1c982b7b0482cafb85a33de1dc2') in 0.0061926 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Brick.mat using Guid(81a9c4180a587ac4ca91cb816dfcc88f) (NativeFormatImporter) -> (artifact id: '8742ab2e28fd262b3ae657d0d06492c3') in 0.0048251 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Ivory.mat using Guid(34c39d070cc09df49873e19a8f0e7179) (NativeFormatImporter) -> (artifact id: '2a8a594af5130c3a871d84a85af15b75') in 0.00525 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Steel.mat using Guid(644256753cd337749bf205b8e6efbb0e) (NativeFormatImporter) -> (artifact id: 'db7bd6d852724bf432fc2a6f66303365') in 0.0050739 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_IndicatorAmber.mat using Guid(c4345d90b0b36cc449ff2ce3980cc0b6) (NativeFormatImporter) -> (artifact id: 'a5918ef37de248d12a4fdc04e04ff925') in 0.0055814 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_HeadlampLens.mat using Guid(f590fee8708e5694daeb47c87240ad1a) (NativeFormatImporter) -> (artifact id: '1f28c9a910f82790f3717674d9285986') in 0.0059563 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_TailRed.mat using Guid(281b494a18446e645a2b635c557fbeb6) (NativeFormatImporter) -> (artifact id: 'cf2d944b118a54cac141193560086674') in 0.0046361 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_VehicleGlass.mat using Guid(0a43255be73077c4f8781f8b3a7c5dd5) (NativeFormatImporter) -> (artifact id: 'c7041f6b35c4c9572b8156afa7d0c83b') in 0.0051807 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_PoolBlue.mat using Guid(3b279e944c7d98c4589a3b8714a0cb18) (NativeFormatImporter) -> (artifact id: '7dcd80588eea17992bf3a25eb0223c20') in 0.0052125 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Mortar.mat using Guid(6b62909aa303f4841b9a4e9b6f1aa842) (NativeFormatImporter) -> (artifact id: 'df47057c888d27688e20152cb46017fd') in 0.0059454 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Cedar.mat using Guid(db9d66a42ee92ec4da8c8e47726f85ae) (NativeFormatImporter) -> (artifact id: 'c09b85714fa13bd24433eb36b2060076') in 0.0057211 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_SientaGrey.mat using Guid(6cbd107577ad6684ba5dcaf60cc2ed4d) (NativeFormatImporter) -> (artifact id: '3f1316119f797a9e6158ab85592dfb53') in 0.0061704 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_TireRubber.mat using Guid(acf03a8ad30aaf54db41da1e4b3de88a) (NativeFormatImporter) -> (artifact id: 'a8f91024133d2b421e0f84c32afac4da') in 0.005298 seconds
+Start importing Assets/VirtualHouse/Materials/OutdoorTilledSoil.mat using Guid(3d79be9db35c0a74ead5eb4e77e7097c) (NativeFormatImporter) -> (artifact id: '45741ccb90f09b88da1ffd225b0ce6d3') in 0.0044073 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Water.mat using Guid(bdc0e5ec53f206e4ba2c7b5047416219) (NativeFormatImporter) -> (artifact id: '9de518d2c8adb4e08eac3bede3385015') in 0.005253 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Chrome.mat using Guid(2f74eb2dc988d7b42bd3dfa9fc3a9fcc) (NativeFormatImporter) -> (artifact id: 'b7b3e2400579ef3ce6e35fe22611123e') in 0.004957 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_クロームリム_0.68.asset using Guid(80dad2eef6ac09a42b5f800a9754b2a5) (NativeFormatImporter) -> (artifact id: 'bdb08e72024a3708613f65929a1dae19') in 0.0054315 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_-1.34_-1.asset using Guid(c0106f63e10e49c45ba895df3ad5a0c1) (NativeFormatImporter) -> (artifact id: 'ba72a81264321b90492f0f8c6e1796cb') in 0.005626 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_ブレーキディスク_-0.68.asset using Guid(a1ab44eade090034eaaabed52ef212f2) (NativeFormatImporter) -> (artifact id: '9e5570ae58f0985cf4dd8a217ae1d2c9') in 0.0065163 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_窓周囲_1.asset using Guid(d11b4fceb53ad4541a4c924460eb74ae) (NativeFormatImporter) -> (artifact id: 'a6f6a459b990bbb0ad6a647481af0cce') in 0.0048915 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_リム_0.55.asset using Guid(c2fb072169aa18c418f620365c711fd3) (NativeFormatImporter) -> (artifact id: 'ddd282fd3148c9547a5cb33ca7c971c5') in 0.0063222 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_フェンダー_0.68.asset using Guid(630a58d3c82e38345aaa76a59daf488d) (NativeFormatImporter) -> (artifact id: 'ab34ce361d3aac21658d59a4c4a9a18c') in 0.0060071 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_細いタイヤ_-0.55.asset using Guid(639b328e047b8ef4580f3355a8802a39) (NativeFormatImporter) -> (artifact id: '8744f4f661986036f2726cb6ec1d36dd') in 0.0054204 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_窓周囲_-1.asset using Guid(73b1c024182063043bd5113fe1232774) (NativeFormatImporter) -> (artifact id: '3dd91aeb382a64044f8de195558195bc') in 0.0064417 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_リム_-0.55.asset using Guid(f3047236b6e216f42acb0f2f73d52e0d) (NativeFormatImporter) -> (artifact id: 'c6e0ed9c45dd8dea15549d95a5910e6b') in 0.0052153 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_運転席ガラス_-1.asset using Guid(158563a20cfb19d47a0ca4cff3819238) (NativeFormatImporter) -> (artifact id: '9bc2599e7fb09b4452f980e0ebc28bcc') in 0.0058836 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_-1.34_1.asset using Guid(37502520b59d88b47981aa22d735857c) (NativeFormatImporter) -> (artifact id: '0212ae8c9570100b6352a835081c9dcf') in 0.0047473 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_1.34_1.asset using Guid(3787e2f667055b3489619eae0de2b2df) (NativeFormatImporter) -> (artifact id: 'b9d15711a2329d5d5a04b76c754aa989') in 0.0057197 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_-1.34_-1.asset using Guid(67f859e9c4117fa47ba5c141682b497b) (NativeFormatImporter) -> (artifact id: '678f2173d5ba065b65aa0e7c4d28405e') in 0.0046098 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_1.34_-1.asset using Guid(77c812cb875342449902f6bb2c51eba9) (NativeFormatImporter) -> (artifact id: 'e47f6b92da3fe100cc7b6534069e6f24') in 0.00507 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_傾斜フロントガラス.asset using Guid(38ad7de3bf79a5b419f9c7a4df0fd8cc) (NativeFormatImporter) -> (artifact id: '2213dc33dbd5bf2b3fca4320ec90b0a8') in 0.0054262 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_タイヤ_0.68.asset using Guid(7812956598dba7d45ac8e23f6bfecb56) (NativeFormatImporter) -> (artifact id: '833107a72d3c80d358f8688c891864f9') in 0.005908 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_1.34_1.asset using Guid(09f2bf2e569697145a503df4500b39d1) (NativeFormatImporter) -> (artifact id: '5a92bf83537eda11e2834b07b569b4e4') in 0.0050503 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_スライドドアガラス_-1.asset using Guid(49c41b3d52a59634aad6eb3a36ea6eb4) (NativeFormatImporter) -> (artifact id: '2d25f7da43f87af901ecb2e5a147b8bc') in 0.0052341 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_1.34_-1.asset using Guid(d91d8a2b66a94bd4a8d3f79617dacaed) (NativeFormatImporter) -> (artifact id: 'ff7a10fa2294d705981d901252b39964') in 0.0047676 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_-1.34_-1.asset using Guid(6aaabad90e24cfb4ea366d053eb18559) (NativeFormatImporter) -> (artifact id: 'd5ce5066bb1787f02699f05ea2b2afa8') in 0.0056178 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_タイヤ_-0.68.asset using Guid(7b332c0ca6444f0448cc1890cc5f6df5) (NativeFormatImporter) -> (artifact id: 'aa2cfc8e7f7f0eb636e6922a0aa16714') in 0.0052762 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_曲面ボディ.asset using Guid(fba56dc8dee5a544e8cb64008d2db652) (NativeFormatImporter) -> (artifact id: '56f0cc3344571fab79a0651952e7e99e') in 0.0056507 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_細いタイヤ_0.55.asset using Guid(2c54d50451aa8844aa08731ecb2fa466) (NativeFormatImporter) -> (artifact id: 'cedff8c63bd2d23fcd2325db7b0abd00') in 0.0060296 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_フェンダー_-0.68.asset using Guid(4c25e94d86d0baa4e9f0cb561c4e502f) (NativeFormatImporter) -> (artifact id: 'a3f25455cd251335e7bb631716e6e581') in 0.0052497 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_運転席ガラス_1.asset using Guid(cc81b65ede1314c499fdcc9a3d3438d4) (NativeFormatImporter) -> (artifact id: '3925b7353326834346d5373064d1325f') in 0.0049149 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_1.34_-1.asset using Guid(dcfdf31f3adb7894dba7d684dc40baca) (NativeFormatImporter) -> (artifact id: 'ccdc072d29d62ce48be5a3ebc8fb8c2e') in 0.0060745 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_クロームリム_-0.68.asset using Guid(ade2f875453525c4cb03f5031afe0bcf) (NativeFormatImporter) -> (artifact id: '5e9cac85ffd283a97dda62475afbde7e') in 0.0070701 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_-1.34_1.asset using Guid(dd333c0ab51e66e44b390e7b0e4fbdb0) (NativeFormatImporter) -> (artifact id: '09ebedf9500ac2f6b89d3ca16bef8146') in 0.0059373 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_スライドドアガラス_1.asset using Guid(dd9d10e7512ba0f4da6e7555373bffa1) (NativeFormatImporter) -> (artifact id: 'ae71930cba8e11ceb234c57c37a1348b') in 0.0054242 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_後席ガラス_-1.asset using Guid(8eb87883936e1e7409a733ef1b902452) (NativeFormatImporter) -> (artifact id: 'e14c81a4c01ea3306f7acc7245f298b8') in 0.0045899 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_ブレーキディスク_0.68.asset using Guid(3f07ad18f3506394a878043afcdaf540) (NativeFormatImporter) -> (artifact id: '3c625b4c7171a6b23133206fe851647e') in 0.0052432 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_-1.34_1.asset using Guid(5ff2feb88b6de7e4a8d569e1ae07304c) (NativeFormatImporter) -> (artifact id: 'd06b44f8dec8de70338dfd54647ae338') in 0.0055722 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_後席ガラス_1.asset using Guid(5f457e62f3067ed4b94cca42ee426c4c) (NativeFormatImporter) -> (artifact id: '2f42d4f785585343848ecfde5d9d928b') in 0.0049843 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_1.34_1.asset using Guid(af73431976f18d1438faa86fdc4913f4) (NativeFormatImporter) -> (artifact id: '19cca8326a6edf9ec398a142d20009cb') in 0.0049187 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リアガラス.asset using Guid(efd69b9215882eb4196e1cc16a8b16a4) (NativeFormatImporter) -> (artifact id: 'a128d5c9a9d695a224d1bb7ac9bdf8e5') in 0.0054727 seconds
+Refreshing native plugins compatible for Editor in 5.30 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=43eb3d3e751b4fd479275415b85afca7): Total: 0.425 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=52 (actual=52, local cache=0, cache server=0)
+		Asset DB Process Time: managed=3 ms, native=379 ms
+		Asset DB Callback time: managed=22 ms, native=19 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=1344, non-scripts=2730
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 56
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 0.001ms
+	ApplyChangesToAssetFolders: 0.102ms
+	Scan: 23.093ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.100ms
+	ProcessAssetsWithTransientArtifactChanges: 0.082ms
+	CategorizeAssets: 30.564ms
+	ImportOutOfDateAssets: 323.248ms (0.355ms without children)
+		ImportManagerImport: 321.217ms (9.276ms without children)
+			ImportInProcess: 311.282ms
+			UpdateCategorizedAssets: 0.659ms
+		ReloadNativeAssets: 0.163ms
+		UnloadImportedAssets: 0.220ms
+		ReloadImportedAssets: 0.008ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.650ms
+		InitializingProgressBar: 0.006ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.001ms
+		OnDemandSchedulerStart: 0.627ms
+	PostProcessAllAssets: 30.174ms
+	Hotreload: 11.981ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.140ms
+	UnloadStreamsBegin: 0.372ms
+	PersistCurrentRevisions: 0.126ms
+	UnloadStreamsEnd: 0.252ms
+	Untracked: 5.260ms
+
+Start importing Assets/Scenes/HouseRenovated.unity using Guid(35dc82e47f0adb148a17229f7f6845d1) (DefaultImporter) -> (artifact id: '6b91be73cc2fb4247707c70ce04d3bae') in 0.0016812 seconds
+Refreshing native plugins compatible for Editor in 4.29 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=599db86cb7e1b3741a40cb47f57bc90f): Total: 0.047 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+OUTDOOR VALIDATION PASSED: Assets/Scenes/HouseRenovated.unity; counts, lot bounds, entrance / parking approach, north exit, BBQ aisle and south garden walk.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateAndValidateOutdoorLayout () (at Assets/VirtualHouse/Editor/HouseOutdoorLayout.cs:216)
+
+(Filename: Assets/VirtualHouse/Editor/HouseOutdoorLayout.cs Line: 216)
+
+Opening scene 'Assets/Scenes/HouseRenovatedAlternative.unity'
+Unloading 24 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/HouseRenovatedAlternative.unity'
+	Deserialize:            128.781 ms
+	Integration:            290.968 ms
+	Integration of assets:  0.040 ms
+	Thread Wait Time:       -0.019 ms
+	Total Operation Time:   419.769 ms
+Unloading 194 unused Assets / (38.7 KB). Loaded Objects now: 18456.
+Memory consumption went from 216.0 MB to 216.0 MB.
+Total: 9.418900 ms (FindLiveObjects: 1.264600 ms CreateObjectMapping: 0.446900 ms MarkObjects: 7.447500 ms  DeleteObjects: 0.259200 ms)
+
+Start importing Assets/VirtualHouse/Materials/Outdoor_CycleBlue.mat using Guid(40a7899fde4109f4ca2f87651e2523fa) (NativeFormatImporter) -> (artifact id: 'f98926a9ccfcf2744343197ef5eb998f') in 0.0069371 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Black.mat using Guid(4018e25827a56044c823d081aaa1a7c1) (NativeFormatImporter) -> (artifact id: '615db1c982b7b0482cafb85a33de1dc2') in 0.0046854 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Brick.mat using Guid(81a9c4180a587ac4ca91cb816dfcc88f) (NativeFormatImporter) -> (artifact id: '8742ab2e28fd262b3ae657d0d06492c3') in 0.0041824 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Ivory.mat using Guid(34c39d070cc09df49873e19a8f0e7179) (NativeFormatImporter) -> (artifact id: '2a8a594af5130c3a871d84a85af15b75') in 0.0039621 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Steel.mat using Guid(644256753cd337749bf205b8e6efbb0e) (NativeFormatImporter) -> (artifact id: 'db7bd6d852724bf432fc2a6f66303365') in 0.0041744 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_IndicatorAmber.mat using Guid(c4345d90b0b36cc449ff2ce3980cc0b6) (NativeFormatImporter) -> (artifact id: 'a5918ef37de248d12a4fdc04e04ff925') in 0.0048544 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_HeadlampLens.mat using Guid(f590fee8708e5694daeb47c87240ad1a) (NativeFormatImporter) -> (artifact id: '1f28c9a910f82790f3717674d9285986') in 0.004522 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_TailRed.mat using Guid(281b494a18446e645a2b635c557fbeb6) (NativeFormatImporter) -> (artifact id: 'cf2d944b118a54cac141193560086674') in 0.0041043 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_VehicleGlass.mat using Guid(0a43255be73077c4f8781f8b3a7c5dd5) (NativeFormatImporter) -> (artifact id: 'c7041f6b35c4c9572b8156afa7d0c83b') in 0.0043536 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_PoolBlue.mat using Guid(3b279e944c7d98c4589a3b8714a0cb18) (NativeFormatImporter) -> (artifact id: '7dcd80588eea17992bf3a25eb0223c20') in 0.0050324 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Mortar.mat using Guid(6b62909aa303f4841b9a4e9b6f1aa842) (NativeFormatImporter) -> (artifact id: 'df47057c888d27688e20152cb46017fd') in 0.004974 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Cedar.mat using Guid(db9d66a42ee92ec4da8c8e47726f85ae) (NativeFormatImporter) -> (artifact id: 'c09b85714fa13bd24433eb36b2060076') in 0.0047067 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_SientaGrey.mat using Guid(6cbd107577ad6684ba5dcaf60cc2ed4d) (NativeFormatImporter) -> (artifact id: '3f1316119f797a9e6158ab85592dfb53') in 0.0045857 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_TireRubber.mat using Guid(acf03a8ad30aaf54db41da1e4b3de88a) (NativeFormatImporter) -> (artifact id: 'a8f91024133d2b421e0f84c32afac4da') in 0.0045141 seconds
+Start importing Assets/VirtualHouse/Materials/OutdoorTilledSoil.mat using Guid(3d79be9db35c0a74ead5eb4e77e7097c) (NativeFormatImporter) -> (artifact id: '45741ccb90f09b88da1ffd225b0ce6d3') in 0.0046293 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Water.mat using Guid(bdc0e5ec53f206e4ba2c7b5047416219) (NativeFormatImporter) -> (artifact id: '9de518d2c8adb4e08eac3bede3385015') in 0.0058883 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Chrome.mat using Guid(2f74eb2dc988d7b42bd3dfa9fc3a9fcc) (NativeFormatImporter) -> (artifact id: 'b7b3e2400579ef3ce6e35fe22611123e') in 0.0050797 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_クロームリム_0.68.asset using Guid(80dad2eef6ac09a42b5f800a9754b2a5) (NativeFormatImporter) -> (artifact id: 'bdb08e72024a3708613f65929a1dae19') in 0.0047334 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_-1.34_-1.asset using Guid(c0106f63e10e49c45ba895df3ad5a0c1) (NativeFormatImporter) -> (artifact id: 'ba72a81264321b90492f0f8c6e1796cb') in 0.0047365 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_ブレーキディスク_-0.68.asset using Guid(a1ab44eade090034eaaabed52ef212f2) (NativeFormatImporter) -> (artifact id: '9e5570ae58f0985cf4dd8a217ae1d2c9') in 0.0049112 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_窓周囲_1.asset using Guid(d11b4fceb53ad4541a4c924460eb74ae) (NativeFormatImporter) -> (artifact id: 'a6f6a459b990bbb0ad6a647481af0cce') in 0.003914 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_リム_0.55.asset using Guid(c2fb072169aa18c418f620365c711fd3) (NativeFormatImporter) -> (artifact id: 'ddd282fd3148c9547a5cb33ca7c971c5') in 0.0051042 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_フェンダー_0.68.asset using Guid(630a58d3c82e38345aaa76a59daf488d) (NativeFormatImporter) -> (artifact id: 'ab34ce361d3aac21658d59a4c4a9a18c') in 0.0042942 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_細いタイヤ_-0.55.asset using Guid(639b328e047b8ef4580f3355a8802a39) (NativeFormatImporter) -> (artifact id: '8744f4f661986036f2726cb6ec1d36dd') in 0.0038845 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_窓周囲_-1.asset using Guid(73b1c024182063043bd5113fe1232774) (NativeFormatImporter) -> (artifact id: '3dd91aeb382a64044f8de195558195bc') in 0.0046132 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_リム_-0.55.asset using Guid(f3047236b6e216f42acb0f2f73d52e0d) (NativeFormatImporter) -> (artifact id: 'c6e0ed9c45dd8dea15549d95a5910e6b') in 0.0040214 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_運転席ガラス_-1.asset using Guid(158563a20cfb19d47a0ca4cff3819238) (NativeFormatImporter) -> (artifact id: '9bc2599e7fb09b4452f980e0ebc28bcc') in 0.0040779 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_-1.34_1.asset using Guid(37502520b59d88b47981aa22d735857c) (NativeFormatImporter) -> (artifact id: '0212ae8c9570100b6352a835081c9dcf') in 0.0050889 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_1.34_1.asset using Guid(3787e2f667055b3489619eae0de2b2df) (NativeFormatImporter) -> (artifact id: 'b9d15711a2329d5d5a04b76c754aa989') in 0.0049657 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_-1.34_-1.asset using Guid(67f859e9c4117fa47ba5c141682b497b) (NativeFormatImporter) -> (artifact id: '678f2173d5ba065b65aa0e7c4d28405e') in 0.0054919 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_1.34_-1.asset using Guid(77c812cb875342449902f6bb2c51eba9) (NativeFormatImporter) -> (artifact id: 'e47f6b92da3fe100cc7b6534069e6f24') in 0.005827 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_傾斜フロントガラス.asset using Guid(38ad7de3bf79a5b419f9c7a4df0fd8cc) (NativeFormatImporter) -> (artifact id: '2213dc33dbd5bf2b3fca4320ec90b0a8') in 0.0052392 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_タイヤ_0.68.asset using Guid(7812956598dba7d45ac8e23f6bfecb56) (NativeFormatImporter) -> (artifact id: '833107a72d3c80d358f8688c891864f9') in 0.0049156 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_1.34_1.asset using Guid(09f2bf2e569697145a503df4500b39d1) (NativeFormatImporter) -> (artifact id: '5a92bf83537eda11e2834b07b569b4e4') in 0.0046621 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_スライドドアガラス_-1.asset using Guid(49c41b3d52a59634aad6eb3a36ea6eb4) (NativeFormatImporter) -> (artifact id: '2d25f7da43f87af901ecb2e5a147b8bc') in 0.0045583 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_1.34_-1.asset using Guid(d91d8a2b66a94bd4a8d3f79617dacaed) (NativeFormatImporter) -> (artifact id: 'ff7a10fa2294d705981d901252b39964') in 0.0044676 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_-1.34_-1.asset using Guid(6aaabad90e24cfb4ea366d053eb18559) (NativeFormatImporter) -> (artifact id: 'd5ce5066bb1787f02699f05ea2b2afa8') in 0.0045805 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_タイヤ_-0.68.asset using Guid(7b332c0ca6444f0448cc1890cc5f6df5) (NativeFormatImporter) -> (artifact id: 'aa2cfc8e7f7f0eb636e6922a0aa16714') in 0.0050072 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_曲面ボディ.asset using Guid(fba56dc8dee5a544e8cb64008d2db652) (NativeFormatImporter) -> (artifact id: '56f0cc3344571fab79a0651952e7e99e') in 0.0045028 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_細いタイヤ_0.55.asset using Guid(2c54d50451aa8844aa08731ecb2fa466) (NativeFormatImporter) -> (artifact id: 'cedff8c63bd2d23fcd2325db7b0abd00') in 0.0050733 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_フェンダー_-0.68.asset using Guid(4c25e94d86d0baa4e9f0cb561c4e502f) (NativeFormatImporter) -> (artifact id: 'a3f25455cd251335e7bb631716e6e581') in 0.0047174 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_運転席ガラス_1.asset using Guid(cc81b65ede1314c499fdcc9a3d3438d4) (NativeFormatImporter) -> (artifact id: '3925b7353326834346d5373064d1325f') in 0.0045997 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_1.34_-1.asset using Guid(dcfdf31f3adb7894dba7d684dc40baca) (NativeFormatImporter) -> (artifact id: 'ccdc072d29d62ce48be5a3ebc8fb8c2e') in 0.0043101 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_クロームリム_-0.68.asset using Guid(ade2f875453525c4cb03f5031afe0bcf) (NativeFormatImporter) -> (artifact id: '5e9cac85ffd283a97dda62475afbde7e') in 0.0059719 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_-1.34_1.asset using Guid(dd333c0ab51e66e44b390e7b0e4fbdb0) (NativeFormatImporter) -> (artifact id: '09ebedf9500ac2f6b89d3ca16bef8146') in 0.0043532 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_スライドドアガラス_1.asset using Guid(dd9d10e7512ba0f4da6e7555373bffa1) (NativeFormatImporter) -> (artifact id: 'ae71930cba8e11ceb234c57c37a1348b') in 0.0046752 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_後席ガラス_-1.asset using Guid(8eb87883936e1e7409a733ef1b902452) (NativeFormatImporter) -> (artifact id: 'e14c81a4c01ea3306f7acc7245f298b8') in 0.004057 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_ブレーキディスク_0.68.asset using Guid(3f07ad18f3506394a878043afcdaf540) (NativeFormatImporter) -> (artifact id: '3c625b4c7171a6b23133206fe851647e') in 0.0050052 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_-1.34_1.asset using Guid(5ff2feb88b6de7e4a8d569e1ae07304c) (NativeFormatImporter) -> (artifact id: 'd06b44f8dec8de70338dfd54647ae338') in 0.0047733 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_後席ガラス_1.asset using Guid(5f457e62f3067ed4b94cca42ee426c4c) (NativeFormatImporter) -> (artifact id: '2f42d4f785585343848ecfde5d9d928b') in 0.0055054 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_1.34_1.asset using Guid(af73431976f18d1438faa86fdc4913f4) (NativeFormatImporter) -> (artifact id: '19cca8326a6edf9ec398a142d20009cb') in 0.0049925 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リアガラス.asset using Guid(efd69b9215882eb4196e1cc16a8b16a4) (NativeFormatImporter) -> (artifact id: 'a128d5c9a9d695a224d1bb7ac9bdf8e5') in 0.0044681 seconds
+Refreshing native plugins compatible for Editor in 5.43 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=14098281848ac4f4ba9ac832933e6a02): Total: 0.348 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=52 (actual=52, local cache=0, cache server=0)
+		Asset DB Process Time: managed=3 ms, native=305 ms
+		Asset DB Callback time: managed=18 ms, native=20 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=1344, non-scripts=2730
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 56
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 0.001ms
+	ApplyChangesToAssetFolders: 0.144ms
+	Scan: 16.840ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.110ms
+	ProcessAssetsWithTransientArtifactChanges: 0.081ms
+	CategorizeAssets: 2.337ms
+	ImportOutOfDateAssets: 285.803ms (0.255ms without children)
+		ImportManagerImport: 284.307ms (9.891ms without children)
+			ImportInProcess: 273.417ms
+			UpdateCategorizedAssets: 0.999ms
+		ReloadNativeAssets: 0.181ms
+		UnloadImportedAssets: 0.199ms
+		ReloadImportedAssets: 0.007ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.511ms
+		InitializingProgressBar: 0.005ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.001ms
+		OnDemandSchedulerStart: 0.336ms
+	PostProcessAllAssets: 25.139ms
+	Hotreload: 13.866ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.220ms
+	UnloadStreamsBegin: 0.032ms
+	PersistCurrentRevisions: 0.102ms
+	UnloadStreamsEnd: 0.146ms
+	Untracked: 2.832ms
+
+Start importing Assets/Scenes/HouseRenovatedAlternative.unity using Guid(f5b6c3a5188415c40a263eb92862cab4) (DefaultImporter) -> (artifact id: '17df801bf23cfdd5aef928f225f1c4b3') in 0.0014405 seconds
+Refreshing native plugins compatible for Editor in 5.43 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=892f72ed0b8feba439264a7b0a86f0f9): Total: 0.052 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+OUTDOOR VALIDATION PASSED: Assets/Scenes/HouseRenovatedAlternative.unity; counts, lot bounds, entrance / parking approach, north exit, BBQ aisle and south garden walk.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateAndValidateOutdoorLayout () (at Assets/VirtualHouse/Editor/HouseOutdoorLayout.cs:216)
+
+(Filename: Assets/VirtualHouse/Editor/HouseOutdoorLayout.cs Line: 216)
+
+Opening scene 'Assets/Scenes/HouseRenovatedPlanC.unity'
+Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/HouseRenovatedPlanC.unity'
+	Deserialize:            106.614 ms
+	Integration:            275.576 ms
+	Integration of assets:  0.040 ms
+	Thread Wait Time:       0.053 ms
+	Total Operation Time:   382.282 ms
+Unloading 194 unused Assets / (38.5 KB). Loaded Objects now: 18446.
+Memory consumption went from 216.4 MB to 216.3 MB.
+Total: 7.372600 ms (FindLiveObjects: 1.047900 ms CreateObjectMapping: 0.179200 ms MarkObjects: 5.864000 ms  DeleteObjects: 0.280700 ms)
+
+Start importing Assets/VirtualHouse/Materials/Outdoor_CycleBlue.mat using Guid(40a7899fde4109f4ca2f87651e2523fa) (NativeFormatImporter) -> (artifact id: 'f98926a9ccfcf2744343197ef5eb998f') in 0.007239 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Black.mat using Guid(4018e25827a56044c823d081aaa1a7c1) (NativeFormatImporter) -> (artifact id: '615db1c982b7b0482cafb85a33de1dc2') in 0.0052302 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Brick.mat using Guid(81a9c4180a587ac4ca91cb816dfcc88f) (NativeFormatImporter) -> (artifact id: '8742ab2e28fd262b3ae657d0d06492c3') in 0.0049229 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Ivory.mat using Guid(34c39d070cc09df49873e19a8f0e7179) (NativeFormatImporter) -> (artifact id: '2a8a594af5130c3a871d84a85af15b75') in 0.0050193 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Steel.mat using Guid(644256753cd337749bf205b8e6efbb0e) (NativeFormatImporter) -> (artifact id: 'db7bd6d852724bf432fc2a6f66303365') in 0.0052924 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_IndicatorAmber.mat using Guid(c4345d90b0b36cc449ff2ce3980cc0b6) (NativeFormatImporter) -> (artifact id: 'a5918ef37de248d12a4fdc04e04ff925') in 0.0054677 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_HeadlampLens.mat using Guid(f590fee8708e5694daeb47c87240ad1a) (NativeFormatImporter) -> (artifact id: '1f28c9a910f82790f3717674d9285986') in 0.0039829 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_TailRed.mat using Guid(281b494a18446e645a2b635c557fbeb6) (NativeFormatImporter) -> (artifact id: 'cf2d944b118a54cac141193560086674') in 0.0058581 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_VehicleGlass.mat using Guid(0a43255be73077c4f8781f8b3a7c5dd5) (NativeFormatImporter) -> (artifact id: 'c7041f6b35c4c9572b8156afa7d0c83b') in 0.0059421 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_PoolBlue.mat using Guid(3b279e944c7d98c4589a3b8714a0cb18) (NativeFormatImporter) -> (artifact id: '7dcd80588eea17992bf3a25eb0223c20') in 0.0043976 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Mortar.mat using Guid(6b62909aa303f4841b9a4e9b6f1aa842) (NativeFormatImporter) -> (artifact id: 'df47057c888d27688e20152cb46017fd') in 0.0047852 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Cedar.mat using Guid(db9d66a42ee92ec4da8c8e47726f85ae) (NativeFormatImporter) -> (artifact id: 'c09b85714fa13bd24433eb36b2060076') in 0.0056955 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_SientaGrey.mat using Guid(6cbd107577ad6684ba5dcaf60cc2ed4d) (NativeFormatImporter) -> (artifact id: '3f1316119f797a9e6158ab85592dfb53') in 0.0047773 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_TireRubber.mat using Guid(acf03a8ad30aaf54db41da1e4b3de88a) (NativeFormatImporter) -> (artifact id: 'a8f91024133d2b421e0f84c32afac4da') in 0.0055791 seconds
+Start importing Assets/VirtualHouse/Materials/OutdoorTilledSoil.mat using Guid(3d79be9db35c0a74ead5eb4e77e7097c) (NativeFormatImporter) -> (artifact id: '45741ccb90f09b88da1ffd225b0ce6d3') in 0.0049358 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Water.mat using Guid(bdc0e5ec53f206e4ba2c7b5047416219) (NativeFormatImporter) -> (artifact id: '9de518d2c8adb4e08eac3bede3385015') in 0.0052686 seconds
+Start importing Assets/VirtualHouse/Materials/Outdoor_Chrome.mat using Guid(2f74eb2dc988d7b42bd3dfa9fc3a9fcc) (NativeFormatImporter) -> (artifact id: 'b7b3e2400579ef3ce6e35fe22611123e') in 0.005487 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_クロームリム_0.68.asset using Guid(80dad2eef6ac09a42b5f800a9754b2a5) (NativeFormatImporter) -> (artifact id: 'bdb08e72024a3708613f65929a1dae19') in 0.0051061 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_-1.34_-1.asset using Guid(c0106f63e10e49c45ba895df3ad5a0c1) (NativeFormatImporter) -> (artifact id: 'ba72a81264321b90492f0f8c6e1796cb') in 0.0052947 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_ブレーキディスク_-0.68.asset using Guid(a1ab44eade090034eaaabed52ef212f2) (NativeFormatImporter) -> (artifact id: '9e5570ae58f0985cf4dd8a217ae1d2c9') in 0.0069454 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_窓周囲_1.asset using Guid(d11b4fceb53ad4541a4c924460eb74ae) (NativeFormatImporter) -> (artifact id: 'a6f6a459b990bbb0ad6a647481af0cce') in 0.0044803 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_リム_0.55.asset using Guid(c2fb072169aa18c418f620365c711fd3) (NativeFormatImporter) -> (artifact id: 'ddd282fd3148c9547a5cb33ca7c971c5') in 0.0047569 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_フェンダー_0.68.asset using Guid(630a58d3c82e38345aaa76a59daf488d) (NativeFormatImporter) -> (artifact id: 'ab34ce361d3aac21658d59a4c4a9a18c') in 0.0061531 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_細いタイヤ_-0.55.asset using Guid(639b328e047b8ef4580f3355a8802a39) (NativeFormatImporter) -> (artifact id: '8744f4f661986036f2726cb6ec1d36dd') in 0.0056598 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_窓周囲_-1.asset using Guid(73b1c024182063043bd5113fe1232774) (NativeFormatImporter) -> (artifact id: '3dd91aeb382a64044f8de195558195bc') in 0.0045344 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_リム_-0.55.asset using Guid(f3047236b6e216f42acb0f2f73d52e0d) (NativeFormatImporter) -> (artifact id: 'c6e0ed9c45dd8dea15549d95a5910e6b') in 0.0057653 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_運転席ガラス_-1.asset using Guid(158563a20cfb19d47a0ca4cff3819238) (NativeFormatImporter) -> (artifact id: '9bc2599e7fb09b4452f980e0ebc28bcc') in 0.0052164 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_-1.34_1.asset using Guid(37502520b59d88b47981aa22d735857c) (NativeFormatImporter) -> (artifact id: '0212ae8c9570100b6352a835081c9dcf') in 0.0068045 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_1.34_1.asset using Guid(3787e2f667055b3489619eae0de2b2df) (NativeFormatImporter) -> (artifact id: 'b9d15711a2329d5d5a04b76c754aa989') in 0.0047661 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_-1.34_-1.asset using Guid(67f859e9c4117fa47ba5c141682b497b) (NativeFormatImporter) -> (artifact id: '678f2173d5ba065b65aa0e7c4d28405e') in 0.0055236 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_1.34_-1.asset using Guid(77c812cb875342449902f6bb2c51eba9) (NativeFormatImporter) -> (artifact id: 'e47f6b92da3fe100cc7b6534069e6f24') in 0.0059438 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_傾斜フロントガラス.asset using Guid(38ad7de3bf79a5b419f9c7a4df0fd8cc) (NativeFormatImporter) -> (artifact id: '2213dc33dbd5bf2b3fca4320ec90b0a8') in 0.0053625 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_タイヤ_0.68.asset using Guid(7812956598dba7d45ac8e23f6bfecb56) (NativeFormatImporter) -> (artifact id: '833107a72d3c80d358f8688c891864f9') in 0.0058923 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_1.34_1.asset using Guid(09f2bf2e569697145a503df4500b39d1) (NativeFormatImporter) -> (artifact id: '5a92bf83537eda11e2834b07b569b4e4') in 0.0058405 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_スライドドアガラス_-1.asset using Guid(49c41b3d52a59634aad6eb3a36ea6eb4) (NativeFormatImporter) -> (artifact id: '2d25f7da43f87af901ecb2e5a147b8bc') in 0.0040982 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_1.34_-1.asset using Guid(d91d8a2b66a94bd4a8d3f79617dacaed) (NativeFormatImporter) -> (artifact id: 'ff7a10fa2294d705981d901252b39964') in 0.0052236 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リム_-1.34_-1.asset using Guid(6aaabad90e24cfb4ea366d053eb18559) (NativeFormatImporter) -> (artifact id: 'd5ce5066bb1787f02699f05ea2b2afa8') in 0.0058065 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_タイヤ_-0.68.asset using Guid(7b332c0ca6444f0448cc1890cc5f6df5) (NativeFormatImporter) -> (artifact id: 'aa2cfc8e7f7f0eb636e6922a0aa16714') in 0.0050068 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_曲面ボディ.asset using Guid(fba56dc8dee5a544e8cb64008d2db652) (NativeFormatImporter) -> (artifact id: '56f0cc3344571fab79a0651952e7e99e') in 0.0059853 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_クロスバイク_細いタイヤ_0.55.asset using Guid(2c54d50451aa8844aa08731ecb2fa466) (NativeFormatImporter) -> (artifact id: 'cedff8c63bd2d23fcd2325db7b0abd00') in 0.0057784 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_フェンダー_-0.68.asset using Guid(4c25e94d86d0baa4e9f0cb561c4e502f) (NativeFormatImporter) -> (artifact id: 'a3f25455cd251335e7bb631716e6e581') in 0.0049066 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_運転席ガラス_1.asset using Guid(cc81b65ede1314c499fdcc9a3d3438d4) (NativeFormatImporter) -> (artifact id: '3925b7353326834346d5373064d1325f') in 0.0048341 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_1.34_-1.asset using Guid(dcfdf31f3adb7894dba7d684dc40baca) (NativeFormatImporter) -> (artifact id: 'ccdc072d29d62ce48be5a3ebc8fb8c2e') in 0.0053026 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_クロームリム_-0.68.asset using Guid(ade2f875453525c4cb03f5031afe0bcf) (NativeFormatImporter) -> (artifact id: '5e9cac85ffd283a97dda62475afbde7e') in 0.0039605 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_-1.34_1.asset using Guid(dd333c0ab51e66e44b390e7b0e4fbdb0) (NativeFormatImporter) -> (artifact id: '09ebedf9500ac2f6b89d3ca16bef8146') in 0.0054112 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_スライドドアガラス_1.asset using Guid(dd9d10e7512ba0f4da6e7555373bffa1) (NativeFormatImporter) -> (artifact id: 'ae71930cba8e11ceb234c57c37a1348b') in 0.0052816 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_後席ガラス_-1.asset using Guid(8eb87883936e1e7409a733ef1b902452) (NativeFormatImporter) -> (artifact id: 'e14c81a4c01ea3306f7acc7245f298b8') in 0.0053851 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_黒のST250風バイク_ブレーキディスク_0.68.asset using Guid(3f07ad18f3506394a878043afcdaf540) (NativeFormatImporter) -> (artifact id: '3c625b4c7171a6b23133206fe851647e') in 0.0050601 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_ホイールアーチ_-1.34_1.asset using Guid(5ff2feb88b6de7e4a8d569e1ae07304c) (NativeFormatImporter) -> (artifact id: 'd06b44f8dec8de70338dfd54647ae338') in 0.0045962 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_後席ガラス_1.asset using Guid(5f457e62f3067ed4b94cca42ee426c4c) (NativeFormatImporter) -> (artifact id: '2f42d4f785585343848ecfde5d9d928b') in 0.0049052 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_タイヤ_1.34_1.asset using Guid(af73431976f18d1438faa86fdc4913f4) (NativeFormatImporter) -> (artifact id: '19cca8326a6edf9ec398a142d20009cb') in 0.0041287 seconds
+Start importing Assets/VirtualHouse/GeneratedMeshes/Vehicle_グレーのシエンタ_概形_リアガラス.asset using Guid(efd69b9215882eb4196e1cc16a8b16a4) (NativeFormatImporter) -> (artifact id: 'a128d5c9a9d695a224d1bb7ac9bdf8e5') in 0.0043817 seconds
+Refreshing native plugins compatible for Editor in 4.38 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=133d5b38d697e6f4e86311eca9d048e3): Total: 0.373 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=52 (actual=52, local cache=0, cache server=0)
+		Asset DB Process Time: managed=3 ms, native=332 ms
+		Asset DB Callback time: managed=17 ms, native=19 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=1344, non-scripts=2730
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 56
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 0.001ms
+	ApplyChangesToAssetFolders: 0.155ms
+	Scan: 17.135ms
+	OnSourceAssetsModified: 0.002ms
+	CategorizeAssetsWithTransientArtifact: 0.096ms
+	ProcessAssetsWithTransientArtifactChanges: 0.084ms
+	CategorizeAssets: 2.555ms
+	ImportOutOfDateAssets: 312.229ms (0.367ms without children)
+		ImportManagerImport: 310.131ms (8.579ms without children)
+			ImportInProcess: 300.697ms
+			UpdateCategorizedAssets: 0.855ms
+		ReloadNativeAssets: 0.285ms
+		UnloadImportedAssets: 0.315ms
+		ReloadImportedAssets: 0.009ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.804ms
+		InitializingProgressBar: 0.009ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.001ms
+		OnDemandSchedulerStart: 0.308ms
+	PostProcessAllAssets: 25.274ms
+	Hotreload: 12.071ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.225ms
+	UnloadStreamsBegin: 0.034ms
+	PersistCurrentRevisions: 0.103ms
+	UnloadStreamsEnd: 0.214ms
+	Untracked: 3.143ms
+
+Start importing Assets/Scenes/HouseRenovatedPlanC.unity using Guid(1c846c7be7afa404893cbbabb23a25bf) (DefaultImporter) -> (artifact id: '91934c747137ed549f7e1b5a29190227') in 0.0014071 seconds
+Refreshing native plugins compatible for Editor in 5.33 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=7f0562a94b21e1a4482f127b5efcb97b): Total: 0.063 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+OUTDOOR VALIDATION PASSED: Assets/Scenes/HouseRenovatedPlanC.unity; counts, lot bounds, entrance / parking approach, north exit, BBQ aisle and south garden walk.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+VirtualHouse.Editor.HouseBlockoutGenerator:UpdateAndValidateOutdoorLayout () (at Assets/VirtualHouse/Editor/HouseOutdoorLayout.cs:216)
+
+(Filename: Assets/VirtualHouse/Editor/HouseOutdoorLayout.cs Line: 216)
+
+Start importing Assets/VirtualHouse/outdoor-bike-preview.png using Guid(c5217becd36ed97409a6a4937d5892ca) (TextureImporter) -> (artifact id: '33db66169e416f18592d2c356c4cd56e') in 0.0790198 seconds
+Start importing Assets/VirtualHouse/outdoor-layout-plan-preview.png using Guid(a7cd5d18bf4ae0e46ad3aa3cb3aaf7ee) (TextureImporter) -> (artifact id: 'cb9ba223d19a1713f54c7738d06e742b') in 0.0568351 seconds
+Start importing Assets/VirtualHouse/outdoor-car-preview.png using Guid(09cc30ad90a53a9448bfe272e990ca53) (TextureImporter) -> (artifact id: '043beb35a9fb0a99b311f20efc8be543') in 0.062966 seconds
+Start importing Assets/VirtualHouse/outdoor-layout-perspective-preview.png using Guid(fad7281480009d140b6fceb6f71562b3) (TextureImporter) -> (artifact id: 'e868dd9a3a1274b4ed3ef2b7f918492e') in 0.0585864 seconds
+Refreshing native plugins compatible for Editor in 5.97 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=5bdb9d005279f5d4b8293e4fd437ec43): Total: 0.335 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=4 (actual=4, local cache=0, cache server=0)
+		Asset DB Process Time: managed=2 ms, native=315 ms
+		Asset DB Callback time: managed=5 ms, native=12 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=1344, non-scripts=2730
+		Asset File Changes: new=0, changed=4, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 0.001ms
+	ApplyChangesToAssetFolders: 0.156ms
+	Scan: 15.326ms
+	OnSourceAssetsModified: 0.070ms
+	CategorizeAssetsWithTransientArtifact: 0.010ms
+	ProcessAssetsWithTransientArtifactChanges: 0.032ms
+	CategorizeAssets: 15.860ms
+	ImportOutOfDateAssets: 262.827ms (0.286ms without children)
+		ImportManagerImport: 261.342ms (0.542ms without children)
+			ImportInProcess: 260.738ms
+			UpdateCategorizedAssets: 0.061ms
+		ReloadNativeAssets: 0.213ms
+		UnloadImportedAssets: 0.212ms
+		ReloadImportedAssets: 0.001ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.389ms
+		InitializingProgressBar: 0.006ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.002ms
+		OnDemandSchedulerStart: 0.376ms
+	PostProcessAllAssets: 4.899ms
+	Hotreload: 12.829ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.231ms
+	UnloadStreamsBegin: 0.919ms
+	PersistCurrentRevisions: 0.231ms
+	UnloadStreamsEnd: 0.001ms
+	Untracked: 21.807ms
+
+Opening scene 'Assets/Scenes/HouseRenovatedPlanC.unity'
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/HouseRenovatedPlanC.unity'
+	Deserialize:            119.337 ms
+	Integration:            295.850 ms
+	Integration of assets:  0.028 ms
+	Thread Wait Time:       0.007 ms
+	Total Operation Time:   415.223 ms
+Unloading 194 unused Assets / (38.8 KB). Loaded Objects now: 18850.
+Memory consumption went from 244.1 MB to 244.0 MB.
+Total: 9.255400 ms (FindLiveObjects: 1.369900 ms CreateObjectMapping: 0.328700 ms MarkObjects: 7.308100 ms  DeleteObjects: 0.247900 ms)
+
+Batchmode quit successfully invoked - shutting down!
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-hirot-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-hirot channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0
