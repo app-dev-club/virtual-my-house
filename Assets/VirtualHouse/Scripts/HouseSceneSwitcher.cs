@@ -65,11 +65,15 @@ namespace VirtualHouse
             if (!IsHouse) return;
             GUI.enabled = !loading;
             string name = SceneManager.GetActiveScene().name;
-            string current = name == Before ? "BEFORE (1/4) > PLAN A" : name == After ? "PLAN A (2/4) > PLAN B" : name == Alternative ? "PLAN B (3/4) > PLAN C" : "PLAN C (4/4) > BEFORE";
-            if (buttonStyle == null) buttonStyle = new GUIStyle(GUI.skin.button);
+            string current = name == Before ? "Afterを表示する" : "Beforeを表示する";
+            if (buttonStyle == null)
+            {
+                buttonStyle = new GUIStyle(GUI.skin.button);
+                buttonStyle.font = Resources.Load<Font>("NotoSansJP");
+            }
             buttonStyle.fontSize = Mathf.RoundToInt(ButtonRect.height * .25f);
             // Rendering only: all activation goes through Update, never IMGUI mouse-up.
-            GUI.Box(ButtonRect, loading ? "Loading..." : current + "\n[R] / TAP", buttonStyle);
+            GUI.Box(ButtonRect, loading ? "Loading..." : current, buttonStyle);
             GUI.enabled = true;
         }
 
@@ -77,7 +81,7 @@ namespace VirtualHouse
         {
             if (loading) return;
             string name = SceneManager.GetActiveScene().name;
-            string target = name == Before ? After : name == After ? Alternative : name == Alternative ? PlanC : Before;
+            string target = name == Before ? Alternative : Before;
             if (!Application.CanStreamedLevelBeLoaded(target))
             {
                 Debug.LogError("Scene is missing from Build Settings: " + target);

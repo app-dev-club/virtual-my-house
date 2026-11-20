@@ -35,6 +35,10 @@ namespace VirtualHouse.Editor
 
         public static void Run()
         {
+            var font = Resources.Load<Font>("NotoSansJP");
+            if (font == null) throw new Exception("Button font is missing");
+            foreach (char character in "AfterBeforeを表示する")
+                if (!font.HasCharacter(character)) throw new Exception("Button font is missing character: " + character);
             EditorSceneManager.OpenScene("Assets/Scenes/HouseBlockout.unity");
             SessionState.SetBool(Pending, true);
             Resume();
@@ -49,7 +53,7 @@ namespace VirtualHouse.Editor
                 if (!EditorApplication.isPlaying || EditorApplication.isCompiling) return;
                 var switcher = UnityEngine.Object.FindFirstObjectByType<HouseSceneSwitcher>();
                 if (switcher == null) return;
-                string expected = stage == 1 ? HouseSceneSwitcher.After : stage == 2 ? HouseSceneSwitcher.Alternative : stage == 3 ? HouseSceneSwitcher.PlanC : HouseSceneSwitcher.Before;
+                string expected = stage % 2 == 1 ? HouseSceneSwitcher.Alternative : HouseSceneSwitcher.Before;
                 if (SceneManager.GetActiveScene().name != expected) { settledFrames = 0; return; }
                 bool touchMode = SessionState.GetBool(Pending + ".Touch", false);
                 if (touchMode && testTouch == null)
@@ -85,22 +89,15 @@ namespace VirtualHouse.Editor
                     || Quaternion.Angle(player.transform.rotation, Quaternion.Euler(0,123,0)) > .1f
                     || Mathf.Abs(player.ViewPitch-20) > .1f)
                     throw new Exception("Player position or view changed across scene switch: " + player.transform.position);
-                if (stage == 1 && (GameObject.Find("脱衣所_残す柱") == null || GameObject.Find("洗濯機") == null))
-                    throw new Exception("Renovated fixtures are not active at runtime");
-                if (stage == 2)
+                if (stage % 2 == 1)
                 {
-                    if (GameObject.Find("壁_688_254_746_254") == null || GameObject.Find("壁_688_291_764_291") != null)
-                        throw new Exception("Alternative dressing layout is not active");
-                }
-                if (stage == 3)
-                {
-                    if(GameObject.Find("洗面_北東角柱") == null || GameObject.Find("壁_688_291_764_291") == null)
-                        throw new Exception("Plan C layout is not active");
+                    if (GameObject.Find("階段北物入") == null || GameObject.Find("洗面台") == null || GameObject.Find("洗濯機") == null)
+                        throw new Exception("Plan B storage or fixtures are not active");
                 }
                 if (stage == 4)
                 {
                     if (GameObject.Find("壁_651_141_651_179") == null) throw new Exception("Original WC partition was not restored");
-                    Debug.Log("SCENE SWITCH VALIDATION PASSED: original -> plan A -> plan B -> plan C -> original, player position/yaw/pitch preserved, fixtures active, original partition restored.");
+                    Debug.Log("SCENE SWITCH VALIDATION PASSED: Before -> Plan B -> Before -> Plan B -> Before, player position/yaw/pitch preserved, fixtures active, original partition restored.");
                     Finish(0);
                     return;
                 }

@@ -8,13 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HouseBlockout.unity
     guid: 298df47ddbcab8a43b1472928aa308bc
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/HouseRenovated.unity
     guid: 35dc82e47f0adb148a17229f7f6845d1
   - enabled: 1
     path: Assets/Scenes/HouseRenovatedAlternative.unity
     guid: f5b6c3a5188415c40a263eb92862cab4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/HouseRenovatedPlanC.unity
     guid: 1c846c7be7afa404893cbbabb23a25bf
   m_configObjects:
